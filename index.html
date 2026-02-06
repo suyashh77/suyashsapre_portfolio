@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suyash Sapre | Supply Chain Strategy & AI/ML</title>
+    <meta name="description"
+        content="Suyash Sapre - Industrial & Systems Engineering student at NC State. Supply Chain Strategy Analyst with AI/ML expertise.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Floating Navigation -->
+    <nav class="floating-nav" id="nav">
+        <div class="nav-content">
+            <a href="index.html" class="nav-logo">Suyash Sapre</a>
+
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="projects.html" class="nav-link">Projects</a>
+                <a href="experience.html" class="nav-link">Work Experience</a>
+                <a href="outside.html" class="nav-link">Beyond Work</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+            </div>
+
+            <button class="nav-mobile-btn" onclick="toggleMenu()" aria-label="Toggle menu">
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg-gradient"></div>
+        <div class="container">
+            <div class="hero-content">
+                <span class="hero-tag fade-in">Supply Chain Strategy · AI/ML · Data Analytics</span>
+                <h1 class="hero-title slide-up">
+                    Hi, I'm <span class="gradient-text">Suyash Sapre</span>
+                </h1>
+                <p class="hero-description fade-in-delay">
+                    Industrial & Systems Engineering student at NC State. Supply Chain Strategy Analyst
+                    with AI/ML expertise—bridging business strategy with data-driven execution.
+                </p>
+                <div class="hero-cta fade-in-delay-2">
+                    <a href="projects.html" class="btn btn-primary">
+                        View My Work
+                        <svg class="arrow-icon" width="16" height="16" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12l7-7M5 5h7v7" />
+                        </svg>
+                    </a>
+                    <a href="contact.html" class="btn btn-glass">
+                        Get in Touch
+                    </a>
+                </div>
+            </div>
+
+            <!-- Floating Elements -->
+            <div class="hero-visual">
+                <div class="floating-card card-1"></div>
+                <div class="floating-card card-2"></div>
+                <div class="floating-card card-3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-grid">
+                <div class="section-header">
+                    <span class="label">About</span>
+                    <h2 class="section-title">What I Do</h2>
+                </div>
+
+                <div class="section-content">
+                    <p class="text-large">
+                        I focus on applying AI/ML and analytics to complex supply chain problems—from
+                        risk intelligence platforms to warehouse network optimization. My research interests
+                        include operations research, simulation, and modeling efficient systems.
+                    </p>
+                    <a href="experience.html" class="link-arrow">
+                        View my work experience
+                        <svg class="arrow-icon" width="16" height="16" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12l7-7M5 5h7v7" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Projects Section -->
+    <section class="section section-bordered">
+        <div class="container">
+            <div class="section-head">
+                <div>
+                    <span class="label">Work</span>
+                    <h2 class="section-title">Featured Projects</h2>
+                </div>
+                <a href="projects.html" class="link-arrow">
+                    View all
+                    <svg class="arrow-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12l7-7M5 5h7v7" />
+                    </svg>
+                </a>
+            </div>
+
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <a href="projects.html" class="glass-card project-card featured">
+                    <div class="project-header">
+                        <h3 class="project-title">Supply Chain Risk Intelligence</h3>
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12l7-7M5 5h7v7" />
+                        </svg>
+                    </div>
+                    <p class="project-description">
+                        Real-time news to risk indices using NLP + GPT
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">GPT</span>
+                        <span class="tag">NLP</span>
+                        <span class="tag">Streamlit</span>
+                    </div>
+                </a>
+
+                <!-- Project 2 -->
+                <a href="projects.html" class="glass-card project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">Commodity Stockout Predictor</h3>
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12l7-7M5 5h7v7" />
+                        </svg>
+                    </div>
+                    <p class="project-description">
+                        ML-powered stockout risk prediction from market signals
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">ML</span>
+                        <span class="tag">Random Forest</span>
+                        <span class="tag">Yahoo Finance</span>
+                    </div>
+                </a>
+
+                <!-- Project 3 -->
+                <a href="projects.html" class="glass-card project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">Spotify Library Comparator</h3>
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12l7-7M5 5h7v7" />
+                        </svg>
+                    </div>
+                    <p class="project-description">
+                        Playlist sync tool for DJs with fuzzy matching
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Spotify API</span>
+                        <span class="tag">OAuth</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section section-bordered cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Let's Work Together</h2>
+                <p class="cta-description">
+                    Open to opportunities in supply chain strategy, AI/ML, and data analytics.
+                </p>
+                <a href="contact.html" class="btn btn-primary btn-glow">
+                    Get in Touch
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="index.html" class="footer-link">Home</a>
+                    <a href="projects.html" class="footer-link">Projects</a>
+                    <a href="experience.html" class="footer-link">Work Experience</a>
+                    <a href="contact.html" class="footer-link">Contact</a>
+                </div>
+
+                <div class="footer-links">
+                    <a href="https://github.com/suyashh77" target="_blank" class="footer-link">GitHub</a>
+                    <a href="https://www.linkedin.com/in/suyash-sapre-2566631b9" target="_blank"
+                        class="footer-link">LinkedIn</a>
+                    <a href="mailto:suyash.sapre@gmail.com" class="footer-link">Email</a>
+                </div>
+            </div>
+
+            <p class="footer-copyright">© 2025 Suyash Sapre</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+
+</html>

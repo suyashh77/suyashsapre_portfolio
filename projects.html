@@ -46,9 +46,26 @@
         <div class="container">
             <span class="label">Work</span>
             <h1 class="page-title">Projects</h1>
-            <p class="page-description">
-                AI/ML and data-driven solutions for supply chain challenges.
-            </p>
+
+            <!-- Page Navigation -->
+            <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 24px;">
+                <a href="#supplychain" class="btn btn-glass" style="padding: 8px 16px; font-size: 0.9rem;">Supply Chain
+                    AI/ML</a>
+                <a href="#personal" class="btn btn-glass" style="padding: 8px 16px; font-size: 0.9rem;">Personal
+                    Projects</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Supply Chain AI/ML Section -->
+    <section class="section" id="supplychain">
+        <div class="container">
+            <div style="margin-bottom: 32px;">
+                <span class="label">AI/ML</span>
+                <h2 class="section-title">Supply Chain Solutions</h2>
+                <p style="color: var(--text-muted); margin-top: 12px;">Data-driven tools for real supply chain
+                    challenges</p>
+            </div>
         </div>
     </section>
 
@@ -287,6 +304,85 @@
                         <iframe src="https://drive.google.com/file/d/1YNyamccPqtCf4cQdMOBhRGAU0phI8LHy/preview"
                             title="Spotify Library Comparator Demo" allow="autoplay; encrypted-media" allowfullscreen>
                         </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Personal Projects Section -->
+    <section class="section section-bordered" id="personal">
+        <div class="container">
+            <div style="margin-bottom: 32px;">
+                <span class="label">Personal</span>
+                <h2 class="section-title">First World Solutions</h2>
+                <p style="color: var(--text-muted); margin-top: 12px;">Tools built to solve everyday inconveniences</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+                <!-- Spotify Comparator -->
+                <a href="https://github.com/suyashh77/spotify_comparer" target="_blank" class="glass-card project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">Spotify Library Comparator</h3>
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12l7-7M5 5h7v7" />
+                        </svg>
+                    </div>
+                    <p class="project-description">
+                        Compare Spotify playlists with local DJ libraries, flag missing tracks.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Spotify API</span>
+                        <span class="tag">OAuth</span>
+                    </div>
+                </a>
+
+                <!-- Budget Tracker -->
+                <div class="glass-card project-card" style="opacity: 0.7;">
+                    <div class="project-header">
+                        <h3 class="project-title">Budget Tracker</h3>
+                        <span class="tag" style="font-size: 0.7rem;">Coming Soon</span>
+                    </div>
+                    <p class="project-description">
+                        Email-based transaction tracking and expense dashboard.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Gmail API</span>
+                        <span class="tag">Excel</span>
+                    </div>
+                </div>
+
+                <!-- Google Maps Scraper -->
+                <div class="glass-card project-card" style="opacity: 0.7;">
+                    <div class="project-header">
+                        <h3 class="project-title">Google Maps Reviews Scraper</h3>
+                        <span class="tag" style="font-size: 0.7rem;">Research</span>
+                    </div>
+                    <p class="project-description">
+                        POI data collection for infrastructure resilience research.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Selenium</span>
+                        <span class="tag">PostgreSQL</span>
+                    </div>
+                </div>
+
+                <!-- Garmin Wrapped -->
+                <div class="glass-card project-card" style="opacity: 0.7;">
+                    <div class="project-header">
+                        <h3 class="project-title">Garmin Wrapped Dashboard</h3>
+                        <span class="tag" style="font-size: 0.7rem;">Coming Soon</span>
+                    </div>
+                    <p class="project-description">
+                        Annual fitness data visualization like Spotify Wrapped.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Garmin API</span>
+                        <span class="tag">Dashboard</span>
                     </div>
                 </div>
             </div>

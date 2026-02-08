@@ -5,22 +5,28 @@
 /* ===== CSS VARIABLES ===== */
 :root {
   /* Colors - Dark Theme */
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #141414;
-  --bg-card: #1a1a1a;
+  --bg-primary: #020617;
+  /* Deep Navy Blue */
+  --bg-secondary: #0f172a;
+  /* Lighter Navy */
+  --bg-card: #1e293b;
+  /* Slate Blue */
 
   /* Text Colors */
-  --text-primary: #ffffff;
-  --text-secondary: #b4b4b4;
-  --text-muted: #737373;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
 
   /* Accent Colors */
   --accent-blue: #3b82f6;
-  --accent-purple: #8b5cf6;
-  --accent-green: #10b981;
+  /* Keep Blue for trust */
+  --accent-teal: #14b8a6;
+  /* Teal for innovation */
+  --accent-orange: #f97316;
+  /* Orange for energy */
 
   /* Gradient */
-  --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  --gradient-accent: linear-gradient(135deg, #14b8a6 0%, #3b82f6 100%);
 
   /* Fonts */
   --font-display: 'Outfit', sans-serif;
@@ -28,7 +34,7 @@
   --font-mono: 'JetBrains Mono', monospace;
 
   /* Spacing */
-  --section-padding: clamp(80px, 12vw, 140px);
+  --section-padding: clamp(40px, 6vw, 60px);
   --container-width: 1280px;
 
   /* Effects */

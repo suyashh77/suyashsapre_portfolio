@@ -61,13 +61,31 @@
         <div class="container">
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px;">
 
-                <!-- Project 1: Supply Chain Risk Intelligence -->
-                <a href="#risk-intelligence" class="glass-card project-card featured">
+                <!-- Garmin Wrapped -->
+                <a href="#garmin-wrapped" class="glass-card project-card featured">
                     <div class="project-header">
-                        <h3 class="project-title">Supply Chain Risk Intelligence</h3>
+                        <h3 class="project-title">Garmin Wrapped</h3>
                         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12l7-7M5 5h7v7" />
                         </svg>
+                    </div>
+                    <p class="project-description">
+                        How I turned 500,000 data points from a Garmin watch into a personalised annual health story using time series decomposition and anomaly detection.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">SQLite</span>
+                        <span class="tag">Prophet</span>
+                        <span class="tag">Streamlit</span>
+                        <span class="tag">LLM</span>
+                    </div>
+                </a>
+
+                <!-- Project 1: Supply Chain Risk Intelligence (Under Rework) -->
+                <div class="glass-card project-card" style="opacity: 0.7;">
+                    <div class="project-header">
+                        <h3 class="project-title">Supply Chain Risk Intelligence</h3>
+                        <span class="tag" style="font-size: 0.7rem;">Under Rework</span>
                     </div>
                     <p class="project-description">
                         Converts real-time news into structured Risk Indices and Alerts to help supply chain leaders
@@ -79,15 +97,13 @@
                         <span class="tag">NLP</span>
                         <span class="tag">Streamlit</span>
                     </div>
-                </a>
+                </div>
 
-                <!-- Project 2: Commodity Stockout Predictor -->
-                <a href="#stockout-predictor" class="glass-card project-card">
+                <!-- Project 2: Commodity Stockout Predictor (Under Rework) -->
+                <div class="glass-card project-card" style="opacity: 0.7;">
                     <div class="project-header">
                         <h3 class="project-title">Commodity Stockout Predictor</h3>
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12l7-7M5 5h7v7" />
-                        </svg>
+                        <span class="tag" style="font-size: 0.7rem;">Under Rework</span>
                     </div>
                     <p class="project-description">
                         ML-powered stockout risk prediction using financial market signals and technical indicators.
@@ -97,7 +113,7 @@
                         <span class="tag">Random Forest</span>
                         <span class="tag">Yahoo Finance</span>
                     </div>
-                </a>
+                </div>
 
                 <!-- Spotify Comparator -->
                 <a href="#spotify-comparator" class="glass-card project-card">
@@ -149,21 +165,7 @@
                     </div>
                 </div>
 
-                <!-- Garmin Wrapped -->
-                <div class="glass-card project-card" style="opacity: 0.7;">
-                    <div class="project-header">
-                        <h3 class="project-title">Garmin Wrapped Dashboard</h3>
-                        <span class="tag" style="font-size: 0.7rem;">Coming Soon</span>
-                    </div>
-                    <p class="project-description">
-                        Annual fitness data visualization like Spotify Wrapped.
-                    </p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Garmin API</span>
-                        <span class="tag">Dashboard</span>
-                    </div>
-                </div>
+
 
             </div>
         </div>
@@ -171,12 +173,13 @@
 
     <!-- Detailed Project Sections (Deep Work) -->
 
+
     <!-- Project 1: Supply Chain Risk Intelligence -->
-    <section class="section section-bordered" id="risk-intelligence">
+    <section class="section section-bordered" id="risk-intelligence" style="opacity: 0.5;">
         <div class="container">
             <div class="project-detail-grid">
                 <div class="project-detail-content">
-                    <h2 class="project-detail-title">Supply Chain Risk Intelligence Platform</h2>
+                    <h2 class="project-detail-title">Supply Chain Risk Intelligence Platform <span class="tag" style="font-size: 0.7rem; vertical-align: middle; margin-left: 10px;">Under Rework</span></h2>
 
                     <p class="project-detail-description">
                         Converts real-time news into structured Risk Indices and Alerts to help
@@ -255,11 +258,11 @@
     </section>
 
     <!-- Project 2: Commodity Stockout Risk Platform -->
-    <section class="section section-bordered" id="stockout-predictor">
+    <section class="section section-bordered" id="stockout-predictor" style="opacity: 0.5;">
         <div class="container">
             <div class="project-detail-grid">
                 <div class="project-detail-content">
-                    <h2 class="project-detail-title">Commodity Stockout Risk Platform</h2>
+                    <h2 class="project-detail-title">Commodity Stockout Risk Platform <span class="tag" style="font-size: 0.7rem; vertical-align: middle; margin-left: 10px;">Under Rework</span></h2>
 
                     <p class="project-detail-description">
                         Uses financial market signals as proxy for supply chain stockout risk.
@@ -336,6 +339,115 @@
         </div>
     </section>
 
+    <!-- Garmin Wrapped Deep Dive -->
+    <section class="section section-bordered" id="garmin-wrapped">
+        <div class="container">
+            <div class="project-detail-grid garmin-grid">
+                <div class="project-detail-content project-article">
+                    <h2 class="project-detail-title">Garmin Wrapped</h2>
+                    <p class="project-detail-description" style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 2rem;">
+                        <em>How I turned 500,000 data points from a Garmin watch into a personalised annual health story.</em>
+                    </p>
+
+                    <h3 class="article-heading" style="margin-top: 0;">The Origin Story</h3>
+                    <p>I've been wearing a Garmin since Black Friday 2022. But every year, when friends post their Spotify Wrapped or Strava Year in Sport, Garmin shows me records and a step count bar chart -- no story, no curation, no narrative. So I built one. This project explains the full system: the data engineering, the statistical methods, the insight logic, the UI, and the design decisions behind every step.</p>
+                    
+                    <p style="margin-top:1rem; margin-bottom: 2rem;"><em>For a detailed explanation of the methodology, architecture, and design decisions behind Garmin Wrapped, please see the <a href="https://github.com/suyashh77/Garmin_Wrapped/blob/main/garmin_wrapped_explained.md" target="_blank" style="color: var(--accent-blue); text-decoration: underline;">detailed methodology write-up</a>.</em></p>
+                    <a href="https://github.com/suyashh77/Garmin_Wrapped" target="_blank" class="link-arrow" style="margin-top: 1rem; display: inline-flex;">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                        </svg>
+                        View Source on GitHub
+                    </a>
+                </div>
+
+                <div class="project-detail-media align-sticky">
+                    <span class="label">
+                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24" style="display:inline-block; vertical-align:middle; margin-right:4px;">
+                            <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 12l-5-3v6H5V6h2v6l5-3 5 3V6h2v12h-2v-6l-5 3z" />
+                        </svg>
+                        Project Media
+                    </span>
+                    <div class="garmin-media-container" style="display: flex; flex-direction: column; gap: 2rem;">
+                        <!-- Video Demo -->
+                        <div class="video-container" style="border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow-card);">
+                            <iframe src="https://drive.google.com/file/d/1v76-HtvCe1lg_pzJUUORFfRgEZvCQVsw/preview" title="Garmin Wrapped Demo" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; aspect-ratio: 16/9; border: none;"></iframe>
+                        </div>
+
+                        <!-- Slides Carousel -->
+                        <div class="garmin-carousel-wrapper" style="position: relative; max-width: 100%; margin: 0 auto; overflow: hidden; border-radius: var(--border-radius); box-shadow: var(--shadow-card); border: 1px solid var(--border-color);">
+                            <div class="garmin-carousel-track" id="garminTrack" style="display: flex; transition: transform 0.4s ease-in-out;">
+                                <div style="min-width: 100%; box-sizing: border-box;"><img src="https://drive.google.com/thumbnail?id=1goAMy7UwpaikGS79tO0_pAh-h4YQl8dP&sz=w1200" alt="Slide 1" style="width: 100%; display: block; cursor: pointer;" onclick="window.open('https://drive.google.com/file/d/1goAMy7UwpaikGS79tO0_pAh-h4YQl8dP/view', '_blank')"></div>
+                                <div style="min-width: 100%; box-sizing: border-box;"><img src="https://drive.google.com/thumbnail?id=1dRBNDuNhEm7rt-IMsQ5nekGzsYSavDRb&sz=w1200" alt="Slide 2" style="width: 100%; display: block; cursor: pointer;" onclick="window.open('https://drive.google.com/file/d/1dRBNDuNhEm7rt-IMsQ5nekGzsYSavDRb/view', '_blank')"></div>
+                                <div style="min-width: 100%; box-sizing: border-box;"><img src="https://drive.google.com/thumbnail?id=1d-usBgvTt1E-krf4bFXKHBvxH8fJ3qdI&sz=w1200" alt="Slide 3" style="width: 100%; display: block; cursor: pointer;" onclick="window.open('https://drive.google.com/file/d/1d-usBgvTt1E-krf4bFXKHBvxH8fJ3qdI/view', '_blank')"></div>
+                                <div style="min-width: 100%; box-sizing: border-box;"><img src="https://drive.google.com/thumbnail?id=1cX3JPascP99oRmq3hJ72jeFSJ7NsMKfZ&sz=w1200" alt="Slide 4" style="width: 100%; display: block; cursor: pointer;" onclick="window.open('https://drive.google.com/file/d/1cX3JPascP99oRmq3hJ72jeFSJ7NsMKfZ/view', '_blank')"></div>
+                                <div style="min-width: 100%; box-sizing: border-box;"><img src="https://drive.google.com/thumbnail?id=1frFUcEn71B9nrw5z70Taj8yX4g__M1E_&sz=w1200" alt="Slide 5" style="width: 100%; display: block; cursor: pointer;" onclick="window.open('https://drive.google.com/file/d/1frFUcEn71B9nrw5z70Taj8yX4g__M1E_/view', '_blank')"></div>
+                                <div style="min-width: 100%; box-sizing: border-box;"><img src="https://drive.google.com/thumbnail?id=14MNFpwJjjcIprbHGz70gaiUiwk1GoWe4&sz=w1200" alt="Slide 6" style="width: 100%; display: block; cursor: pointer;" onclick="window.open('https://drive.google.com/file/d/14MNFpwJjjcIprbHGz70gaiUiwk1GoWe4/view', '_blank')"></div>
+                                <div style="min-width: 100%; box-sizing: border-box;"><img src="https://drive.google.com/thumbnail?id=1uDF0dI4poZQRr4LXLuHEHclsKRV6lUzI&sz=w1200" alt="Slide 7" style="width: 100%; display: block; cursor: pointer;" onclick="window.open('https://drive.google.com/file/d/1uDF0dI4poZQRr4LXLuHEHclsKRV6lUzI/view', '_blank')"></div>
+                                <div style="min-width: 100%; box-sizing: border-box;"><img src="https://drive.google.com/thumbnail?id=1kCD3Kf0DtG9aw0vogH546BbyjtcVzr9J&sz=w1200" alt="Slide 8" style="width: 100%; display: block; cursor: pointer;" onclick="window.open('https://drive.google.com/file/d/1kCD3Kf0DtG9aw0vogH546BbyjtcVzr9J/view', '_blank')"></div>
+                            </div>
+                            
+                            <button onclick="moveGarminCarousel(-1)" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); background: rgba(15, 23, 42, 0.7); color: var(--text-primary); border: 1px solid var(--border-color); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
+                            </button>
+                            <button onclick="moveGarminCarousel(1)" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); background: rgba(15, 23, 42, 0.7); color: var(--text-primary); border: 1px solid var(--border-color); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+                            </button>
+                            
+                            <div id="garminIndicators" style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10;">
+                                <div class="garmin-dot" onclick="setGarminCarousel(0)" style="width: 24px; height: 8px; border-radius: 4px; background: var(--accent-blue); cursor: pointer; transition: all 0.3s;"></div>
+                                <div class="garmin-dot" onclick="setGarminCarousel(1)" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: all 0.3s;"></div>
+                                <div class="garmin-dot" onclick="setGarminCarousel(2)" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: all 0.3s;"></div>
+                                <div class="garmin-dot" onclick="setGarminCarousel(3)" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: all 0.3s;"></div>
+                                <div class="garmin-dot" onclick="setGarminCarousel(4)" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: all 0.3s;"></div>
+                                <div class="garmin-dot" onclick="setGarminCarousel(5)" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: all 0.3s;"></div>
+                                <div class="garmin-dot" onclick="setGarminCarousel(6)" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: all 0.3s;"></div>
+                                <div class="garmin-dot" onclick="setGarminCarousel(7)" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: all 0.3s;"></div>
+                            </div>
+                        </div>
+                        <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Click any slide to view it in full resolution.</p>
+
+                        <script>
+                            let currentGarminSlide = 0;
+                            const totalGarminSlides = 8;
+                            
+                            function updateGarminCarousel() {
+                                const track = document.getElementById('garminTrack');
+                                const indicators = document.getElementById('garminIndicators').children;
+                                
+                                track.style.transform = `translateX(-${currentGarminSlide * 100}%)`;
+                                
+                                for(let i=0; i<indicators.length; i++) {
+                                    if(i === currentGarminSlide) {
+                                        indicators[i].style.width = '24px';
+                                        indicators[i].style.borderRadius = '4px';
+                                        indicators[i].style.background = 'var(--accent-blue)';
+                                    } else {
+                                        indicators[i].style.width = '8px';
+                                        indicators[i].style.borderRadius = '50%';
+                                        indicators[i].style.background = 'rgba(255, 255, 255, 0.4)';
+                                    }
+                                }
+                            }
+                            
+                            function moveGarminCarousel(direction) {
+                                currentGarminSlide += direction;
+                                if(currentGarminSlide < 0) currentGarminSlide = totalGarminSlides - 1;
+                                if(currentGarminSlide >= totalGarminSlides) currentGarminSlide = 0;
+                                updateGarminCarousel();
+                            }
+                            
+                            function setGarminCarousel(index) {
+                                currentGarminSlide = index;
+                                updateGarminCarousel();
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Project 3: Spotify Library Comparator -->
     <section class="section section-bordered" id="spotify-comparator">
         <div class="container">
@@ -392,6 +504,20 @@
                         </svg>
                         View Source on GitHub
                     </a>
+                </div>
+
+                <div class="project-detail-media align-sticky">
+                    <span class="label">
+                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24" style="display:inline-block; vertical-align:middle; margin-right:4px;">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
+                        Demo Video
+                    </span>
+                    <div class="garmin-media-container" style="display: flex; flex-direction: column; gap: 2rem;">
+                        <div class="video-container" style="border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow-card);">
+                            <iframe src="https://drive.google.com/file/d/1Cy1aAjHRssSWpCxibkIsxpCaenc8eXRs/preview" title="Spotify Comparator Demo" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; aspect-ratio: 16/9; border: none;"></iframe>
+                        </div>
+                    </div>
                 </div>
 
 

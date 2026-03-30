@@ -133,6 +133,44 @@
                     </div>
                 </a>
 
+                <!-- YouTube Notes Taker -->
+                <a href="#youtube-notes-taker" class="glass-card project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">YouTube Notes Taker</h3>
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12l7-7M5 5h7v7" />
+                        </svg>
+                    </div>
+                    <p class="project-description">
+                        Automated pipeline that monitors a YouTube playlist, transcribes new videos, and generates structured AI-powered summaries on a daily schedule.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">OpenAI</span>
+                        <span class="tag">yt-dlp</span>
+                        <span class="tag">Whisper</span>
+                    </div>
+                </a>
+
+                <!-- WolfAttend -->
+                <a href="#wolfattend" class="glass-card project-card">
+                    <div class="project-header">
+                        <h3 class="project-title">WolfAttend</h3>
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12l7-7M5 5h7v7" />
+                        </svg>
+                    </div>
+                    <p class="project-description">
+                        Frictionless, verified attendance system for NC State using TOTP codes and campus WiFi RADIUS validation — submitted to OIT and DELTA.
+                    </p>
+                    <div class="project-tags">
+                        <span class="tag">Systems Design</span>
+                        <span class="tag">Moodle</span>
+                        <span class="tag">Cisco ISE</span>
+                        <span class="tag">TOTP</span>
+                    </div>
+                </a>
+
                 <!-- Budget Tracker -->
                 <div class="glass-card project-card" style="opacity: 0.7;">
                     <div class="project-header">
@@ -521,6 +559,192 @@
                 </div>
 
 
+            </div>
+        </div>
+    </section>
+
+    <!-- WolfAttend Deep Dive -->
+    <section class="section section-bordered" id="wolfattend">
+        <div class="container">
+            <div class="project-detail-grid">
+                <div class="project-detail-content">
+                    <h2 class="project-detail-title">WolfAttend</h2>
+
+                    <p class="project-detail-description">
+                        A smart attendance tracking system designed for NC State that combines cryptographic
+                        one-time codes (TOTP) with passive campus WiFi RADIUS validation to deliver verified,
+                        cheat-resistant attendance in under 15 seconds — with zero hardware and no new student apps.
+                        Proposal submitted to NC State OIT and DELTA with active institutional feedback received.
+                    </p>
+
+                    <div class="project-features">
+                        <span class="label">Key Design Elements</span>
+                        <ul class="feature-list">
+                            <li class="feature-item">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 13l4 4L19 7" />
+                                </svg>
+                                TOTP-based session codes — unique, time-bound, never reusable
+                            </li>
+                            <li class="feature-item">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 13l4 4L19 7" />
+                                </svg>
+                                Passive RADIUS validation via Cisco ISE pxGrid — no new tracking infrastructure
+                            </li>
+                            <li class="feature-item">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 13l4 4L19 7" />
+                                </svg>
+                                Blocks remote submissions, VPN spoofing, code sharing, and replay attacks
+                            </li>
+                            <li class="feature-item">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 13l4 4L19 7" />
+                                </svg>
+                                No student is ever auto-marked absent — flagged records go to instructor review
+                            </li>
+                            <li class="feature-item">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 13l4 4L19 7" />
+                                </svg>
+                                Zero hardware, zero student app installs, near-zero ongoing cost
+                            </li>
+                            <li class="feature-item">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 13l4 4L19 7" />
+                                </svg>
+                                FERPA-compliant — minimal data collection, all on university infrastructure
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="project-tags">
+                        <span class="tag">Systems Design</span>
+                        <span class="tag">Moodle Plugin</span>
+                        <span class="tag">TOTP / RFC 6238</span>
+                        <span class="tag">Cisco ISE</span>
+                        <span class="tag">pxGrid API</span>
+                        <span class="tag">FERPA</span>
+                    </div>
+
+                    <a href="https://github.com/suyashh77/WolfAttend" target="_blank"
+                        class="link-arrow">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                        </svg>
+                        View Full Proposal on GitHub
+                    </a>
+                </div>
+
+                <div class="project-detail-media">
+                    <span class="label">Architecture</span>
+                    <div class="glass-card" style="padding: 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 1.8; color: var(--text-secondary);">
+                        <p style="margin: 0; color: var(--text-primary); font-weight: 600;">Moodle Layer</p>
+                        <p style="margin: 0;">&nbsp;&nbsp;Session management &middot; Submission UI</p>
+                        <p style="margin: 0;">&nbsp;&nbsp;Gradebook integration</p>
+                        <p style="margin: 0;">&nbsp;&nbsp;&darr;</p>
+                        <p style="margin: 0; color: var(--text-primary); font-weight: 600;">Validation Layer</p>
+                        <p style="margin: 0;">&nbsp;&nbsp;TOTP validator &middot; pxGrid client</p>
+                        <p style="margin: 0;">&nbsp;&nbsp;Decision engine &middot; AP zone lookup</p>
+                        <p style="margin: 0;">&nbsp;&nbsp;&darr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;</p>
+                        <p style="margin: 0; display: flex; gap: 2rem;">
+                            <span>Cisco ISE</span>
+                            <span>AP-to-Room Map</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- YouTube Notes Taker Deep Dive -->
+    <section class="section section-bordered" id="youtube-notes-taker">
+        <div class="container">
+            <div class="project-detail-grid">
+                <div class="project-detail-content">
+                    <h2 class="project-detail-title">YouTube Notes Taker</h2>
+
+                    <p class="project-detail-description">
+                        Automated pipeline that monitors a YouTube playlist, transcribes new videos using
+                        YouTube captions (with local Whisper as fallback), and generates structured AI-powered
+                        summaries with key takeaways, detailed notes, and action items — all on a daily schedule.
+                    </p>
+
+                    <div class="project-features">
+                        <span class="label">Features</span>
+                        <ul class="feature-list">
+                            <li class="feature-item">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 13l4 4L19 7" />
+                                </svg>
+                                Playlist monitoring and automatic new video detection via yt-dlp
+                            </li>
+                            <li class="feature-item">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 13l4 4L19 7" />
+                                </svg>
+                                YouTube captions with local Whisper fallback — no transcription API costs
+                            </li>
+                            <li class="feature-item">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 13l4 4L19 7" />
+                                </svg>
+                                Structured markdown summaries with key takeaways, notes, and action items
+                            </li>
+                            <li class="feature-item">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 13l4 4L19 7" />
+                                </svg>
+                                Per-video API cost tracking in Excel
+                            </li>
+                            <li class="feature-item">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 13l4 4L19 7" />
+                                </svg>
+                                Idempotent and fault-tolerant — safe to re-run, failed videos retry automatically
+                            </li>
+                            <li class="feature-item">
+                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 13l4 4L19 7" />
+                                </svg>
+                                Schedulable via Windows Task Scheduler or cron
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="project-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">OpenAI</span>
+                        <span class="tag">yt-dlp</span>
+                        <span class="tag">Whisper</span>
+                        <span class="tag">GPT-4o-mini</span>
+                    </div>
+
+                    <a href="https://github.com/suyashh77/youtube-notes-taker" target="_blank"
+                        class="link-arrow">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                        </svg>
+                        View Source on GitHub
+                    </a>
+                </div>
+
+                <div class="project-detail-media">
+                    <span class="label">How It Works</span>
+                    <div class="glass-card" style="padding: 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 1.8; color: var(--text-secondary);">
+                        <p style="margin: 0;">YouTube Playlist</p>
+                        <p style="margin: 0;">&nbsp;&nbsp;&darr; <span style="color: var(--text-muted);">yt-dlp</span></p>
+                        <p style="margin: 0;">Transcription</p>
+                        <p style="margin: 0;">&nbsp;&nbsp;<span style="color: var(--text-muted);">Captions first, Whisper fallback</span></p>
+                        <p style="margin: 0;">&nbsp;&nbsp;&darr; <span style="color: var(--text-muted);">OpenAI API</span></p>
+                        <p style="margin: 0;">Structured Summaries</p>
+                        <p style="margin: 0;">&nbsp;&nbsp;&darr;</p>
+                        <p style="margin: 0;">summaries/ &nbsp;&nbsp; costs.xlsx</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

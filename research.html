@@ -5,27 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research | Suyash Sapre</title>
-    <meta name="description"
-        content="Research interests and academic focus of Suyash Sapre - Operations Research, Machine Learning, and Optimization">
+    <meta name="description" content="Research interests, current work, and PhD plans — Operations Research, ML for Optimization, Supply Chain Analytics">
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
-        rel="stylesheet">
-
-    <!-- Stylesheet -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="pages.css">
 </head>
 
 <body>
-    <!-- Floating Navigation -->
     <nav class="floating-nav" id="nav">
         <div class="nav-content">
             <a href="index.html" class="nav-logo">SS</a>
-
             <div class="nav-links" id="navLinks">
                 <a href="index.html" class="nav-link">Home</a>
                 <a href="projects.html" class="nav-link">Projects</a>
@@ -33,36 +25,214 @@
                 <a href="experience.html" class="nav-link">Experience</a>
                 <a href="outside.html" class="nav-link">Beyond Work</a>
                 <a href="contact.html" class="nav-link">Contact</a>
-                <a href="assets/resume.pdf" class="nav-link nav-resume" download>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                        <polyline points="7 10 12 15 17 10"/>
-                        <line x1="12" y1="15" x2="12" y2="3"/>
-                    </svg>
-                    Resume
-                </a>
             </div>
-
             <button class="nav-mobile-btn" onclick="toggleMenu()" aria-label="Toggle menu">
-                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M4 6h16M4 12h16M4 18h16" />
+                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 6h14M4 12h14M4 18h14" />
                 </svg>
             </button>
         </div>
     </nav>
 
     <!-- Page Header -->
-    <section class="page-header" style="min-height: 60vh; display: flex; align-items: center; justify-content: center;">
-        <div class="container" style="text-align: center;">
+    <section class="page-header">
+        <div class="container">
             <span class="label">Academic</span>
-            <h1 class="page-title">Research Interests</h1>
-            <p class="page-description" style="margin-top: 24px;">
-                Coming Soon
+            <h1 class="page-title">Research</h1>
+            <p class="page-description" style="font-size: 1rem; max-width: 600px;">
+                Current work in infrastructure resilience and food access. Long-term interest: integrating ML with classical optimization for large-scale logistics.
             </p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px;">
+                <a href="#lab" class="btn btn-glass" style="padding: 7px 16px; font-size: 0.82rem;">Current Lab</a>
+                <a href="#projects" class="btn btn-glass" style="padding: 7px 16px; font-size: 0.82rem;">Projects</a>
+                <a href="#interests" class="btn btn-glass" style="padding: 7px 16px; font-size: 0.82rem;">Interests</a>
+                <a href="#phd" class="btn btn-glass" style="padding: 7px 16px; font-size: 0.82rem;">PhD Plans</a>
+            </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Current Lab -->
+    <section class="section" id="lab">
+        <div class="container">
+            <div class="experience-featured">
+                <div class="experience-header">
+                    <div>
+                        <span class="label">Jan 2026 – Present</span>
+                        <h2 class="experience-title">Sustainable & Resilient Systems Lab</h2>
+                        <p class="experience-subtitle">Dr. Benjamin Rachunok · NC State University, ISE</p>
+                    </div>
+                    <div class="experience-meta">
+                        <p class="experience-location">Raleigh, NC</p>
+                    </div>
+                </div>
+
+                <p class="text-large" style="margin-bottom: 32px;">
+                    The Rachunok lab studies how infrastructure systems fail under stress — from climate hazards to supply chain disruptions. I contribute through data collection, processing, and model development.
+                </p>
+
+                <ul class="rotation-list" style="max-width: 720px;">
+                    <li class="rotation-item">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/></svg>
+                        Built Google Maps POI scraper collecting ~12,000 grocery locations and ~12 million reviews across North Carolina for food desert research
+                    </li>
+                    <li class="rotation-item">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/></svg>
+                        Processing and analyzing point-of-interest data to model food access patterns and infrastructure resilience across geographies
+                    </li>
+                    <li class="rotation-item">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/></svg>
+                        Weekly paper discussions (2 papers/week) on climate risk, operations research, and ML methods
+                    </li>
+                    <li class="rotation-item">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/></svg>
+                        Active project: Climate Resilience Lead-Time Framework — quantifying how long a state has to prepare as its hazard profile shifts
+                    </li>
+                </ul>
+
+                <a href="https://resilience.wordpress.ncsu.edu/" target="_blank" class="link-arrow" style="margin-top: 28px; display: inline-flex;">
+                    Visit Rachunok Lab
+                    <svg class="arrow-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12l7-7M5 5h7v7" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Projects -->
+    <section class="section section-bordered" id="projects">
+        <div class="container">
+            <span class="label">Projects</span>
+            <h2 class="section-title" style="margin-bottom: 40px; font-size: clamp(1.5rem, 3vw, 2.2rem);">Active Research Work</h2>
+
+            <div style="display: flex; flex-direction: column; gap: 0;">
+
+                <!-- Climate Resilience Lead-Time Framework -->
+                <div style="padding: 32px 0; border-bottom: 1px solid var(--border-color);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;">
+                        <div>
+                            <h3 style="color: var(--text-primary); font-size: 1.2rem; margin-bottom: 6px;">Climate Resilience Lead-Time Framework</h3>
+                            <p style="color: var(--text-muted); font-size: 0.82rem; font-family: var(--font-mono);">In Development · Dr. Rachunok · NC State</p>
+                        </div>
+                        <span style="padding: 4px 12px; background: var(--accent-dim); border: 1px solid rgba(29,185,84,0.3); border-radius: 12px; font-size: 0.72rem; color: var(--accent); font-family: var(--font-mono); white-space: nowrap;">Active</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.75; font-size: 0.92rem; max-width: 720px;">
+                        Quantitative framework modeling how long a state has to prepare as its hazard profile shifts due to climate change. As North Carolina's risk profile transitions toward hurricanes, flooding, drought, and wildfire, the question becomes: how much lead time do communities and infrastructure systems actually have to adapt? Combines historical hazard data, climate projections, and infrastructure vulnerability modeling.
+                    </p>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;">
+                        <span class="tag">Python</span>
+                        <span class="tag">Geospatial Analysis</span>
+                        <span class="tag">Climate Data</span>
+                        <span class="tag">Infrastructure Modeling</span>
+                    </div>
+                </div>
+
+                <!-- Google Maps Scraper / Food Deserts -->
+                <div style="padding: 32px 0; border-bottom: 1px solid var(--border-color);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;">
+                        <div>
+                            <h3 style="color: var(--text-primary); font-size: 1.2rem; margin-bottom: 6px;">Food Desert POI Data Collection</h3>
+                            <p style="color: var(--text-muted); font-size: 0.82rem; font-family: var(--font-mono);">Ongoing · Rachunok Lab</p>
+                        </div>
+                        <span style="padding: 4px 12px; background: var(--accent-dim); border: 1px solid rgba(29,185,84,0.3); border-radius: 12px; font-size: 0.72rem; color: var(--accent); font-family: var(--font-mono); white-space: nowrap;">Active</span>
+                    </div>
+                    <p style="color: var(--text-secondary); line-height: 1.75; font-size: 0.92rem; max-width: 720px;">
+                        Built a scalable Google Maps scraper collecting point-of-interest data for grocery stores and food retailers across North Carolina — approximately 12,000 locations and 12 million reviews. The dataset supports research on food access disparities, infrastructure resilience, and community vulnerability. Tools: Python, Selenium, PostgreSQL.
+                    </p>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;">
+                        <span class="tag">Python</span>
+                        <span class="tag">Selenium</span>
+                        <span class="tag">PostgreSQL</span>
+                        <span class="tag">POI Data</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Interests -->
+    <section class="section section-bordered" id="interests">
+        <div class="container">
+            <div class="section-grid">
+                <div>
+                    <span class="label">Interests</span>
+                    <h2 style="font-size: clamp(1.3rem, 2.8vw, 1.9rem);">What I Want to Study</h2>
+                </div>
+                <div>
+                    <p style="font-size: 0.97rem; line-height: 1.85; color: var(--text-secondary); margin-bottom: 28px;">
+                        My research identity is at the intersection of <strong style="color: var(--text-primary);">machine learning and classical operations research</strong>. I'm interested in when ML can make OR faster, more robust, or applicable to problems that were previously too large or uncertain to solve well.
+                    </p>
+
+                    <div style="display: flex; flex-direction: column; gap: 0;">
+                        <div style="padding: 20px 0; border-bottom: 1px solid var(--border-color);">
+                            <p style="color: var(--text-primary); font-weight: 600; font-size: 0.95rem; margin-bottom: 6px;">Reinforcement Learning for Vehicle Routing</p>
+                            <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.7;">Attention-based models (Kool et al.) and RL policies that learn good heuristics for VRP variants. When does learned heuristic beat exact methods?</p>
+                        </div>
+                        <div style="padding: 20px 0; border-bottom: 1px solid var(--border-color);">
+                            <p style="color: var(--text-primary); font-weight: 600; font-size: 0.95rem; margin-bottom: 6px;">Stochastic Optimization Under Demand Uncertainty</p>
+                            <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.7;">Two-stage stochastic programs, robust optimization, and scenario generation for supply chain decisions under demand variability.</p>
+                        </div>
+                        <div style="padding: 20px 0; border-bottom: 1px solid var(--border-color);">
+                            <p style="color: var(--text-primary); font-weight: 600; font-size: 0.95rem; margin-bottom: 6px;">Predict-then-Optimize Frameworks</p>
+                            <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.7;">End-to-end differentiable optimization layers; integrating ML prediction with OR prescription in a single pipeline.</p>
+                        </div>
+                        <div style="padding: 20px 0;">
+                            <p style="color: var(--text-primary); font-weight: 600; font-size: 0.95rem; margin-bottom: 6px;">Infrastructure Resilience & Climate OR</p>
+                            <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.7;">Modeling infrastructure system failures, recovery optimization, and preparedness lead times under evolving climate hazard profiles.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PhD Plans -->
+    <section class="section section-bordered" id="phd">
+        <div class="container">
+            <div class="section-grid">
+                <div>
+                    <span class="label">PhD Plans</span>
+                    <h2 style="font-size: clamp(1.3rem, 2.8vw, 1.9rem);">Graduate School</h2>
+                </div>
+                <div>
+                    <p style="font-size: 0.97rem; line-height: 1.85; color: var(--text-secondary); margin-bottom: 28px;">
+                        Long-term goal: PhD in Operations Research. Plan: 2–3 years of industry experience after graduation (Jan 2027) building production OR systems, then applying for <strong style="color: var(--text-primary);">Fall 2028 start</strong> (applications Fall 2027).
+                    </p>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px;">
+                        <div style="padding: 16px 20px; background: var(--bg-card); border: 1px solid rgba(29,185,84,0.25); border-radius: var(--border-radius-lg);">
+                            <p style="color: var(--accent); font-size: 0.72rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;">Dream</p>
+                            <p style="color: var(--text-primary); font-weight: 600; font-size: 0.92rem;">Georgia Tech ISyE</p>
+                            <p style="color: var(--text-muted); font-size: 0.78rem;">#1 ranked OR program</p>
+                        </div>
+                        <div style="padding: 16px 20px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--border-radius-lg);">
+                            <p style="color: var(--text-muted); font-size: 0.72rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;">Reach</p>
+                            <p style="color: var(--text-primary); font-weight: 600; font-size: 0.92rem;">MIT ORC</p>
+                            <p style="color: var(--text-muted); font-size: 0.78rem;">Operations Research Center</p>
+                        </div>
+                        <div style="padding: 16px 20px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--border-radius-lg);">
+                            <p style="color: var(--text-muted); font-size: 0.72rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;">Reach</p>
+                            <p style="color: var(--text-primary); font-weight: 600; font-size: 0.92rem;">Cornell ORIE</p>
+                            <p style="color: var(--text-muted); font-size: 0.78rem;">Strong stochastic opt. faculty</p>
+                        </div>
+                        <div style="padding: 16px 20px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--border-radius-lg);">
+                            <p style="color: var(--text-muted); font-size: 0.72rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px;">Target</p>
+                            <p style="color: var(--text-primary); font-weight: 600; font-size: 0.92rem;">Northwestern IEMS</p>
+                            <p style="color: var(--text-muted); font-size: 0.78rem;">Industrial Engineering & MS</p>
+                        </div>
+                    </div>
+
+                    <div style="padding: 20px 24px; background: var(--bg-secondary); border-left: 3px solid var(--accent); border-radius: var(--border-radius);">
+                        <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.75; font-style: italic;">
+                            "I'm interested in integrating machine learning with classical operations research for real-time supply chain optimization. Specifically: how can reinforcement learning improve VRP heuristics? When do classical OR methods fail and how can ML predict and adapt? My long-term goal is to build a PhD research program around ML-OR hybrid methods for large-scale logistics networks."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
@@ -73,20 +243,16 @@
                     <a href="experience.html" class="footer-link">Experience</a>
                     <a href="contact.html" class="footer-link">Contact</a>
                 </div>
-
                 <div class="footer-links">
                     <a href="https://github.com/suyashh77" target="_blank" class="footer-link">GitHub</a>
-                    <a href="https://www.linkedin.com/in/suyash-sapre-2566631b9" target="_blank"
-                        class="footer-link">LinkedIn</a>
+                    <a href="https://www.linkedin.com/in/suyash-sapre-2566631b9" target="_blank" class="footer-link">LinkedIn</a>
                     <a href="mailto:suyash.sapre@gmail.com" class="footer-link">Email</a>
                 </div>
             </div>
-
             <p class="footer-copyright">© 2026 Suyash Sapre</p>
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="script.js"></script>
 </body>
 

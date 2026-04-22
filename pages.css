@@ -1,11 +1,11 @@
 /* =====================================================
-   PAGES STYLESHEET - BOLD & CLEAN DESIGN
+   PAGES STYLESHEET — SPOTIFY THEME
    ===================================================== */
 
 /* ===== PAGE HEADER ===== */
 .page-header {
-    padding-top: 160px;
-    padding-bottom: 80px;
+    padding-top: 130px;
+    padding-bottom: 56px;
 }
 
 .page-title {
@@ -83,7 +83,7 @@
 }
 
 .video-container:hover {
-    border-color: var(--accent-blue);
+    border-color: rgba(29, 185, 84, 0.4);
     box-shadow: var(--shadow-hover);
 }
 
@@ -153,7 +153,7 @@
 .rotation-number {
     font-family: var(--font-mono);
     font-size: 0.85rem;
-    color: var(--accent-blue);
+    color: var(--accent);
     font-weight: 700;
     margin-bottom: 16px;
     display: block;
@@ -259,7 +259,7 @@
 
 .contact-card:hover {
     background: var(--bg-secondary);
-    border-color: var(--accent-blue);
+    border-color: var(--accent);
     transform: translateY(-4px);
     box-shadow: var(--shadow-hover);
 }
@@ -267,7 +267,7 @@
 .contact-icon {
     width: 28px;
     height: 28px;
-    color: var(--accent-blue);
+    color: var(--accent);
     margin-bottom: 20px;
 }
 
@@ -293,7 +293,7 @@
 }
 
 .contact-card:hover .contact-arrow {
-    color: var(--accent-blue);
+    color: var(--accent);
     transform: translate(4px, -4px);
 }
 
@@ -350,7 +350,7 @@
 
 .value-card:hover {
     background: var(--bg-secondary);
-    border-color: var(--accent-blue);
+    border-color: var(--accent);
     transform: translateY(-4px);
     box-shadow: var(--shadow-hover);
 }

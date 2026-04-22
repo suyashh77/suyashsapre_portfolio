@@ -4,148 +4,449 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suyash Sapre | Supply Chain Strategy & AI/ML</title>
+    <title>Suyash Sapre | Operations Research & Supply Chain</title>
     <meta name="description"
-        content="Suyash Sapre - Industrial & Systems Engineering student at NC State. Supply Chain Strategy Analyst with AI/ML expertise.">
+        content="Suyash Sapre — ISE student at NC State. Building optimization systems for logistics and supply chain. Seeking OR/SCM roles starting January 2027.">
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
         rel="stylesheet">
-
-    <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-    <!-- Floating Navigation -->
+    <!-- Nav -->
     <nav class="floating-nav" id="nav">
         <div class="nav-content">
-            <a href="index.html" class="nav-logo">Suyash Sapre</a>
-
+            <a href="index.html" class="nav-logo">SS</a>
             <div class="nav-links" id="navLinks">
                 <a href="index.html" class="nav-link active">Home</a>
                 <a href="projects.html" class="nav-link">Projects</a>
                 <a href="research.html" class="nav-link">Research</a>
-                <a href="experience.html" class="nav-link">Work Experience</a>
+                <a href="experience.html" class="nav-link">Experience</a>
                 <a href="outside.html" class="nav-link">Beyond Work</a>
                 <a href="contact.html" class="nav-link">Contact</a>
+                <a href="assets/resume.pdf" class="nav-link nav-resume" download>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Resume
+                </a>
             </div>
-
             <button class="nav-mobile-btn" onclick="toggleMenu()" aria-label="Toggle menu">
-                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M4 6h16M4 12h16M4 18h16" />
+                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 6h14M4 12h14M4 18h14" />
                 </svg>
             </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero -->
     <section class="hero">
         <div class="hero-bg-gradient"></div>
+        <div class="hero-bg-grid"></div>
         <div class="container">
-            <div class="hero-content">
-                <span class="hero-tag fade-in">Operations Research · Supply Chain · Machine Learning</span>
-                <h1 class="hero-title slide-up">
-                    Hi, I'm <span class="gradient-text">Suyash Sapre</span>
-                </h1>
-
-                <!-- Quick Navigation Tiles -->
-                <div class="hero-cta fade-in-delay-2"
-                    style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px;">
-                    <a href="experience.html" class="btn btn-glass" style="padding: 12px 24px; font-size: 0.95rem;">Work
-                        Experience</a>
-                    <a href="projects.html" class="btn btn-glass"
-                        style="padding: 12px 24px; font-size: 0.95rem;">Projects</a>
-                    <a href="outside.html" class="btn btn-glass" style="padding: 12px 24px; font-size: 0.95rem;">Beyond
-                        Work</a>
-                    <a href="contact.html" class="btn btn-glass" style="padding: 12px 24px; font-size: 0.95rem;">Get in
-                        Touch</a>
-                </div>
-            </div>
-
-            <!-- Floating Elements -->
-            <div class="hero-visual">
-                <div class="floating-card card-1"></div>
-                <div class="floating-card card-2"></div>
-                <div class="floating-card card-3"></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="section">
-        <div class="container">
-            <div class="section-grid">
-                <div class="section-header">
-                    <span class="label">About</span>
-                    <h2 class="section-title">About Me</h2>
-                </div>
-
-                <div class="section-content">
-                    <!-- What I Do -->
-                    <h3 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-primary); font-weight: 600;">
-                        What I Like to Do</h3>
-                    <p class="text-large" style="margin-bottom: 24px; font-size: 1rem; line-height: 1.6;">
-                        Problems I like working on / learning about <strong>Combinatorial
-                            Optimization, Stochastic Modeling, ML-Enhanced OR.</strong>
+            <div class="hero-layout">
+                <div class="hero-content">
+                    <span class="hero-tag fade-in">Operations Research · Supply Chain · ML</span>
+                    <h1 class="hero-title slide-up">
+                        Suyash <span class="gradient-text">Sapre</span>
+                    </h1>
+                    <p class="hero-description fade-in-delay">
+                        ISE senior at NC State. I work at the intersection of <strong
+                            style="color: var(--text-primary);">mathematical optimization and real-world logistics</strong>
+                        — from 9-warehouse network models to ML-driven supply chain tooling.
                         <br><br>
-                        <strong>Long-term vision:</strong> I'm looking to pursue a PhD in Operations Research (target:
-                        Fall 2029) to advance the theoretical foundations of machine learning-driven optimization for
-                        real-time logistics. Before graduate school, I'm seeking 2-3 years of industry experience at
-                        companies pushing the boundaries of OR in practice—places where research and production systems
-                        intersect.
+                        2+ years @ UPL NA across three rotations. Researcher in Dr. Rachunok's Sustainable &
+                        Resilient Systems Lab. Open to <strong style="color: var(--text-primary);">full-time OR /
+                            Supply Chain Optimization roles</strong> from January 2027.
                     </p>
-
-                    <!-- Values -->
-                    <h3 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-primary); font-weight: 600;">
-                        Values</h3>
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 32px;">
-                        <div class="glass-card" style="padding: 16px; text-align: left;">
-                            <h4 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 4px;">Ambition</h4>
-                            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;">Intrinsic
-                                drive to excel</p>
+                    <div class="hero-cta fade-in-delay-2">
+                        <a href="projects.html" class="btn btn-primary btn-glow">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 3v18h18"/>
+                                <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/>
+                            </svg>
+                            View Projects
+                        </a>
+                        <a href="assets/resume.pdf" class="btn btn-outline" download>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="7 10 12 15 17 10"/>
+                                <line x1="12" y1="15" x2="12" y2="3"/>
+                            </svg>
+                            Download Resume
+                        </a>
+                    </div>
+                    <!-- Impact Metrics - Recruiter Quick Scan -->
+                    <div class="hero-metrics fade-in-delay-2">
+                        <div class="metric">
+                            <span class="metric-value">63K+</span>
+                            <span class="metric-label">Orders Optimized</span>
                         </div>
-                        <div class="glass-card" style="padding: 16px; text-align: left;">
-                            <h4 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 4px;">Curiosity
-                            </h4>
-                            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;">Always
-                                learning, always asking why</p>
+                        <div class="metric-divider"></div>
+                        <div class="metric">
+                            <span class="metric-value">538</span>
+                            <span class="metric-label">SKUs Modeled</span>
                         </div>
-                        <div class="glass-card" style="padding: 16px; text-align: left;">
-                            <h4 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 4px;">People</h4>
-                            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;">Meaningful
-                                relationships along the way</p>
+                        <div class="metric-divider"></div>
+                        <div class="metric">
+                            <span class="metric-value">2+</span>
+                            <span class="metric-label">Years Experience</span>
+                        </div>
+                        <div class="metric-divider"></div>
+                        <div class="metric">
+                            <span class="metric-value">9</span>
+                            <span class="metric-label">Warehouse Network</span>
                         </div>
                     </div>
 
-                    <!-- What I'm Looking For -->
-                    <h3 style="font-size: 1.1rem; margin-bottom: 12px; color: var(--text-primary); font-weight: 600;">
-                        What I'm Looking For</h3>
-                    <p class="text-large" style="margin-bottom: 32px; font-size: 1rem; line-height: 1.6;">
-                        <strong>Immediate (January 2027):</strong> Full-time Operations Research Analyst or Supply Chain
-                        Optimization roles where I can apply mathematical optimization and machine learning to solve
-                        large-scale logistics problems.
-                    </p>
+                    <div class="hero-socials fade-in-delay-2">
+                        <a href="https://github.com/suyashh77" target="_blank" class="social-link" aria-label="GitHub">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.linkedin.com/in/suyash-sapre-2566631b9" target="_blank" class="social-link" aria-label="LinkedIn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                            </svg>
+                        </a>
+                        <a href="mailto:suyash.sapre@gmail.com" class="social-link" aria-label="Email">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-visual fade-in-delay">
+                    <div class="profile-container">
+                        <div class="profile-glow"></div>
+                        <div class="profile-frame">
+                            <img src="assets/profile.jpg" alt="Suyash Sapre" class="profile-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="profile-placeholder" style="display: none;">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                                <span>Your Photo</span>
+                                <small>Add image to assets/profile.jpg</small>
+                            </div>
+                        </div>
+                        <div class="floating-badge">
+                            <span class="badge-dot"></span>
+                            Open to Work
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
+    <!-- Featured Work -->
+    <section class="section section-bordered">
+        <div class="container">
+            <div class="section-grid">
+                <div>
+                    <span class="label">Work</span>
+                    <h2 style="font-size: clamp(1.3rem, 2.8vw, 1.9rem); margin-bottom: 16px;">Featured Projects</h2>
+                    <a href="projects.html" class="link-arrow" style="font-size: 0.82rem;">
+                        All projects
+                        <svg class="arrow-icon" width="13" height="13" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12l7-7M5 5h7v7" />
+                        </svg>
+                    </a>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+
+                    <!-- Garmin Wrapped -->
+                    <a href="projects.html#garmin-wrapped" class="glass-card project-card"
+                        style="border-left: 2px solid var(--accent);">
+                        <div class="project-header">
+                            <h3 class="project-title">Garmin Wrapped</h3>
+                            <svg width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="2">
+                                <path d="M5 12l7-7M5 5h7v7" />
+                            </svg>
+                        </div>
+                        <p class="project-description">500K+ data points → personalised annual health story. Time
+                            series decomposition, anomaly detection, LLM narrative generation.</p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Prophet</span>
+                            <span class="tag">SQLite</span>
+                            <span class="tag">LLM</span>
+                        </div>
+                    </a>
+
+                    <!-- Spotify Comparator -->
+                    <a href="projects.html#spotify-comparator" class="glass-card project-card"
+                        style="border-left: 2px solid var(--accent);">
+                        <div class="project-header">
+                            <h3 class="project-title">Spotify Library Comparator</h3>
+                            <svg width="14" height="14" fill="none" stroke="var(--accent)" stroke-width="2">
+                                <path d="M5 12l7-7M5 5h7v7" />
+                            </svg>
+                        </div>
+                        <p class="project-description">Compare Spotify playlists against local DJ libraries. Flags
+                            missing tracks, auto-generates catch-up playlists via fuzzy matching + OAuth.</p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Spotify API</span>
+                            <span class="tag">OAuth</span>
+                            <span class="tag">RapidFuzz</span>
+                        </div>
+                    </a>
+
+                    <!-- Network Analysis -->
+                    <a href="experience.html#coop" class="glass-card project-card">
+                        <div class="project-header">
+                            <h3 class="project-title">9-Warehouse Network Model</h3>
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12l7-7M5 5h7v7" />
+                            </svg>
+                        </div>
+                        <p class="project-description">@ UPL NA — 63K+ annual orders, 538 SKUs. Python pipeline for
+                            regional demand, service gaps, and inventory positioning trade-offs.</p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Tableau</span>
+                            <span class="tag">SAP</span>
+                            <span class="tag">OR</span>
+                        </div>
+                    </a>
+
+                    <!-- WolfAttend -->
+                    <a href="projects.html#wolfattend" class="glass-card project-card">
+                        <div class="project-header">
+                            <h3 class="project-title">WolfAttend</h3>
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12l7-7M5 5h7v7" />
+                            </svg>
+                        </div>
+                        <p class="project-description">Verified attendance for NC State using TOTP codes + campus WiFi
+                            RADIUS validation. Submitted to OIT and DELTA.</p>
+                        <div class="project-tags">
+                            <span class="tag">Systems Design</span>
+                            <span class="tag">TOTP</span>
+                            <span class="tag">Cisco ISE</span>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Strip -->
+    <section class="section section-bordered">
+        <div class="container">
+            <div class="section-grid">
+                <div>
+                    <span class="label">Career</span>
+                    <h2 style="font-size: clamp(1.3rem, 2.8vw, 1.9rem); margin-bottom: 16px;">Where I've Worked</h2>
+                    <a href="experience.html" class="link-arrow" style="font-size: 0.82rem;">
+                        Full details
+                        <svg class="arrow-icon" width="13" height="13" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12l7-7M5 5h7v7" />
+                        </svg>
+                    </a>
+                </div>
+                <div>
+                    <!-- Research Lab -->
+                    <div
+                        style="padding: 18px 0; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: padding-left 0.2s ease;"
+                        onmouseover="this.style.paddingLeft='10px'" onmouseout="this.style.paddingLeft='0'">
+                        <div>
+                            <p
+                                style="color: var(--text-primary); font-weight: 600; font-size: 0.95rem; margin-bottom: 2px;">
+                                Sustainable & Resilient Systems Lab</p>
+                            <p style="color: var(--text-muted); font-size: 0.8rem;">Undergraduate Researcher · Dr.
+                                Rachunok · NC State</p>
+                        </div>
+                        <span
+                            style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); white-space: nowrap;">Jan 2026 – Present</span>
+                    </div>
+                    <!-- UPL -->
+                    <div
+                        style="padding: 18px 0; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: padding-left 0.2s ease;"
+                        onmouseover="this.style.paddingLeft='10px'" onmouseout="this.style.paddingLeft='0'">
+                        <div>
+                            <p
+                                style="color: var(--text-primary); font-weight: 600; font-size: 0.95rem; margin-bottom: 2px;">
+                                UPL NA</p>
+                            <p style="color: var(--text-muted); font-size: 0.8rem;">Supply Chain & Manufacturing Co-Op
+                                · 3 Rotations · Cary, NC</p>
+                        </div>
+                        <span
+                            style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); white-space: nowrap;">Jan 2024 – Aug 2025</span>
+                    </div>
+                    <!-- David Phillips -->
+                    <div
+                        style="padding: 18px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px; transition: padding-left 0.2s ease;"
+                        onmouseover="this.style.paddingLeft='10px'" onmouseout="this.style.paddingLeft='0'">
+                        <div>
+                            <p
+                                style="color: var(--text-primary); font-weight: 600; font-size: 0.95rem; margin-bottom: 2px;">
+                                David Phillips</p>
+                            <p style="color: var(--text-muted); font-size: 0.8rem;">Supply Chain Intern · London, UK
+                            </p>
+                        </div>
+                        <span
+                            style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); white-space: nowrap;">Jun – Aug 2023</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="section section-bordered">
+        <div class="container">
+            <div class="section-grid">
+                <div>
+                    <span class="label">About</span>
+                    <h2 style="font-size: clamp(1.3rem, 2.8vw, 1.9rem);">Who I Am</h2>
+                </div>
+                <div>
+                    <p style="font-size: 0.97rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: 20px;">
+                        Senior at NC State studying <strong style="color: var(--text-primary);">Industrial &
+                            Systems Engineering</strong> with a focus on operations research and ML for logistics.
+                        I care about the intersection where mathematical optimization meets messy real-world data.
+                    </p>
+                    <p style="font-size: 0.97rem; line-height: 1.8; color: var(--text-secondary); margin-bottom: 24px;">
+                        Outside work: USSF Regional Referee (ECNL, MLS Next, USL2), USSF National D License holder,
+                        soccer coach, and DJ / music producer who makes mashups and plays college events.
+                        Long-term target: PhD in Operations Research (Fall 2029) — before that, 2–3 years pushing OR
+                        in production systems.
+                    </p>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <span
+                            style="padding: 5px 12px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono);">Combinatorial
+                            Optimization</span>
+                        <span
+                            style="padding: 5px 12px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono);">Stochastic
+                            Modeling</span>
+                        <span
+                            style="padding: 5px 12px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono);">ML-Enhanced
+                            OR</span>
+                        <span
+                            style="padding: 5px 12px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; font-size: 0.75rem; color: var(--text-secondary); font-family: var(--font-mono);">Reverse
+                            Logistics</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Hire Me - Value Proposition -->
+    <section class="section section-bordered">
+        <div class="container">
+            <div class="section-grid">
+                <div>
+                    <span class="label">Value Prop</span>
+                    <h2 style="font-size: clamp(1.3rem, 2.8vw, 1.9rem);">Why Hire Me?</h2>
+                </div>
+                <div class="value-prop-grid">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                <path d="M2 17l10 5 10-5"/>
+                                <path d="M2 12l10 5 10-5"/>
+                            </svg>
+                        </div>
+                        <h3 class="value-title">Production-Ready Experience</h3>
+                        <p class="value-desc">2+ years at UPL NA working on real supply chain systems. Not just academic theory — I've optimized actual warehouse networks handling 63K+ orders.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                <line x1="8" y1="21" x2="16" y2="21"/>
+                                <line x1="12" y1="17" x2="12" y2="21"/>
+                            </svg>
+                        </div>
+                        <h3 class="value-title">Technical + Business Fluency</h3>
+                        <p class="value-desc">I speak both Python and supply chain. Can translate business problems into mathematical models and explain results to stakeholders.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 20h9"/>
+                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                            </svg>
+                        </div>
+                        <h3 class="value-title">Research-Driven Mindset</h3>
+                        <p class="value-desc">Active researcher in sustainable systems lab. I bring academic rigor to industry problems — and industry pragmatism to research.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Showcase -->
+    <section class="section section-bordered">
+        <div class="container">
+            <div class="section-grid">
+                <div>
+                    <span class="label">Toolkit</span>
+                    <h2 style="font-size: clamp(1.3rem, 2.8vw, 1.9rem);">Technical Skills</h2>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 8px;">What I use to solve problems</p>
+                </div>
+                <div class="skills-showcase">
+                    <div class="skill-category">
+                        <h4 class="skill-cat-title">Optimization & OR</h4>
+                        <div class="skill-items">
+                            <span class="skill-badge expert">Python</span>
+                            <span class="skill-badge expert">Gurobi</span>
+                            <span class="skill-badge advanced">Pyomo</span>
+                            <span class="skill-badge advanced">NetworkX</span>
+                            <span class="skill-badge">OR-Tools</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <h4 class="skill-cat-title">Data & ML</h4>
+                        <div class="skill-items">
+                            <span class="skill-badge expert">Pandas</span>
+                            <span class="skill-badge expert">NumPy</span>
+                            <span class="skill-badge advanced">Scikit-learn</span>
+                            <span class="skill-badge advanced">SQL</span>
+                            <span class="skill-badge">Tableau</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <h4 class="skill-cat-title">Supply Chain</h4>
+                        <div class="skill-items">
+                            <span class="skill-badge expert">SAP</span>
+                            <span class="skill-badge advanced">Demand Planning</span>
+                            <span class="skill-badge advanced">Inventory Opt</span>
+                            <span class="skill-badge">Network Design</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
     <section class="section section-bordered cta-section">
         <div class="container">
             <div class="cta-content">
-                <h2 class="cta-title">Let's Work Together</h2>
-                <p class="cta-description">
-                    Looking for Operations Research Analyst / Supply Chain Optimization roles starting January 2027.
-                </p>
-                <a href="contact.html" class="btn btn-primary btn-glow">
-                    Get in Touch
-                </a>
+                <span class="label" style="display: block; text-align: center;">Available January 2027</span>
+                <h2 class="cta-title">Let's Build Something</h2>
+                <p class="cta-description">Looking for OR Analyst / Supply Chain Optimization roles. Reach out
+                    anytime.</p>
+                <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                    <a href="mailto:suyash.sapre@gmail.com" class="btn btn-primary btn-glow">Get in Touch</a>
+                    <a href="contact.html" class="btn btn-glass">More ways to connect</a>
+                </div>
             </div>
         </div>
     </section>
@@ -158,10 +459,9 @@
                     <a href="index.html" class="footer-link">Home</a>
                     <a href="projects.html" class="footer-link">Projects</a>
                     <a href="research.html" class="footer-link">Research</a>
-                    <a href="experience.html" class="footer-link">Work Experience</a>
+                    <a href="experience.html" class="footer-link">Experience</a>
                     <a href="contact.html" class="footer-link">Contact</a>
                 </div>
-
                 <div class="footer-links">
                     <a href="https://github.com/suyashh77" target="_blank" class="footer-link">GitHub</a>
                     <a href="https://www.linkedin.com/in/suyash-sapre-2566631b9" target="_blank"
@@ -169,12 +469,10 @@
                     <a href="mailto:suyash.sapre@gmail.com" class="footer-link">Email</a>
                 </div>
             </div>
-
-            <p class="footer-copyright">© 2025 Suyash Sapre</p>
+            <p class="footer-copyright">© 2026 Suyash Sapre</p>
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="script.js"></script>
 </body>
 

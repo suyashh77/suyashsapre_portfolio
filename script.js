@@ -3,14 +3,13 @@ function toggleMenu() {
     document.getElementById('navLinks').classList.toggle('active');
 }
 
-// Scroll Effects
+// Scroll: add shadow to nav when not at top
 window.addEventListener('scroll', function () {
     const nav = document.getElementById('nav');
-
-    if (window.scrollY > 50) {
-        nav.style.top = '12px';
+    if (window.scrollY > 20) {
+        nav.style.boxShadow = '0 4px 24px rgba(0,0,0,0.4)';
     } else {
-        nav.style.top = '24px';
+        nav.style.boxShadow = 'none';
     }
 });
 
@@ -20,19 +19,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     });
 });
 
-// Add intersection observer for fade-in animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
+// Intersection observer: fade-in sections on scroll
+const observerOptions = { threshold: 0.08, rootMargin: '0px 0px -40px 0px' };
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -43,29 +36,13 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe all sections
 document.addEventListener('DOMContentLoaded', () => {
     const sections = document.querySelectorAll('.section');
     sections.forEach(section => {
         section.style.opacity = '0';
-        section.style.transform = 'translateY(20px)';
-        section.style.transition = 'all 0.6s ease-out';
+        section.style.transform = 'translateY(16px)';
+        section.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
         observer.observe(section);
     });
 });
 
-// Parallax effect for hero visual elements
-window.addEventListener('mousemove', (e) => {
-    const cards = document.querySelectorAll('.floating-card');
-    const { clientX, clientY } = e;
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
-
-    cards.forEach((card, index) => {
-        const speed = (index + 1) * 0.02;
-        const x = (clientX - centerX) * speed;
-        const y = (clientY - centerY) * speed;
-
-        card.style.transform = `translate(${x}px, ${y}px)`;
-    });
-});

@@ -75,10 +75,6 @@
         }
 
         .topbar .wrap {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            align-items: baseline;
             padding-top: 16px;
             padding-bottom: 16px;
         }
@@ -86,12 +82,6 @@
         .topbar .name {
             font-weight: 600;
             color: var(--text);
-        }
-
-        .topbar .tagline {
-            color: var(--text-3);
-            font-size: 0.85rem;
-            margin-left: auto;
         }
 
         /* ---------- header ---------- */
@@ -110,6 +100,10 @@
             color: var(--text-2);
             margin-top: 14px;
             font-size: 1rem;
+        }
+
+        .lede+.lede {
+            margin-top: 12px;
         }
 
         /* ---------- index ---------- */
@@ -249,6 +243,13 @@
             font-size: 0.88rem;
         }
 
+        .callout {
+            border-left: 2px solid var(--rule);
+            padding-left: 16px;
+            margin-top: 14px;
+            color: var(--text-2);
+        }
+
         ul.pts {
             list-style: none;
             color: var(--text-2);
@@ -258,7 +259,7 @@
         ul.pts li {
             padding-left: 16px;
             position: relative;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
         }
 
         ul.pts li::before {
@@ -266,6 +267,11 @@
             position: absolute;
             left: 4px;
             color: var(--text-3);
+        }
+
+        ul.arrow li::before {
+            content: "→";
+            font-size: 0.85em;
         }
 
         b {
@@ -483,7 +489,6 @@
     <div class="topbar">
         <div class="wrap">
             <span class="name">Suyash Sapre</span>
-            <span class="tagline">Operations research · logistics systems · NC State ISE</span>
         </div>
     </div>
 
@@ -491,36 +496,41 @@
         <div class="wrap">
             <h1>Projects &amp; Research</h1>
             <p class="lede">
-                Decision systems for logistics, resilience, and operations. Everything here started as a problem where
-                the data was messy, the operations were real, and a decision still had to be made anyway. Ordered by
-                depth of the problem solved. Unfinished work is labelled as unfinished.
+                Almost everything on this page was built since I got a Claude Code subscription. That's the honest
+                framing: the tooling collapsed the distance between "I wonder how this actually works" and a system that
+                runs, so I started chasing questions I would previously have just read about. What follows is the record
+                of that — what I built, what broke, and what I'd do differently.
+            </p>
+            <p class="lede">
+                The through-line is supply chain decisions. Several of these are deliberately pieces of the same larger
+                system — see <a href="#end-to-end">where this is going</a> at the bottom.
             </p>
 
             <nav class="index">
-                <h2>Research</h2>
+                <h2>Research — Rachunok Lab, NC State ISE</h2>
                 <ol>
-                    <li><span class="n">R1</span><a href="#grocery">NC Grocery Reviews — Data Pipeline &amp;
-                            Scraper</a><span class="dotfill"></span><span class="st">live · 84.3% collected</span></li>
-                    <li><span class="n">R2</span><a href="#lead-time">Climate Resilience Lead-Time
-                            Framework</a><span class="dotfill"></span><span class="st">in development</span></li>
+                    <li><span class="n">R1</span><a href="#scraper">Google Maps Review Scraper — NC food access
+                            data</a><span class="dotfill"></span><span class="st">~84% collected</span></li>
+                    <li><span class="n">R2</span><a href="#geomatch">GeoMatch</a><span class="dotfill"></span><span
+                            class="st">shipped</span></li>
                 </ol>
 
                 <h2>Projects</h2>
                 <ol>
                     <li><span class="n">01</span><a href="#return-routing">Return Routing
                             Optimisation</a><span class="dotfill"></span><span class="st">results complete</span></li>
-                    <li><span class="n">02</span><a href="#geomatch">GeoMatch</a><span class="dotfill"></span><span
-                            class="st">shipped</span></li>
-                    <li><span class="n">03</span><a href="#policypulse">PolicyPulse</a><span
-                            class="dotfill"></span><span class="st">in progress</span></li>
-                    <li><span class="n">04</span><a href="#garmin-wrapped">Garmin Wrapped</a><span
+                    <li><span class="n">02</span><a href="#risk-intelligence">Supply Chain Risk
+                            Intelligence</a><span class="dotfill"></span><span class="st">rebuilding next</span></li>
+                    <li><span class="n">03</span><a href="#uflp">Facility Location — Greedy-Add Solver</a><span
                             class="dotfill"></span><span class="st">shipped</span></li>
-                    <li><span class="n">05</span><a href="#wolfattend">WolfAttend</a><span class="dotfill"></span><span
+                    <li><span class="n">04</span><a href="#consolidation">Consolidation Centres &amp; Load
+                            Building</a><span class="dotfill"></span><span class="st">planned</span></li>
+                    <li><span class="n">05</span><a href="#policypulse">PolicyPulse</a><span
+                            class="dotfill"></span><span class="st">finishing now</span></li>
+                    <li><span class="n">06</span><a href="#garmin-wrapped">Garmin Wrapped</a><span
+                            class="dotfill"></span><span class="st">shipped</span></li>
+                    <li><span class="n">07</span><a href="#wolfattend">WolfAttend</a><span class="dotfill"></span><span
                             class="st">proposal submitted</span></li>
-                    <li><span class="n">06</span><a href="#uflp">UFLP Greedy-Add Solver</a><span
-                            class="dotfill"></span><span class="st">shipped</span></li>
-                    <li><span class="n">07</span><a href="#risk-intelligence">Supply Chain Risk
-                            Intelligence</a><span class="dotfill"></span><span class="st">under rework</span></li>
                     <li><span class="n">08</span><a href="#stockout-predictor">Commodity Stockout Risk
                             Platform</a><span class="dotfill"></span><span class="st">under rework</span></li>
                 </ol>
@@ -534,6 +544,12 @@
                     <li><span class="n">11</span><a href="#spotify-comparator">Spotify Library Comparator</a><span
                             class="dotfill"></span><span class="st">shipped</span></li>
                 </ol>
+
+                <h2>&nbsp;</h2>
+                <ol>
+                    <li><span class="n">→</span><a href="#end-to-end">Where this is going</a><span
+                            class="dotfill"></span><span class="st">the end-to-end idea</span></li>
+                </ol>
             </nav>
         </div>
     </header>
@@ -543,32 +559,45 @@
         <div class="wrap">
             <div class="group-title">Research</div>
             <p class="group-note">
-                Sustainable &amp; Resilient Systems Lab, NC State ISE — January 2026 to present, advised by
-                <a href="https://resilience.wordpress.ncsu.edu/" target="_blank" rel="noopener">Dr. Benjamin
-                    Rachunok</a>. The lab studies how infrastructure systems fail under stress, from climate hazards to
-                supply disruptions. My contribution so far is mostly data infrastructure, on the theory that the
-                measurement has to exist before the model does.
+                Work I've contributed to in
+                <a href="https://resilience.wordpress.ncsu.edu/" target="_blank" rel="noopener">Dr. Ben Rachunok's</a>
+                group at NC State ISE, from January 2026.
             </p>
 
             <!-- R1 -->
-            <article id="grocery">
+            <article id="scraper">
                 <div class="head">
                     <span class="num">R1</span>
-                    <h3>NC Grocery Reviews — Data Pipeline &amp; Scraper</h3>
-                    <span class="status">Live · 84.3% collected</span>
+                    <h3>Google Maps Review Scraper — NC food access data</h3>
+                    <span class="status open">~84% collected</span>
                 </div>
-                <p class="problem">
-                    Food deserts are almost always measured geographically — how far you live from a supermarket. That
-                    misses whether the store is stocked, affordable, safe, or open when you can get there. This pipeline
-                    operationalises the Penchansky &amp; Thomas five dimensions of access by mining what people actually
-                    write in Google Maps reviews, scaling a method demonstrated for Raleigh to all of North Carolina.
-                </p>
-                <p class="note">
-                    <b>4,889 stores · 1,201,237 reviews · 578 NC cities</b>, across 13 grocery-relevant categories.
-                    84.3% capped fill-rate; 3,323 stores complete; 215,457 reviews still to scrape across 1,409 stores.
+
+                <p class="callout">
+                    <b>To be clear about credit:</b> the food desert research is Teresa Gorton's and Dr. Rachunok's. I
+                    didn't do the research. I built the scraper and the data pipeline that made the collection possible.
                 </p>
 
-                <h4>Pipeline</h4>
+                <p class="problem">
+                    Last semester Teresa Gorton and Dr. Rachunok were working on food desert research at NC State, and I
+                    got to help by building a Google Maps scraper. Most food desert research measures access in miles.
+                    They were looking at it through Penchansky &amp; Thomas's five dimensions of access — availability,
+                    accessibility, accommodation, affordability, acceptability — measured through what people actually
+                    write in Google Maps reviews. That approach had been demonstrated for Raleigh; the job was to scale
+                    it to the whole state.
+                </p>
+                <p class="note">
+                    We ended up covering nearly <b>5,000 grocery stores across almost 600 NC cities</b>, pulling in over
+                    <b>1.2 million reviews</b> along the way.
+                </p>
+
+                <h4>How it works</h4>
+                <p class="note">
+                    Two stages. First, resolve a universe of stores: 451,296 Overture Maps POIs down to North Carolina,
+                    enriched to Google <code>place_id</code>s, fuzzy-matched and manually reviewed, then filtered from
+                    424 raw Google categories down to the 13 that are actually grocery. Second, scrape reviews for the
+                    survivors — headless Playwright on Linux VMs, running continuously, restarting itself on crash and
+                    draining a batch until it's done.
+                </p>
                 <pre>Overture Maps US POIs                     451,296
  └─ NC filter                             16,680
     └─ GMaps enrichment (place_id)        7,858 matched + 6,607 unmatched
@@ -577,80 +606,126 @@
              └─ Category filter           424 GMaps categories → 13 in, 411 out
                 └─ Closed-store + place_id dedup
                    └─ Review scraping     1,201,237 reviews</pre>
-
-                <h4>The hard part</h4>
                 <p class="note">
-                    Not the scraping — the provenance. Every one of the 7,497 dropped stores is retained with a
-                    machine-readable reason (<code>CATEGORY_NON_GROCERY</code>, <code>MANUAL_REVIEW_UNMATCHED</code>,
-                    <code>CLOSED_STORE</code>), and every review carries a source-batch tag. A filtered-out store is a
-                    research finding, not a deleted row. Without that audit trail nobody downstream can tell whether a
-                    coverage gap is a real food desert or a scraper failure.
+                    Every dropped store is kept with a machine-readable reason in a 7,497-row exclusion audit, and every
+                    review carries a provenance tag for the batch it came from. A filtered-out store is a research
+                    finding, not a deleted row — without that trail nobody downstream can tell whether a coverage gap is
+                    a real food desert or a scraper failure.
                 </p>
 
-                <ul class="pts">
-                    <li>Scraper v2: headless Playwright on Linux VMs, with continuous orchestration that restarts on
-                        crash and drains a batch.</li>
-                    <li>A Tkinter GUI build so non-technical classmates could double-click and run batches on their own
-                        laptops — throughput was a distribution problem, not just a code problem.</li>
-                    <li>The repo keeps an <code>Archive/</code> of earlier architectures that didn't survive contact with
-                        production, plus a written "what failed and why".</li>
+                <h4>What actually broke</h4>
+                <p class="note">
+                    The scraping was the easy part. What took months was everything that broke.
+                </p>
+                <ul class="pts arrow">
+                    <li>Lost an 8-hour run to a Wi-Fi blip — moved everything to SQLite, so it now resumes mid-store
+                        instead of restarting, right down to which review sort order it was part-way through.</li>
+                    <li>Silently scraped the wrong Dollar General once — built a geo-matcher to check the store name
+                        against haversine distance from the expected coordinates before trusting anything. Not a strict
+                        distance reject, though: Overture coordinates are routinely 1–2 km off Google's even for the
+                        <em>correct</em> store, and a tight threshold wrongly killed ~25 valid stores.
+                    </li>
+                    <li>Burned Google accounts treating CAPTCHAs and sign-in walls as the same problem — one blocks your
+                        IP, the other blocks your account. A sign-in wall means ban that account and rotate; a CAPTCHA
+                        means write a global pause flag and sleep 30–60 minutes.</li>
+                    <li>Trusted an in-memory counter for <code>reviews_scraped</code> and got 2,263 phantom reviews. The
+                        count is now re-read from disk after every flush, so progress can never drift from what was
+                        actually persisted.</li>
+                    <li>Assumed a scroll stall meant the end of the list. It doesn't — Google stops yielding long before
+                        you've seen everything, so the scraper re-sorts newest → oldest → relevant, because different
+                        sort orders surface different subsets of the same reviews.</li>
                 </ul>
 
+                <h4>What I'd tell myself at the start</h4>
+                <ul class="pts">
+                    <li><b>Resumability is the whole game.</b> An 8-hour run that loses everything is worth zero. State
+                        belongs in SQLite, not memory.</li>
+                    <li><b>Clean abstractions can be the wrong abstractions.</b> The first version was a tidy
+                        config-driven package; one selector change on Google's side meant edits across three files. It's
+                        in <code>Archive/</code> along with three other architectures that didn't survive production.
+                    </li>
+                    <li><b>Parallelism wasn't the bottleneck.</b> I fixed SQLite contention with WAL and immediate-mode
+                        store claiming, then found Google's rate limits were the real ceiling all along.</li>
+                    <li><b>Shipping it to other people is a design spec.</b> A Tkinter GUI build let non-technical
+                        classmates run batches on their own laptops — it contributed 19,992 reviews and 25 batch DBs, and
+                        every complaint they filed (leaked tabs, one bad store halting the batch, no checkpointing)
+                        became a requirement for the next version.</li>
+                </ul>
+
+                <h4>Output and honesty</h4>
+                <p class="note">
+                    <b>4,889 stores · 1,201,237 reviews · 578 NC cities · 13 categories.</b> It's about 84% done, and
+                    every gap is documented in the repo's quality report rather than buried — the text corpus is really
+                    ~608K reviews because 49.4% of Google reviews are rating-only; 157 stores were over-scraped by the
+                    wrong-location bug before the geo guardrail existed; Costco is missing entirely. The path from
+                    "usable" to "authoritative" is itemised and effort-estimated in the future-work doc.
+                </p>
+                <p class="note">
+                    Thank you to Dr. Ben Rachunok and everyone in the lab — the weekly discussions taught me as much as
+                    building this did.
+                </p>
+
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Python · Playwright · SQLite · Overture
-                            Maps · DuckDB · Tkinter · Linux VMs</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python · Playwright · SQLite (WAL) ·
+                            Overture Maps · DuckDB · Tkinter · Linux VMs</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
-                            <a href="https://github.com/suyashh77/gmaps-scraper" target="_blank"
-                                rel="noopener">Repository</a>
-                            <a href="https://resilience.wordpress.ncsu.edu/" target="_blank" rel="noopener">Lab</a>
+                            <a href="https://github.com/suyashh77/gmaps-scraper" target="_blank" rel="noopener">Code
+                                &amp; docs</a>
+                            <a href="https://github.com/suyashh77/gmaps-scraper/blob/main/Data/Data%20Quality%20Report.md"
+                                target="_blank" rel="noopener">Quality report</a>
                         </span></div>
+                    <div class="row"><span class="k">Data</span><span class="v">The dataset itself isn't in the repo —
+                            it's research data belonging to the project. Contact the group for access.</span></div>
                 </div>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
             <!-- R2 -->
-            <article id="lead-time">
+            <article id="geomatch">
                 <div class="head">
                     <span class="num">R2</span>
-                    <h3>Climate Resilience Lead-Time Framework</h3>
-                    <span class="status open">In development</span>
+                    <h3>GeoMatch</h3>
+                    <span class="status">Shipped · v1.0</span>
                 </div>
                 <p class="problem">
-                    How much preparation time does a region actually get, and how fast is that shrinking as North
-                    Carolina's hazard profile shifts toward hurricanes, flooding, drought, and wildfire? Lead time is the
-                    variable every preparedness decision is implicitly priced on, and it is rarely quantified directly.
+                    The wrong-Dollar-General problem, generalised into a library. The same physical place looks different
+                    in every data source: <code>"Food Lion #1542, 2410 Wade Ave Ste 100"</code>, <code>"Food Lion, Wade
+                        Avenue, Raleigh"</code> and <code>"FOOD LION 2410 WADE AVE RALEIGH NC 27607"</code> are one
+                    store, three records, zero exact matches. GeoMatch links them in one function call — offline, no API
+                    keys, nothing leaves your machine.
                 </p>
 
                 <h4>The hard part</h4>
                 <p class="note">
-                    Joining historical hazard records to forward climate projections without letting the two disagree
-                    silently — the vulnerability model is only as honest as the seam between them.
+                    Being explainable and un-opinionated at the same time. Every match returns a calibrated probability
+                    <em>and</em> a plain-English reason — <em>"accepted by rule: house number + street + ZIP/city all
+                        match"</em>. And <code>link</code> never auto-filters: you get every candidate pair with its full
+                    feature row, veto flag, and parsed components for both sides, and you pick the threshold. A matcher
+                    that silently drops pairs is unusable for research, because the drops are exactly what you need to
+                    audit.
                 </p>
 
+                <ul class="pts">
+                    <li>Seven layers: normalise → parse → hard rules → similarity features → scoring → calibration →
+                        explanation.</li>
+                    <li>A token state machine pulls house number, street, suffix, unit, city, state, ZIP and POI name
+                        using a pure-Python USPS Pub 28 expander — <b>no libpostal</b>, so it installs anywhere.</li>
+                    <li>Non-negotiable identifiers veto or accept before any scoring: a ZIP / house-number / state
+                        mismatch rejects outright; a matching identifier triple accepts outright.</li>
+                    <li>Optional ONNX transformer features (~15MB, no PyTorch) when names need semantic comparison.</li>
+                    <li>Also exposes <code>dedupe</code> and <code>standardize</code>, plus a pandas <code>.geo</code>
+                        accessor.</li>
+                </ul>
+
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Python · geospatial analysis · climate
-                            projections · infrastructure modelling</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python ≥3.10 · pandas · RapidFuzz ·
+                            scikit-learn · pgeocode · ONNX Runtime · pytest · Apache-2.0</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://github.com/suyashh77/geomatch" target="_blank"
+                                rel="noopener">Repository</a>
+                        </span></div>
                 </div>
                 <a class="totop" href="#top">↑ Index</a>
-            </article>
-
-            <article style="border-bottom:none">
-                <h4 style="margin-top:0">Research interests</h4>
-                <dl class="interests">
-                    <dt>Reinforcement learning for vehicle routing</dt>
-                    <dd>Attention-based models that learn heuristics for VRP variants instead of hand-coding them.</dd>
-                    <dt>Stochastic optimisation under demand uncertainty</dt>
-                    <dd>Two-stage programs, robust formulations, and scenario generation.</dd>
-                    <dt>Predict-then-optimise</dt>
-                    <dd>Differentiable optimisation that trains the prediction against the decision it will feed.</dd>
-                    <dt>Infrastructure resilience and climate OR</dt>
-                    <dd>Failure propagation, recovery optimisation, and preparedness as hazard profiles evolve.</dd>
-                </dl>
-                <blockquote>
-                    The question I keep coming back to is how decision systems should behave when the world underneath
-                    them is noisy, delayed, and non-stationary. Two to three years in industry, then a PhD in operations
-                    research.
-                </blockquote>
             </article>
         </div>
     </section>
@@ -671,13 +746,19 @@
                     <span class="status">Results complete</span>
                     <span class="status open">Write-up in progress</span>
                 </div>
+
                 <p class="problem">
-                    Deciding where a returned item should go — <em>before it ships</em>. Most retailers send every return
-                    to a central warehouse, inspect it there, and only then decide what to do with it. Deciding after the
-                    item has already travelled wastes the shipping and lets value decay; the industry loses an estimated
-                    10–20% of a product's value this way. This system decides the destination at the moment the return
-                    label is generated, using the expected recovery value of each possible route across a capacitated
-                    network.
+                    I returned a North Face jacket. It was unworn — wrong size, sent back within a few days — and it
+                    still got shipped across the country to a facility so somebody could open the box and decide it was
+                    resellable. Everything needed to make that call was knowable before the box moved. That's the whole
+                    project: <em>decide where a return goes before it ships, not after.</em>
+                </p>
+                <p class="note">
+                    Most retailers route every return to a central warehouse, inspect it there, and only then decide what
+                    to do with it. Deciding after the item has already travelled wastes the shipping and lets value
+                    decay; the industry loses an estimated 10–20% of a product's value this way. This system decides the
+                    destination at the moment the return label is generated, using the expected recovery value of each
+                    possible route across a capacitated network.
                 </p>
 
                 <h4>How it works</h4>
@@ -762,10 +843,10 @@
                     daily throughput at that node is worth, which turns a router into a where-to-invest recommendation.
                 </p>
                 <p class="fine">
-                    Every figure above is computed on the item's <em>true</em> condition, which no model ever saw. The
-                    network, capacities, recovery rates, costs, and the returns themselves are synthetic — parameter
-                    ranges are anchored to published industry figures; no value is claimed to be measured from any real
-                    company.
+                    The North Face anecdote is motivation only — it contributed no data. The network, capacities,
+                    recovery rates, costs, and the returns themselves are synthetic; parameter ranges are anchored to
+                    published industry figures, and no value is claimed to be measured from any real company. Every
+                    figure above is scored against the item's <em>true</em> condition, which no model ever saw.
                 </p>
 
                 <div class="meta">
@@ -778,60 +859,126 @@
             </article>
 
             <!-- 02 -->
-            <article id="geomatch">
+            <article id="risk-intelligence">
                 <div class="head">
                     <span class="num">02</span>
-                    <h3>GeoMatch</h3>
-                    <span class="status">Shipped · v1.0</span>
+                    <h3>Supply Chain Risk Intelligence</h3>
+                    <span class="status open">Rebuilding next</span>
                 </div>
                 <p class="problem">
-                    The same physical place looks different in every data source. <code>"Food Lion #1542, 2410 Wade Ave
-                        Ste 100"</code>, <code>"Food Lion, Wade Avenue, Raleigh"</code> and <code>"FOOD LION 2410 WADE
-                        AVE RALEIGH NC 27607"</code> are one store, three records, zero exact matches. GeoMatch links
-                    them in one function call — offline, no API keys, nothing leaves your machine.
+                    Converts real-time news into structured risk indices and alerts so supply chain leaders can
+                    anticipate disruptions instead of reacting to them. Multi-source ingestion via NewsAPI, NLP + GPT
+                    risk scoring, corridor and port indices, executive heatmaps, and export to CSV / PDF / Power BI.
                 </p>
 
-                <h4>The hard part</h4>
+                <h4>Why it's getting rebuilt</h4>
                 <p class="note">
-                    Being explainable and un-opinionated at the same time. Every match returns a calibrated probability
-                    <em>and</em> a plain-English reason — <em>"accepted by rule: house number + street + ZIP/city all
-                        match"</em>. And <code>link</code> never auto-filters: you get every candidate pair with its full
-                    feature row, veto flag, and parsed components for both sides, and you pick the threshold. A matcher
-                    that silently drops pairs is unusable for research, because the drops are exactly what you need to
-                    audit.
+                    The scoring layer is an LLM asked to rate a headline, which is not a risk model — no calibration, no
+                    base rate, no way for it to be wrong in a measurable direction. The version that exists is a
+                    convincing demo of the wrong thing.
                 </p>
-
-                <ul class="pts">
-                    <li>Seven layers: normalise → parse → hard rules → similarity features → scoring → calibration →
-                        explanation.</li>
-                    <li>A token state machine pulls house number, street, suffix, unit, city, state, ZIP and POI name
-                        using a pure-Python USPS Pub 28 expander — <b>no libpostal</b>, so it installs anywhere.</li>
-                    <li>Non-negotiable identifiers veto or accept before any scoring: a ZIP / house-number / state
-                        mismatch rejects outright; a matching identifier triple accepts outright.</li>
-                    <li>Optional ONNX transformer features (~15MB, no PyTorch) when names need semantic comparison.</li>
-                    <li>Also exposes <code>dedupe</code> and <code>standardize</code>, plus a pandas <code>.geo</code>
-                        accessor.</li>
-                </ul>
+                <p class="note">
+                    The rebuild replaces it with event extraction against a defined taxonomy plus an explicit exposure
+                    map, so an index number traces back to a named supply node rather than to a vibe — and so the whole
+                    thing can be scored against disruptions that actually happened. This is the next one I'm working on.
+                </p>
 
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Python ≥3.10 · pandas · RapidFuzz ·
-                            scikit-learn · pgeocode · ONNX Runtime · pytest · Apache-2.0</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python · GPT · NLP · NewsAPI ·
+                            Streamlit</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
-                            <a href="https://github.com/suyashh77/geomatch" target="_blank"
-                                rel="noopener">Repository</a>
+                            <a href="https://github.com/suyashh77/Supply-Chain-Intelligence-Plaform" target="_blank"
+                                rel="noopener">Current version</a>
                         </span></div>
-                    <div class="row"><span class="k">Origin</span><span class="v">Built for the grocery pipeline above,
-                            then generalised into a library.</span></div>
                 </div>
+
+                <details>
+                    <summary>Demo video of the current version</summary>
+                    <div class="video">
+                        <iframe src="https://drive.google.com/file/d/18RALz-VznoIOipr43YpK6iHLwOuntwRp/preview"
+                            title="Supply Chain Risk Intelligence demo" allow="autoplay; encrypted-media" allowfullscreen
+                            loading="lazy"></iframe>
+                    </div>
+                </details>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
             <!-- 03 -->
-            <article id="policypulse">
+            <article id="uflp">
                 <div class="head">
                     <span class="num">03</span>
+                    <h3>Facility Location — Greedy-Add Solver</h3>
+                    <span class="status">Shipped</span>
+                </div>
+                <p class="problem">
+                    Where should the warehouses go, and how much does it cost you to get that wrong? An interactive
+                    solver for the Uncapacitated Fixed-Charge Location Problem using the Greedy-Add construction
+                    heuristic — 100 randomly generated US customers with demand, and 1–10 candidate facilities you place
+                    by street address.
+                </p>
+                <p class="callout">
+                    I worked on this class of problem during my co-op rotations at UPL, on real warehouse network
+                    questions. This is not that work — it's the same problem rebuilt from scratch on synthetic data, so
+                    there's something I can actually show.
+                </p>
+
+                <h4>The hard part</h4>
+                <p class="note">
+                    Making the heuristic legible. It renders every iteration as a table — which facility was evaluated,
+                    what it saved, why it won — next to a map of the resulting assignment arcs. The point isn't the
+                    optimum; it's watching a greedy method commit to a facility early and seeing exactly where that costs
+                    you.
+                </p>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">React · FastAPI · Leaflet · Tailwind ·
+                            OSM Nominatim</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://github.com/suyashh77/Supply-Chain-Buddy" target="_blank"
+                                rel="noopener">Repository</a>
+                            <a href="https://github.com/suyashh77/supply-chain-simulator" target="_blank"
+                                rel="noopener">Simulator</a>
+                        </span></div>
+                </div>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+
+            <!-- 04 -->
+            <article id="consolidation">
+                <div class="head">
+                    <span class="num">04</span>
+                    <h3>Consolidation Centres &amp; Load Building</h3>
+                    <span class="status open">Planned</span>
+                </div>
+                <p class="problem">
+                    I've always wondered how Lowe's and companies at that scale actually run consolidation centres and
+                    cross-dock terminals — how freight from hundreds of suppliers gets pooled, and how anyone decides
+                    what goes on which truck. It looks like a scheduling problem and a packing problem wearing the same
+                    coat, and I want to build it to find out where the real difficulty lives.
+                </p>
+
+                <h4>The questions I want to answer</h4>
+                <ul class="pts">
+                    <li>When is it worth holding freight one more day to build a fuller truck, and what does that
+                        deferral cost downstream in service?</li>
+                    <li>How do you assign inbound loads to outbound doors and departure windows when both dock capacity
+                        and trailer cube are binding?</li>
+                    <li>Where does a consolidation centre stop paying for itself — at what volume, distance, and supplier
+                        fragmentation does direct-ship win?</li>
+                </ul>
+                <p class="fine">
+                    Nothing built yet. This entry is here because it's the next thing I want to work on, and because it's
+                    the missing middle of the end-to-end system below.
+                </p>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+
+            <!-- 05 -->
+            <article id="policypulse">
+                <div class="head">
+                    <span class="num">05</span>
                     <h3>PolicyPulse</h3>
-                    <span class="status open">In progress</span>
+                    <span class="status open">Finishing now</span>
                 </div>
                 <p class="problem">
                     A multi-agent consumer simulation for pre-launch retail policy validation, built as the companion to
@@ -863,16 +1010,16 @@
                     <div class="row"><span class="k">Stack</span><span class="v">Claude Sonnet · OASIS / MiroFish ·
                             Neo4j · Zep Cloud · FastAPI · Streamlit · PRAW · Ollama (Qwen2.5-32B) fallback</span></div>
                     <div class="row"><span class="k">Status</span><span class="v">Spec and simulation core are written;
-                            the report layer and validation runs are unfinished. No results yet, and none
+                            the report layer and validation runs are what's left. No results yet, and none
                             claimed.</span></div>
                 </div>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
-            <!-- 04 -->
+            <!-- 06 -->
             <article id="garmin-wrapped">
                 <div class="head">
-                    <span class="num">04</span>
+                    <span class="num">06</span>
                     <h3>Garmin Wrapped</h3>
                     <span class="status">Shipped</span>
                 </div>
@@ -934,10 +1081,10 @@
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
-            <!-- 05 -->
+            <!-- 07 -->
             <article id="wolfattend">
                 <div class="head">
-                    <span class="num">05</span>
+                    <span class="num">07</span>
                     <h3>WolfAttend</h3>
                     <span class="status">Proposal submitted — OIT &amp; DELTA</span>
                 </div>
@@ -968,81 +1115,6 @@ Cisco ISE (pxGrid)    →  AP-to-room map, device presence</pre>
                                 proposal</a>
                         </span></div>
                 </div>
-                <a class="totop" href="#top">↑ Index</a>
-            </article>
-
-            <!-- 06 -->
-            <article id="uflp">
-                <div class="head">
-                    <span class="num">06</span>
-                    <h3>UFLP Greedy-Add Solver</h3>
-                    <span class="status">Shipped</span>
-                </div>
-                <p class="problem">
-                    An interactive solver for the Uncapacitated Fixed-Charge Location Problem using the Greedy-Add
-                    construction heuristic — 100 randomly generated US customers with demand, and 1–10 candidate
-                    facilities you place by street address.
-                </p>
-
-                <h4>The hard part</h4>
-                <p class="note">
-                    Making the heuristic legible. It renders every iteration as a table — which facility was evaluated,
-                    what it saved, why it won — next to a map of the resulting assignment arcs. The point isn't the
-                    optimum; it's watching a greedy method commit to a facility early and seeing exactly where that costs
-                    you.
-                </p>
-
-                <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">React · FastAPI · Leaflet · Tailwind ·
-                            OSM Nominatim</span></div>
-                    <div class="row"><span class="k">Links</span><span class="v">
-                            <a href="https://github.com/suyashh77/Supply-Chain-Buddy" target="_blank"
-                                rel="noopener">Repository</a>
-                            <a href="https://github.com/suyashh77/supply-chain-simulator" target="_blank"
-                                rel="noopener">Simulator</a>
-                        </span></div>
-                </div>
-                <a class="totop" href="#top">↑ Index</a>
-            </article>
-
-            <!-- 07 -->
-            <article id="risk-intelligence">
-                <div class="head">
-                    <span class="num">07</span>
-                    <h3>Supply Chain Risk Intelligence</h3>
-                    <span class="status open">Under rework</span>
-                </div>
-                <p class="problem">
-                    Converts real-time news into structured risk indices and alerts so supply chain leaders can
-                    anticipate disruptions instead of reacting to them. Multi-source ingestion via NewsAPI, NLP + GPT
-                    risk scoring, corridor and port indices, executive heatmaps, and export to CSV / PDF / Power BI.
-                </p>
-
-                <h4>Why it's being reworked</h4>
-                <p class="note">
-                    The scoring layer is an LLM asked to rate a headline, which is not a risk model — no calibration, no
-                    base rate, no way for it to be wrong in a measurable direction. The rebuild replaces it with event
-                    extraction against a defined taxonomy plus an explicit exposure map, so an index number traces back
-                    to a supply node rather than to a vibe.
-                </p>
-
-                <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Python · GPT · NLP · NewsAPI ·
-                            Streamlit</span></div>
-                    <div class="row"><span class="k">Links</span><span class="v">
-                            <a href="https://github.com/suyashh77/Supply-Chain-Intelligence-Plaform" target="_blank"
-                                rel="noopener">Repository</a>
-                        </span></div>
-                </div>
-
-                <details>
-                    <summary>Demo video</summary>
-                    <div class="video">
-                        <iframe src="https://drive.google.com/file/d/18RALz-VznoIOipr43YpK6iHLwOuntwRp/preview"
-                            title="Supply Chain Risk Intelligence demo" allow="autoplay; encrypted-media" allowfullscreen
-                            loading="lazy"></iframe>
-                    </div>
-                </details>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
@@ -1177,6 +1249,46 @@ Cisco ISE (pxGrid)    →  AP-to-room map, device presence</pre>
                             loading="lazy"></iframe>
                     </div>
                 </details>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+        </div>
+    </section>
+
+    <!-- ==================== WHERE THIS IS GOING ==================== -->
+    <section class="group" id="end-to-end">
+        <div class="wrap">
+            <div class="group-title">Where this is going</div>
+
+            <article style="border-bottom:none">
+                <p class="problem">
+                    Several of these aren't separate projects so much as separate layers of one system. Real supply
+                    chains decide on wildly different clocks — where to put a building (months to years), which truck to
+                    load tonight (days), what route it drives (hours), what comes back (continuously) — and each layer's
+                    decision quietly constrains the next one down. Most tools solve exactly one layer and assume the
+                    others away. I want to build the version that doesn't.
+                </p>
+
+                <pre>Strategic     Where do facilities go?         →  <a href="#uflp">03</a>  facility location
+Tactical      What goes on which truck?      →  <a href="#consolidation">04</a>  consolidation
+Operational   What route does it drive?      →      routing / TSP &amp; VRP
+Reverse       Where does it go coming back?  →  <a href="#return-routing">01</a>  return routing</pre>
+
+                <h4>The interesting part isn't the layers, it's the seams</h4>
+                <ul class="pts">
+                    <li>A facility-location model that ignores consolidation will site warehouses that are expensive to
+                        actually serve, because it prices lanes as if every shipment were a full truck.</li>
+                    <li>Load building that ignores the route it feeds will build trucks that are cube-efficient and
+                        route-hostile.</li>
+                    <li>And forward network design that ignores returns undersizes exactly the nodes the return router
+                        later discovers are the binding constraint — the capacity duals in project 01 are already a
+                        signal pointing back up at project 03.</li>
+                </ul>
+
+                <p class="note">
+                    So the plan is to build the missing middle, then connect the layers and measure the thing nobody
+                    reports: how much value is lost at the handoffs when each layer is optimised alone. That number is
+                    the whole argument for end-to-end.
+                </p>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
         </div>

@@ -496,14 +496,14 @@
         <div class="wrap">
             <h1>Projects &amp; Research</h1>
             <p class="lede">
-                Almost everything on this page was built since I got a Claude Code subscription. That's the honest
-                framing: the tooling collapsed the distance between "I wonder how this actually works" and a system that
-                runs, so I started chasing questions I would previously have just read about. What follows is the record
-                of that — what I built, what broke, and what I'd do differently.
+                I'm fascinated by supply chains — less by the logistics than by the mathematics sitting underneath them.
+                A truck leaving a dock half full, a warehouse built in the wrong place, a returned jacket crossing the
+                country so somebody can look at it: every one of those is a decision made against a model, whether or not
+                anyone wrote the model down. What interests me is writing it down — the formulation, the algorithm, and
+                the point where the elegant version stops surviving contact with real operations.
             </p>
             <p class="lede">
-                The through-line is supply chain decisions. Several of these are deliberately pieces of the same larger
-                system — see <a href="#end-to-end">where this is going</a> at the bottom.
+                Most of what follows is me building those models to find out where the difficulty actually lives.
             </p>
 
             <nav class="index">
@@ -515,8 +515,10 @@
                             class="st">shipped</span></li>
                 </ol>
 
-                <h2>Projects</h2>
+                <h2>Supply Chain</h2>
                 <ol>
+                    <li><span class="n">→</span><a href="#end-to-end">The end-to-end idea</a><span
+                            class="dotfill"></span><span class="st">what ties these together</span></li>
                     <li><span class="n">01</span><a href="#return-routing">Return Routing
                             Optimisation</a><span class="dotfill"></span><span class="st">results complete</span></li>
                     <li><span class="n">02</span><a href="#risk-intelligence">Supply Chain Risk
@@ -527,12 +529,16 @@
                             Building</a><span class="dotfill"></span><span class="st">planned</span></li>
                     <li><span class="n">05</span><a href="#policypulse">PolicyPulse</a><span
                             class="dotfill"></span><span class="st">finishing now</span></li>
-                    <li><span class="n">06</span><a href="#garmin-wrapped">Garmin Wrapped</a><span
-                            class="dotfill"></span><span class="st">shipped</span></li>
-                    <li><span class="n">07</span><a href="#wolfattend">WolfAttend</a><span class="dotfill"></span><span
-                            class="st">proposal submitted</span></li>
-                    <li><span class="n">08</span><a href="#stockout-predictor">Commodity Stockout Risk
+                    <li><span class="n">06</span><a href="#stockout-predictor">Commodity Stockout Risk
                             Platform</a><span class="dotfill"></span><span class="st">under rework</span></li>
+                </ol>
+
+                <h2>Projects</h2>
+                <ol>
+                    <li><span class="n">07</span><a href="#garmin-wrapped">Garmin Wrapped</a><span
+                            class="dotfill"></span><span class="st">shipped</span></li>
+                    <li><span class="n">08</span><a href="#wolfattend">WolfAttend</a><span class="dotfill"></span><span
+                            class="st">proposal submitted</span></li>
                 </ol>
 
                 <h2>Tools</h2>
@@ -543,12 +549,6 @@
                             class="dotfill"></span><span class="st">shipped</span></li>
                     <li><span class="n">11</span><a href="#spotify-comparator">Spotify Library Comparator</a><span
                             class="dotfill"></span><span class="st">shipped</span></li>
-                </ol>
-
-                <h2>&nbsp;</h2>
-                <ol>
-                    <li><span class="n">→</span><a href="#end-to-end">Where this is going</a><span
-                            class="dotfill"></span><span class="st">the end-to-end idea</span></li>
                 </ol>
             </nav>
         </div>
@@ -730,13 +730,51 @@
         </div>
     </section>
 
-    <!-- ==================== PROJECTS ==================== -->
-    <section class="group" id="projects">
+    <!-- ==================== SUPPLY CHAIN ==================== -->
+    <section class="group" id="supply-chain">
         <div class="wrap">
-            <div class="group-title">Projects</div>
+            <div class="group-title">Supply Chain</div>
             <p class="group-note">
-                Each of these is here because of a decision I had to defend, not because of the stack it used.
+                Different layers of the same system, built one at a time.
             </p>
+
+            <!-- end-to-end framing -->
+            <article id="end-to-end">
+                <div class="head">
+                    <span class="num">→</span>
+                    <h3>The end-to-end idea</h3>
+                </div>
+                <p class="problem">
+                    Several of these aren't separate projects so much as separate layers of one system. Real supply
+                    chains decide on wildly different clocks — where to put a building (months to years), which truck to
+                    load tonight (days), what route it drives (hours), what comes back (continuously) — and each layer's
+                    decision quietly constrains the next one down. Most tools solve exactly one layer and assume the
+                    others away. I want to build the version that doesn't.
+                </p>
+
+                <pre>Strategic     Where do facilities go?         →  <a href="#uflp">03</a>  facility location
+Tactical      What goes on which truck?      →  <a href="#consolidation">04</a>  consolidation
+Operational   What route does it drive?      →      routing / TSP &amp; VRP
+Reverse       Where does it go coming back?  →  <a href="#return-routing">01</a>  return routing</pre>
+
+                <h4>The interesting part isn't the layers, it's the seams</h4>
+                <ul class="pts">
+                    <li>A facility-location model that ignores consolidation will site warehouses that are expensive to
+                        actually serve, because it prices lanes as if every shipment were a full truck.</li>
+                    <li>Load building that ignores the route it feeds will build trucks that are cube-efficient and
+                        route-hostile.</li>
+                    <li>And forward network design that ignores returns undersizes exactly the nodes the return router
+                        later discovers are the binding constraint — the capacity duals in project 01 are already a
+                        signal pointing back up at project 03.</li>
+                </ul>
+
+                <p class="note">
+                    So the plan is to build the missing middle, then connect the layers and measure the thing nobody
+                    reports: how much value is lost at the handoffs when each layer is optimised alone. That number is
+                    the whole argument for end-to-end.
+                </p>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
 
             <!-- 01 -->
             <article id="return-routing">
@@ -1017,9 +1055,60 @@
             </article>
 
             <!-- 06 -->
-            <article id="garmin-wrapped">
+            <article id="stockout-predictor">
                 <div class="head">
                     <span class="num">06</span>
+                    <h3>Commodity Stockout Risk Platform</h3>
+                    <span class="status open">Under rework</span>
+                </div>
+                <p class="problem">
+                    Uses financial market signals as a proxy for stockout risk — live OHLCV from Yahoo Finance, technical
+                    indicators (ATR, RSI, MACD), a unified 0–1 risk index, a Random Forest shock predictor, and
+                    GPT-generated summaries.
+                </p>
+
+                <h4>Why it's being reworked</h4>
+                <p class="note">
+                    The premise is both the interesting part and the weak part: commodity price volatility is a
+                    <em>leading</em> signal for some disruptions and a <em>lagging</em> one for others, and this version
+                    doesn't distinguish. Until the index is validated against actual stockout events rather than price
+                    moves, it's a market dashboard wearing a supply chain label.
+                </p>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">Python · Random Forest · Yahoo Finance ·
+                            Streamlit</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://github.com/suyashh77/Commodity-Stockout-Risk-Platform" target="_blank"
+                                rel="noopener">Repository</a>
+                        </span></div>
+                </div>
+
+                <details>
+                    <summary>Demo video</summary>
+                    <div class="video">
+                        <iframe src="https://drive.google.com/file/d/1tuvD6E9Zwz8vAEsI-k6sBA_TvkIeRedI/preview"
+                            title="Commodity Stockout Risk demo" allow="autoplay; encrypted-media" allowfullscreen
+                            loading="lazy"></iframe>
+                    </div>
+                </details>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+        </div>
+    </section>
+
+    <!-- ==================== PROJECTS ==================== -->
+    <section class="group" id="projects">
+        <div class="wrap">
+            <div class="group-title">Projects</div>
+            <p class="group-note">
+                Things I built because I wanted them to exist.
+            </p>
+
+            <!-- 07 -->
+            <article id="garmin-wrapped">
+                <div class="head">
+                    <span class="num">07</span>
                     <h3>Garmin Wrapped</h3>
                     <span class="status">Shipped</span>
                 </div>
@@ -1081,10 +1170,10 @@
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
-            <!-- 07 -->
+            <!-- 08 -->
             <article id="wolfattend">
                 <div class="head">
-                    <span class="num">07</span>
+                    <span class="num">08</span>
                     <h3>WolfAttend</h3>
                     <span class="status">Proposal submitted — OIT &amp; DELTA</span>
                 </div>
@@ -1118,46 +1207,6 @@ Cisco ISE (pxGrid)    →  AP-to-room map, device presence</pre>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
-            <!-- 08 -->
-            <article id="stockout-predictor">
-                <div class="head">
-                    <span class="num">08</span>
-                    <h3>Commodity Stockout Risk Platform</h3>
-                    <span class="status open">Under rework</span>
-                </div>
-                <p class="problem">
-                    Uses financial market signals as a proxy for stockout risk — live OHLCV from Yahoo Finance, technical
-                    indicators (ATR, RSI, MACD), a unified 0–1 risk index, a Random Forest shock predictor, and
-                    GPT-generated summaries.
-                </p>
-
-                <h4>Why it's being reworked</h4>
-                <p class="note">
-                    The premise is both the interesting part and the weak part: commodity price volatility is a
-                    <em>leading</em> signal for some disruptions and a <em>lagging</em> one for others, and this version
-                    doesn't distinguish. Until the index is validated against actual stockout events rather than price
-                    moves, it's a market dashboard wearing a supply chain label.
-                </p>
-
-                <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Python · Random Forest · Yahoo Finance ·
-                            Streamlit</span></div>
-                    <div class="row"><span class="k">Links</span><span class="v">
-                            <a href="https://github.com/suyashh77/Commodity-Stockout-Risk-Platform" target="_blank"
-                                rel="noopener">Repository</a>
-                        </span></div>
-                </div>
-
-                <details>
-                    <summary>Demo video</summary>
-                    <div class="video">
-                        <iframe src="https://drive.google.com/file/d/1tuvD6E9Zwz8vAEsI-k6sBA_TvkIeRedI/preview"
-                            title="Commodity Stockout Risk demo" allow="autoplay; encrypted-media" allowfullscreen
-                            loading="lazy"></iframe>
-                    </div>
-                </details>
-                <a class="totop" href="#top">↑ Index</a>
-            </article>
         </div>
     </section>
 
@@ -1249,46 +1298,6 @@ Cisco ISE (pxGrid)    →  AP-to-room map, device presence</pre>
                             loading="lazy"></iframe>
                     </div>
                 </details>
-                <a class="totop" href="#top">↑ Index</a>
-            </article>
-        </div>
-    </section>
-
-    <!-- ==================== WHERE THIS IS GOING ==================== -->
-    <section class="group" id="end-to-end">
-        <div class="wrap">
-            <div class="group-title">Where this is going</div>
-
-            <article style="border-bottom:none">
-                <p class="problem">
-                    Several of these aren't separate projects so much as separate layers of one system. Real supply
-                    chains decide on wildly different clocks — where to put a building (months to years), which truck to
-                    load tonight (days), what route it drives (hours), what comes back (continuously) — and each layer's
-                    decision quietly constrains the next one down. Most tools solve exactly one layer and assume the
-                    others away. I want to build the version that doesn't.
-                </p>
-
-                <pre>Strategic     Where do facilities go?         →  <a href="#uflp">03</a>  facility location
-Tactical      What goes on which truck?      →  <a href="#consolidation">04</a>  consolidation
-Operational   What route does it drive?      →      routing / TSP &amp; VRP
-Reverse       Where does it go coming back?  →  <a href="#return-routing">01</a>  return routing</pre>
-
-                <h4>The interesting part isn't the layers, it's the seams</h4>
-                <ul class="pts">
-                    <li>A facility-location model that ignores consolidation will site warehouses that are expensive to
-                        actually serve, because it prices lanes as if every shipment were a full truck.</li>
-                    <li>Load building that ignores the route it feeds will build trucks that are cube-efficient and
-                        route-hostile.</li>
-                    <li>And forward network design that ignores returns undersizes exactly the nodes the return router
-                        later discovers are the binding constraint — the capacity duals in project 01 are already a
-                        signal pointing back up at project 03.</li>
-                </ul>
-
-                <p class="note">
-                    So the plan is to build the missing middle, then connect the layers and measure the thing nobody
-                    reports: how much value is lost at the handoffs when each layer is optimised alone. That number is
-                    the whole argument for end-to-end.
-                </p>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
         </div>

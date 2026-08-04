@@ -4,784 +4,1204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects | Suyash Sapre</title>
-    <meta name="description" content="AI/ML and data-driven projects by Suyash Sapre">
+    <title>Projects &amp; Research — Suyash Sapre</title>
+    <meta name="description"
+        content="Projects and research by Suyash Sapre — decision systems for logistics, resilience, and operations.">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
-        rel="stylesheet">
+    <style>
+        :root {
+            --text: #16181d;
+            --text-2: #4a4f57;
+            --text-3: #82888f;
+            --rule: #e3e5e8;
+            --rule-2: #f0f1f3;
+            --link: #1d4ed8;
+            --bg: #ffffff;
+            --bg-2: #f7f8f9;
+            --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+        }
 
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="pages.css">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            font-size: 16.5px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrap {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        a {
+            color: var(--link);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            text-decoration-thickness: 1px;
+        }
+
+        a:hover {
+            text-decoration-thickness: 2px;
+        }
+
+        code {
+            font-family: var(--mono);
+            font-size: 0.87em;
+            color: var(--text-2);
+        }
+
+        em {
+            font-style: italic;
+        }
+
+        /* ---------- top bar ---------- */
+        .topbar {
+            border-bottom: 1px solid var(--rule);
+            font-size: 0.9rem;
+        }
+
+        .topbar .wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: baseline;
+            padding-top: 16px;
+            padding-bottom: 16px;
+        }
+
+        .topbar .name {
+            font-weight: 600;
+            color: var(--text);
+            text-decoration: none;
+            margin-right: auto;
+        }
+
+        .topbar a:not(.name) {
+            color: var(--text-2);
+            text-decoration: none;
+        }
+
+        .topbar a:not(.name):hover {
+            color: var(--text);
+            text-decoration: underline;
+        }
+
+        /* ---------- header ---------- */
+        header.page {
+            padding: 56px 0 8px;
+        }
+
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .lede {
+            color: var(--text-2);
+            margin-top: 14px;
+            font-size: 1rem;
+        }
+
+        /* ---------- index ---------- */
+        .index {
+            margin: 40px 0 8px;
+            border-top: 1px solid var(--rule);
+            padding-top: 28px;
+        }
+
+        .index h2 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            margin-bottom: 10px;
+        }
+
+        .index h2:not(:first-of-type) {
+            margin-top: 26px;
+        }
+
+        .index ol {
+            list-style: none;
+        }
+
+        .index li {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            padding: 3px 0;
+            font-size: 0.97rem;
+        }
+
+        .index .n {
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            color: var(--text-3);
+            min-width: 22px;
+        }
+
+        .index .dotfill {
+            flex: 1;
+            border-bottom: 1px dotted var(--rule);
+            transform: translateY(-3px);
+        }
+
+        .index .st {
+            font-size: 0.8rem;
+            color: var(--text-3);
+            white-space: nowrap;
+        }
+
+        /* ---------- sections ---------- */
+        section.group {
+            margin-top: 64px;
+        }
+
+        .group-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--text);
+        }
+
+        .group-note {
+            color: var(--text-3);
+            font-size: 0.88rem;
+            margin-top: 10px;
+        }
+
+        /* ---------- entries ---------- */
+        article {
+            padding: 36px 0;
+            border-bottom: 1px solid var(--rule);
+            scroll-margin-top: 24px;
+        }
+
+        .head {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+        }
+
+        .num {
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            color: var(--text-3);
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .status {
+            font-size: 0.78rem;
+            color: var(--text-3);
+            border: 1px solid var(--rule);
+            border-radius: 3px;
+            padding: 1px 7px;
+            white-space: nowrap;
+        }
+
+        .status.open {
+            border-style: dashed;
+        }
+
+        .problem {
+            margin-top: 12px;
+        }
+
+        h4 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            margin: 22px 0 6px;
+        }
+
+        p+p {
+            margin-top: 12px;
+        }
+
+        .note {
+            color: var(--text-2);
+        }
+
+        .fine {
+            color: var(--text-3);
+            font-size: 0.88rem;
+        }
+
+        ul.pts {
+            list-style: none;
+            color: var(--text-2);
+            margin-top: 8px;
+        }
+
+        ul.pts li {
+            padding-left: 16px;
+            position: relative;
+            margin-bottom: 4px;
+        }
+
+        ul.pts li::before {
+            content: "·";
+            position: absolute;
+            left: 4px;
+            color: var(--text-3);
+        }
+
+        b {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .meta {
+            margin-top: 20px;
+            font-size: 0.88rem;
+            color: var(--text-3);
+        }
+
+        .meta .row {
+            display: flex;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .meta .k {
+            min-width: 62px;
+            flex-shrink: 0;
+        }
+
+        .meta .v {
+            color: var(--text-2);
+        }
+
+        .meta a {
+            margin-right: 14px;
+            white-space: nowrap;
+        }
+
+        /* ---------- table ---------- */
+        .scroll {
+            overflow-x: auto;
+            margin: 14px 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 460px;
+            font-size: 0.9rem;
+        }
+
+        th,
+        td {
+            text-align: right;
+            padding: 6px 10px;
+            border-bottom: 1px solid var(--rule-2);
+            font-variant-numeric: tabular-nums;
+        }
+
+        th:first-child,
+        td:first-child {
+            text-align: left;
+        }
+
+        thead th {
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-3);
+            font-weight: 600;
+            border-bottom: 1px solid var(--text);
+        }
+
+        tr.hl td {
+            font-weight: 600;
+            background: var(--bg-2);
+        }
+
+        tr.oracle td {
+            color: var(--text-3);
+            font-style: italic;
+        }
+
+        /* ---------- pre ---------- */
+        pre {
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            line-height: 1.65;
+            color: var(--text-2);
+            background: var(--bg-2);
+            border: 1px solid var(--rule);
+            border-radius: 4px;
+            padding: 14px 16px;
+            overflow-x: auto;
+            margin: 14px 0;
+        }
+
+        /* ---------- details ---------- */
+        details {
+            margin-top: 18px;
+        }
+
+        summary {
+            cursor: pointer;
+            font-size: 0.88rem;
+            color: var(--link);
+            list-style: none;
+            width: fit-content;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::before {
+            content: "▸ ";
+        }
+
+        details[open] summary::before {
+            content: "▾ ";
+        }
+
+        summary:hover {
+            text-decoration: underline;
+        }
+
+        .video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            margin-top: 12px;
+            border: 1px solid var(--rule);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .video iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .slides {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .slides img {
+            width: 100%;
+            display: block;
+            border: 1px solid var(--rule);
+            border-radius: 3px;
+        }
+
+        /* ---------- interests ---------- */
+        .interests {
+            margin-top: 8px;
+        }
+
+        .interests dt {
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        .interests dd {
+            color: var(--text-2);
+        }
+
+        blockquote {
+            border-left: 2px solid var(--rule);
+            padding-left: 16px;
+            margin-top: 24px;
+            color: var(--text-2);
+        }
+
+        .totop {
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 0.85rem;
+        }
+
+        footer {
+            border-top: 1px solid var(--rule);
+            margin-top: 64px;
+            padding: 28px 0 64px;
+            font-size: 0.88rem;
+            color: var(--text-3);
+        }
+
+        footer .wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: baseline;
+        }
+
+        footer .sp {
+            margin-left: auto;
+        }
+
+        @media (max-width: 600px) {
+            header.page {
+                padding-top: 36px;
+            }
+
+            .index .dotfill {
+                display: none;
+            }
+
+            .index li {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Floating Navigation -->
-    <nav class="floating-nav" id="nav">
-        <div class="nav-content">
-            <a href="index.html" class="nav-logo">SS</a>
 
-            <div class="nav-links" id="navLinks">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="projects.html" class="nav-link active">Projects</a>
-                <a href="research.html" class="nav-link">Research</a>
-                <a href="experience.html" class="nav-link">Experience</a>
-                <a href="outside.html" class="nav-link">Beyond Work</a>
-                <a href="contact.html" class="nav-link">Contact</a>
-                <a href="assets/resume.pdf" class="nav-link nav-resume" download>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                        <polyline points="7 10 12 15 17 10"/>
-                        <line x1="12" y1="15" x2="12" y2="3"/>
-                    </svg>
-                    Resume
-                </a>
-            </div>
-
-            <button class="nav-mobile-btn" onclick="toggleMenu()" aria-label="Toggle menu">
-                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
+    <div class="topbar">
+        <div class="wrap">
+            <a href="index.html" class="name">Suyash Sapre</a>
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects &amp; Research</a>
+            <a href="experience.html">Experience</a>
+            <a href="outside.html">Beyond Work</a>
+            <a href="contact.html">Contact</a>
         </div>
-    </nav>
+    </div>
 
-    <!-- Page Header -->
-    <section class="page-header">
-        <div class="container">
-            <span class="label">Work</span>
-            <h1 class="page-title">Projects</h1>
-            <p class="page-description" style="font-size: 1rem; max-width: 620px;">
-                Decision systems for logistics, resilience, and operations. This page mixes shipped work, live research infrastructure, and current builds that point directly at operations research roles.
+    <header class="page" id="top">
+        <div class="wrap">
+            <h1>Projects &amp; Research</h1>
+            <p class="lede">
+                Decision systems for logistics, resilience, and operations. Everything here started as a problem where
+                the data was messy, the operations were real, and a decision still had to be made anyway. Ordered by
+                depth of the problem solved. Unfinished work is labelled as unfinished.
             </p>
 
-            <!-- Page Navigation -->
+            <nav class="index">
+                <h2>Research</h2>
+                <ol>
+                    <li><span class="n">R1</span><a href="#grocery">NC Grocery Reviews — Data Pipeline &amp;
+                            Scraper</a><span class="dotfill"></span><span class="st">live · 84.3% collected</span></li>
+                    <li><span class="n">R2</span><a href="#lead-time">Climate Resilience Lead-Time
+                            Framework</a><span class="dotfill"></span><span class="st">in development</span></li>
+                </ol>
+
+                <h2>Projects</h2>
+                <ol>
+                    <li><span class="n">01</span><a href="#return-routing">Return Routing
+                            Optimisation</a><span class="dotfill"></span><span class="st">results complete</span></li>
+                    <li><span class="n">02</span><a href="#geomatch">GeoMatch</a><span class="dotfill"></span><span
+                            class="st">shipped</span></li>
+                    <li><span class="n">03</span><a href="#policypulse">PolicyPulse</a><span
+                            class="dotfill"></span><span class="st">in progress</span></li>
+                    <li><span class="n">04</span><a href="#garmin-wrapped">Garmin Wrapped</a><span
+                            class="dotfill"></span><span class="st">shipped</span></li>
+                    <li><span class="n">05</span><a href="#wolfattend">WolfAttend</a><span class="dotfill"></span><span
+                            class="st">proposal submitted</span></li>
+                    <li><span class="n">06</span><a href="#uflp">UFLP Greedy-Add Solver</a><span
+                            class="dotfill"></span><span class="st">shipped</span></li>
+                    <li><span class="n">07</span><a href="#risk-intelligence">Supply Chain Risk
+                            Intelligence</a><span class="dotfill"></span><span class="st">under rework</span></li>
+                    <li><span class="n">08</span><a href="#stockout-predictor">Commodity Stockout Risk
+                            Platform</a><span class="dotfill"></span><span class="st">under rework</span></li>
+                </ol>
+
+                <h2>Tools</h2>
+                <ol>
+                    <li><span class="n">09</span><a href="#payment-tracker">Payment Tracker</a><span
+                            class="dotfill"></span><span class="st">running nightly</span></li>
+                    <li><span class="n">10</span><a href="#youtube-notes">YouTube Notes Taker</a><span
+                            class="dotfill"></span><span class="st">shipped</span></li>
+                    <li><span class="n">11</span><a href="#spotify-comparator">Spotify Library Comparator</a><span
+                            class="dotfill"></span><span class="st">shipped</span></li>
+                </ol>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ==================== RESEARCH ==================== -->
+    <section class="group" id="research">
+        <div class="wrap">
+            <div class="group-title">Research</div>
+            <p class="group-note">
+                Sustainable &amp; Resilient Systems Lab, NC State ISE — January 2026 to present, advised by
+                <a href="https://resilience.wordpress.ncsu.edu/" target="_blank" rel="noopener">Dr. Benjamin
+                    Rachunok</a>. The lab studies how infrastructure systems fail under stress, from climate hazards to
+                supply disruptions. My contribution so far is mostly data infrastructure, on the theory that the
+                measurement has to exist before the model does.
+            </p>
+
+            <!-- R1 -->
+            <article id="grocery">
+                <div class="head">
+                    <span class="num">R1</span>
+                    <h3>NC Grocery Reviews — Data Pipeline &amp; Scraper</h3>
+                    <span class="status">Live · 84.3% collected</span>
+                </div>
+                <p class="problem">
+                    Food deserts are almost always measured geographically — how far you live from a supermarket. That
+                    misses whether the store is stocked, affordable, safe, or open when you can get there. This pipeline
+                    operationalises the Penchansky &amp; Thomas five dimensions of access by mining what people actually
+                    write in Google Maps reviews, scaling a method demonstrated for Raleigh to all of North Carolina.
+                </p>
+                <p class="note">
+                    <b>4,889 stores · 1,201,237 reviews · 578 NC cities</b>, across 13 grocery-relevant categories.
+                    84.3% capped fill-rate; 3,323 stores complete; 215,457 reviews still to scrape across 1,409 stores.
+                </p>
+
+                <h4>Pipeline</h4>
+                <pre>Overture Maps US POIs                     451,296
+ └─ NC filter                             16,680
+    └─ GMaps enrichment (place_id)        7,858 matched + 6,607 unmatched
+       └─ Outscraper second pass          21,840 results
+          └─ Fuzzy match + manual review  4,905 matched / 1,605 rejected
+             └─ Category filter           424 GMaps categories → 13 in, 411 out
+                └─ Closed-store + place_id dedup
+                   └─ Review scraping     1,201,237 reviews</pre>
+
+                <h4>The hard part</h4>
+                <p class="note">
+                    Not the scraping — the provenance. Every one of the 7,497 dropped stores is retained with a
+                    machine-readable reason (<code>CATEGORY_NON_GROCERY</code>, <code>MANUAL_REVIEW_UNMATCHED</code>,
+                    <code>CLOSED_STORE</code>), and every review carries a source-batch tag. A filtered-out store is a
+                    research finding, not a deleted row. Without that audit trail nobody downstream can tell whether a
+                    coverage gap is a real food desert or a scraper failure.
+                </p>
+
+                <ul class="pts">
+                    <li>Scraper v2: headless Playwright on Linux VMs, with continuous orchestration that restarts on
+                        crash and drains a batch.</li>
+                    <li>A Tkinter GUI build so non-technical classmates could double-click and run batches on their own
+                        laptops — throughput was a distribution problem, not just a code problem.</li>
+                    <li>The repo keeps an <code>Archive/</code> of earlier architectures that didn't survive contact with
+                        production, plus a written "what failed and why".</li>
+                </ul>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">Python · Playwright · SQLite · Overture
+                            Maps · DuckDB · Tkinter · Linux VMs</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://github.com/suyashh77/gmaps-scraper" target="_blank"
+                                rel="noopener">Repository</a>
+                            <a href="https://resilience.wordpress.ncsu.edu/" target="_blank" rel="noopener">Lab</a>
+                        </span></div>
+                </div>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+
+            <!-- R2 -->
+            <article id="lead-time">
+                <div class="head">
+                    <span class="num">R2</span>
+                    <h3>Climate Resilience Lead-Time Framework</h3>
+                    <span class="status open">In development</span>
+                </div>
+                <p class="problem">
+                    How much preparation time does a region actually get, and how fast is that shrinking as North
+                    Carolina's hazard profile shifts toward hurricanes, flooding, drought, and wildfire? Lead time is the
+                    variable every preparedness decision is implicitly priced on, and it is rarely quantified directly.
+                </p>
+
+                <h4>The hard part</h4>
+                <p class="note">
+                    Joining historical hazard records to forward climate projections without letting the two disagree
+                    silently — the vulnerability model is only as honest as the seam between them.
+                </p>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">Python · geospatial analysis · climate
+                            projections · infrastructure modelling</span></div>
+                </div>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+
+            <article style="border-bottom:none">
+                <h4 style="margin-top:0">Research interests</h4>
+                <dl class="interests">
+                    <dt>Reinforcement learning for vehicle routing</dt>
+                    <dd>Attention-based models that learn heuristics for VRP variants instead of hand-coding them.</dd>
+                    <dt>Stochastic optimisation under demand uncertainty</dt>
+                    <dd>Two-stage programs, robust formulations, and scenario generation.</dd>
+                    <dt>Predict-then-optimise</dt>
+                    <dd>Differentiable optimisation that trains the prediction against the decision it will feed.</dd>
+                    <dt>Infrastructure resilience and climate OR</dt>
+                    <dd>Failure propagation, recovery optimisation, and preparedness as hazard profiles evolve.</dd>
+                </dl>
+                <blockquote>
+                    The question I keep coming back to is how decision systems should behave when the world underneath
+                    them is noisy, delayed, and non-stationary. Two to three years in industry, then a PhD in operations
+                    research.
+                </blockquote>
+            </article>
         </div>
     </section>
 
-    <!-- All Projects Section -->
-    <section class="section">
-        <div class="container">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+    <!-- ==================== PROJECTS ==================== -->
+    <section class="group" id="projects">
+        <div class="wrap">
+            <div class="group-title">Projects</div>
+            <p class="group-note">
+                Each of these is here because of a decision I had to defend, not because of the stack it used.
+            </p>
 
-                <!-- Garmin Wrapped -->
-                <a href="#garmin-wrapped" class="glass-card project-card featured">
-                    <div class="project-header">
-                        <h3 class="project-title">Garmin Wrapped</h3>
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12l7-7M5 5h7v7" />
-                        </svg>
-                    </div>
-                    <p class="project-description">
-                        How I turned 500,000 data points from a Garmin watch into a personalised annual health story using time series decomposition and anomaly detection.
-                    </p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">SQLite</span>
-                        <span class="tag">Prophet</span>
-                        <span class="tag">Streamlit</span>
-                        <span class="tag">LLM</span>
-                    </div>
-                </a>
+            <!-- 01 -->
+            <article id="return-routing">
+                <div class="head">
+                    <span class="num">01</span>
+                    <h3>Return Routing Optimisation</h3>
+                    <span class="status">Results complete</span>
+                    <span class="status open">Write-up in progress</span>
+                </div>
+                <p class="problem">
+                    Deciding where a returned item should go — <em>before it ships</em>. Most retailers send every return
+                    to a central warehouse, inspect it there, and only then decide what to do with it. Deciding after the
+                    item has already travelled wastes the shipping and lets value decay; the industry loses an estimated
+                    10–20% of a product's value this way. This system decides the destination at the moment the return
+                    label is generated, using the expected recovery value of each possible route across a capacitated
+                    network.
+                </p>
 
-                <!-- Project 1: Supply Chain Risk Intelligence (Under Rework) -->
-                <div class="glass-card project-card" style="opacity: 0.7;">
-                    <div class="project-header">
-                        <h3 class="project-title">Supply Chain Risk Intelligence</h3>
-                        <span class="tag" style="font-size: 0.7rem;">Under Rework</span>
-                    </div>
-                    <p class="project-description">
-                        Converts real-time news into structured Risk Indices and Alerts to help supply chain leaders
-                        anticipate disruptions.
-                    </p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">GPT</span>
-                        <span class="tag">NLP</span>
-                        <span class="tag">Streamlit</span>
-                    </div>
+                <h4>How it works</h4>
+                <ul class="pts">
+                    <li><b>L1</b> — predicts a probability distribution over the item's condition from label-time
+                        features only.</li>
+                    <li><b>L2</b> — prices every route in expected dollars:
+                        <code>EV(j) = Σₖ P(k) × [R(j,k) − T(j) − P(j,k)]</code></li>
+                    <li><b>L3</b> — an integer program assigns the whole day's returns under every facility's capacity
+                        limit.</li>
+                </ul>
+
+                <h4>Results</h4>
+                <div class="scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Policy</th>
+                                <th>Net recovery / return</th>
+                                <th>Cost / return</th>
+                                <th>A-items at full price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>P0 — centralised (strawman)</td>
+                                <td>$39.46</td>
+                                <td>$15.07</td>
+                                <td>0%</td>
+                            </tr>
+                            <tr>
+                                <td>PNEAR — nearest DC (baseline)</td>
+                                <td>$40.46</td>
+                                <td>$13.63</td>
+                                <td>0%</td>
+                            </tr>
+                            <tr>
+                                <td>P1 — EV routing, mail only</td>
+                                <td>$41.57</td>
+                                <td>$11.70</td>
+                                <td>0%</td>
+                            </tr>
+                            <tr class="hl">
+                                <td>P2 — EV routing + free in-store</td>
+                                <td>$45.66</td>
+                                <td>$9.70</td>
+                                <td>29.4%</td>
+                            </tr>
+                            <tr class="oracle">
+                                <td>Oracle — perfect condition info</td>
+                                <td>$46.75</td>
+                                <td>$8.10</td>
+                                <td>30.7%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="note">
+                    <b>+$5.20 recovered per return</b> over the credible baseline — about <b>$520,000/year</b> at 100,000
+                    returns. Paired over the same returns: 95% bootstrap CI <b>[+$4.92, +$5.48]</b>, <b>t = 36.3</b>,
+                    Cohen's <b>d = 0.57</b>, with 61.9% of returns routed differently. Using label-time features alone,
+                    it captures <b>83%</b> of the value a perfect-information router would achieve.
+                </p>
+
+                <h4>The part worth volunteering before you're asked</h4>
+                <p class="note">
+                    Most of that is not the machine learning. The Layer-1 quality sweep doubles as a decomposition: at
+                    <code>skill = 0</code> the classifier is switched off entirely and every return gets the population
+                    base rate, so whatever survives is earned by the channel change and the optimiser alone.
+                    <b>Free in-store returns plus capacity-aware routing account for +$4.68 — 90% of the uplift. The
+                        trained condition classifier accounts for +$0.51 — 10%.</b>
+                </p>
+                <p class="note">
+                    Most of the money is a policy change and an assignment problem. Leading with the classifier because
+                    it is the most technically interesting part would be the easiest and least honest thing to do with
+                    these results. It also sharpens the roadmap: of the value attributable to condition
+                    <em>information</em> at all, the model captures 34% — the rest needs better data, not a better model,
+                    which is the case for capturing customer photos at return initiation (~$98k/year at the same volume).
+                </p>
+                <p class="note">
+                    The second output is a capacity plan. The dual on each capacity constraint says what one more unit of
+                    daily throughput at that node is worth, which turns a router into a where-to-invest recommendation.
+                </p>
+                <p class="fine">
+                    Every figure above is computed on the item's <em>true</em> condition, which no model ever saw. The
+                    network, capacities, recovery rates, costs, and the returns themselves are synthetic — parameter
+                    ranges are anchored to published industry figures; no value is claimed to be measured from any real
+                    company.
+                </p>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">Python · PuLP (ILP) · scikit-learn ·
+                            multinomial logistic · bootstrap inference · LP duality · Monte Carlo</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">Repository and full write-up going
+                            public shortly.</span></div>
+                </div>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+
+            <!-- 02 -->
+            <article id="geomatch">
+                <div class="head">
+                    <span class="num">02</span>
+                    <h3>GeoMatch</h3>
+                    <span class="status">Shipped · v1.0</span>
+                </div>
+                <p class="problem">
+                    The same physical place looks different in every data source. <code>"Food Lion #1542, 2410 Wade Ave
+                        Ste 100"</code>, <code>"Food Lion, Wade Avenue, Raleigh"</code> and <code>"FOOD LION 2410 WADE
+                        AVE RALEIGH NC 27607"</code> are one store, three records, zero exact matches. GeoMatch links
+                    them in one function call — offline, no API keys, nothing leaves your machine.
+                </p>
+
+                <h4>The hard part</h4>
+                <p class="note">
+                    Being explainable and un-opinionated at the same time. Every match returns a calibrated probability
+                    <em>and</em> a plain-English reason — <em>"accepted by rule: house number + street + ZIP/city all
+                        match"</em>. And <code>link</code> never auto-filters: you get every candidate pair with its full
+                    feature row, veto flag, and parsed components for both sides, and you pick the threshold. A matcher
+                    that silently drops pairs is unusable for research, because the drops are exactly what you need to
+                    audit.
+                </p>
+
+                <ul class="pts">
+                    <li>Seven layers: normalise → parse → hard rules → similarity features → scoring → calibration →
+                        explanation.</li>
+                    <li>A token state machine pulls house number, street, suffix, unit, city, state, ZIP and POI name
+                        using a pure-Python USPS Pub 28 expander — <b>no libpostal</b>, so it installs anywhere.</li>
+                    <li>Non-negotiable identifiers veto or accept before any scoring: a ZIP / house-number / state
+                        mismatch rejects outright; a matching identifier triple accepts outright.</li>
+                    <li>Optional ONNX transformer features (~15MB, no PyTorch) when names need semantic comparison.</li>
+                    <li>Also exposes <code>dedupe</code> and <code>standardize</code>, plus a pandas <code>.geo</code>
+                        accessor.</li>
+                </ul>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">Python ≥3.10 · pandas · RapidFuzz ·
+                            scikit-learn · pgeocode · ONNX Runtime · pytest · Apache-2.0</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://github.com/suyashh77/geomatch" target="_blank"
+                                rel="noopener">Repository</a>
+                        </span></div>
+                    <div class="row"><span class="k">Origin</span><span class="v">Built for the grocery pipeline above,
+                            then generalised into a library.</span></div>
+                </div>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+
+            <!-- 03 -->
+            <article id="policypulse">
+                <div class="head">
+                    <span class="num">03</span>
+                    <h3>PolicyPulse</h3>
+                    <span class="status open">In progress</span>
+                </div>
+                <p class="problem">
+                    A multi-agent consumer simulation for pre-launch retail policy validation, built as the companion to
+                    the return routing system above. The optimiser says what to do economically; PolicyPulse asks the
+                    question an EV calculator structurally cannot — <em>will consumers actually accept it?</em> A policy
+                    that is financially optimal but behaviourally unacceptable drives churn and backlash that never shows
+                    up in the objective function.
+                </p>
+
+                <h4>The hard part</h4>
+                <p class="note">
+                    The claim being tested is that emergent group dynamics — the pile-on, the counter-narrative, the
+                    influencer amplification — are fundamentally different from the sum of individual stated preferences.
+                    Focus groups and surveys capture the latter. So the simulation has to be capable of producing
+                    cascades rather than averages, which means agents need persistent memory and a feed algorithm, not
+                    just a good prompt.
+                </p>
+
+                <ul class="pts">
+                    <li>Takes a proposed policy change, generates <b>500 agents</b> across five retail personas, and
+                        simulates <b>45 days</b> of reaction.</li>
+                    <li>Outputs a sentiment trajectory, churn probability by segment, cascade detection, fee-threshold
+                        comparison across runs, and an agent interview explaining individual decisions.</li>
+                    <li>Built on MiroFish / OASIS (CAMEL-AI), with a Neo4j knowledge graph for brand ↔ policy ↔ segment ↔
+                        competitor relationships and Zep Cloud for per-agent persistent memory.</li>
+                </ul>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">Claude Sonnet · OASIS / MiroFish ·
+                            Neo4j · Zep Cloud · FastAPI · Streamlit · PRAW · Ollama (Qwen2.5-32B) fallback</span></div>
+                    <div class="row"><span class="k">Status</span><span class="v">Spec and simulation core are written;
+                            the report layer and validation runs are unfinished. No results yet, and none
+                            claimed.</span></div>
+                </div>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+
+            <!-- 04 -->
+            <article id="garmin-wrapped">
+                <div class="head">
+                    <span class="num">04</span>
+                    <h3>Garmin Wrapped</h3>
+                    <span class="status">Shipped</span>
+                </div>
+                <p class="problem">
+                    Turning roughly 500,000 data points from a Garmin watch into a personalised annual health story.
+                    Every year friends post their Spotify Wrapped; Garmin shows me records and a step-count bar chart —
+                    no story, no curation. So I built the narrative layer.
+                </p>
+
+                <h4>The hard part</h4>
+                <p class="note">
+                    Not computing insights — <em>rejecting</em> them. Rather than showing everything (a dashboard), it
+                    answers one question: what are the most interesting things your data revealed this year? Every
+                    candidate insight passes two gates before it reaches you — is there enough data to make this claim
+                    reliably, and is this fact actually worth one of your ten slides? The survivors are then ordered into
+                    a Freytag dramatic arc rather than by score.
+                </p>
+
+                <ul class="pts">
+                    <li>Prophet-based decomposition for genuine anomaly detection, not "low step day".</li>
+                    <li>Granger-gated cross-metric insights — sleep vs. next-day activity, tested before it's claimed.
+                    </li>
+                    <li>Population comparisons anchored in peer-reviewed epidemiological studies; personality archetypes
+                        like Weekend Warrior, Steady Pacer, Cool Engine.</li>
+                    <li>gpt-4o for climax slides, gpt-4o-mini for context slides, template fallback when there's no API
+                        key.</li>
+                </ul>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">Python · SQLite · Prophet · Granger
+                            causality · Streamlit · gpt-4o</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://github.com/suyashh77/Garmin_Wrapped" target="_blank"
+                                rel="noopener">Repository</a>
+                            <a href="https://github.com/suyashh77/Garmin_Wrapped/blob/main/garmin_wrapped_explained.md"
+                                target="_blank" rel="noopener">Methodology write-up</a>
+                        </span></div>
                 </div>
 
-                <!-- Project 2: Commodity Stockout Predictor (Under Rework) -->
-                <div class="glass-card project-card" style="opacity: 0.7;">
-                    <div class="project-header">
-                        <h3 class="project-title">Commodity Stockout Predictor</h3>
-                        <span class="tag" style="font-size: 0.7rem;">Under Rework</span>
+                <details>
+                    <summary>Demo video and slides</summary>
+                    <div class="video">
+                        <iframe src="https://drive.google.com/file/d/1v76-HtvCe1lg_pzJUUORFfRgEZvCQVsw/preview"
+                            title="Garmin Wrapped demo" allow="autoplay; encrypted-media" allowfullscreen
+                            loading="lazy"></iframe>
                     </div>
-                    <p class="project-description">
-                        ML-powered stockout risk prediction using financial market signals and technical indicators.
-                    </p>
-                    <div class="project-tags">
-                        <span class="tag">ML</span>
-                        <span class="tag">Random Forest</span>
-                        <span class="tag">Yahoo Finance</span>
+                    <div class="slides">
+                        <a href="https://drive.google.com/file/d/1goAMy7UwpaikGS79tO0_pAh-h4YQl8dP/view" target="_blank" rel="noopener"><img loading="lazy" alt="Garmin Wrapped slide 1" src="https://drive.google.com/thumbnail?id=1goAMy7UwpaikGS79tO0_pAh-h4YQl8dP&sz=w600"></a>
+                        <a href="https://drive.google.com/file/d/1dRBNDuNhEm7rt-IMsQ5nekGzsYSavDRb/view" target="_blank" rel="noopener"><img loading="lazy" alt="Garmin Wrapped slide 2" src="https://drive.google.com/thumbnail?id=1dRBNDuNhEm7rt-IMsQ5nekGzsYSavDRb&sz=w600"></a>
+                        <a href="https://drive.google.com/file/d/1d-usBgvTt1E-krf4bFXKHBvxH8fJ3qdI/view" target="_blank" rel="noopener"><img loading="lazy" alt="Garmin Wrapped slide 3" src="https://drive.google.com/thumbnail?id=1d-usBgvTt1E-krf4bFXKHBvxH8fJ3qdI&sz=w600"></a>
+                        <a href="https://drive.google.com/file/d/1cX3JPascP99oRmq3hJ72jeFSJ7NsMKfZ/view" target="_blank" rel="noopener"><img loading="lazy" alt="Garmin Wrapped slide 4" src="https://drive.google.com/thumbnail?id=1cX3JPascP99oRmq3hJ72jeFSJ7NsMKfZ&sz=w600"></a>
+                        <a href="https://drive.google.com/file/d/1frFUcEn71B9nrw5z70Taj8yX4g__M1E_/view" target="_blank" rel="noopener"><img loading="lazy" alt="Garmin Wrapped slide 5" src="https://drive.google.com/thumbnail?id=1frFUcEn71B9nrw5z70Taj8yX4g__M1E_&sz=w600"></a>
+                        <a href="https://drive.google.com/file/d/14MNFpwJjjcIprbHGz70gaiUiwk1GoWe4/view" target="_blank" rel="noopener"><img loading="lazy" alt="Garmin Wrapped slide 6" src="https://drive.google.com/thumbnail?id=14MNFpwJjjcIprbHGz70gaiUiwk1GoWe4&sz=w600"></a>
+                        <a href="https://drive.google.com/file/d/1uDF0dI4poZQRr4LXLuHEHclsKRV6lUzI/view" target="_blank" rel="noopener"><img loading="lazy" alt="Garmin Wrapped slide 7" src="https://drive.google.com/thumbnail?id=1uDF0dI4poZQRr4LXLuHEHclsKRV6lUzI&sz=w600"></a>
+                        <a href="https://drive.google.com/file/d/1kCD3Kf0DtG9aw0vogH546BbyjtcVzr9J/view" target="_blank" rel="noopener"><img loading="lazy" alt="Garmin Wrapped slide 8" src="https://drive.google.com/thumbnail?id=1kCD3Kf0DtG9aw0vogH546BbyjtcVzr9J&sz=w600"></a>
                     </div>
+                    <p class="fine" style="margin-top:8px">Click any slide to open it at full resolution.</p>
+                </details>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+
+            <!-- 05 -->
+            <article id="wolfattend">
+                <div class="head">
+                    <span class="num">05</span>
+                    <h3>WolfAttend</h3>
+                    <span class="status">Proposal submitted — OIT &amp; DELTA</span>
+                </div>
+                <p class="problem">
+                    A frictionless, verified attendance system for NC State. Every existing option makes you choose
+                    between friction (roll call, QR queues) and fraud (a code your friend texts you from home).
+                    WolfAttend removes the choice by binding the code to the network the student is actually standing on.
+                </p>
+
+                <h4>The hard part</h4>
+                <p class="note">
+                    This one is a threat model, not a feature list. A rotating TOTP session code alone is defeated by
+                    screenshot sharing; WiFi presence alone is defeated by VPN spoofing. Validating the TOTP
+                    <em>against a Cisco ISE pxGrid AP-to-room map</em> closes both at once, and replay dies with the time
+                    window. The constraints mattered more than the mechanism: zero new hardware, zero student apps, never
+                    auto-mark anyone absent, FERPA-compliant by construction.
+                </p>
+
+                <pre>Moodle layer          →  session start, TOTP issue, roster write-back
+Validation layer      →  TOTP check × live client-to-AP association
+Cisco ISE (pxGrid)    →  AP-to-room map, device presence</pre>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">Systems design · Moodle · Cisco ISE /
+                            pxGrid · TOTP · RADIUS · FERPA</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://github.com/suyashh77/WolfAttend" target="_blank" rel="noopener">Full
+                                proposal</a>
+                        </span></div>
+                </div>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+
+            <!-- 06 -->
+            <article id="uflp">
+                <div class="head">
+                    <span class="num">06</span>
+                    <h3>UFLP Greedy-Add Solver</h3>
+                    <span class="status">Shipped</span>
+                </div>
+                <p class="problem">
+                    An interactive solver for the Uncapacitated Fixed-Charge Location Problem using the Greedy-Add
+                    construction heuristic — 100 randomly generated US customers with demand, and 1–10 candidate
+                    facilities you place by street address.
+                </p>
+
+                <h4>The hard part</h4>
+                <p class="note">
+                    Making the heuristic legible. It renders every iteration as a table — which facility was evaluated,
+                    what it saved, why it won — next to a map of the resulting assignment arcs. The point isn't the
+                    optimum; it's watching a greedy method commit to a facility early and seeing exactly where that costs
+                    you.
+                </p>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">React · FastAPI · Leaflet · Tailwind ·
+                            OSM Nominatim</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://github.com/suyashh77/Supply-Chain-Buddy" target="_blank"
+                                rel="noopener">Repository</a>
+                            <a href="https://github.com/suyashh77/supply-chain-simulator" target="_blank"
+                                rel="noopener">Simulator</a>
+                        </span></div>
+                </div>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+
+            <!-- 07 -->
+            <article id="risk-intelligence">
+                <div class="head">
+                    <span class="num">07</span>
+                    <h3>Supply Chain Risk Intelligence</h3>
+                    <span class="status open">Under rework</span>
+                </div>
+                <p class="problem">
+                    Converts real-time news into structured risk indices and alerts so supply chain leaders can
+                    anticipate disruptions instead of reacting to them. Multi-source ingestion via NewsAPI, NLP + GPT
+                    risk scoring, corridor and port indices, executive heatmaps, and export to CSV / PDF / Power BI.
+                </p>
+
+                <h4>Why it's being reworked</h4>
+                <p class="note">
+                    The scoring layer is an LLM asked to rate a headline, which is not a risk model — no calibration, no
+                    base rate, no way for it to be wrong in a measurable direction. The rebuild replaces it with event
+                    extraction against a defined taxonomy plus an explicit exposure map, so an index number traces back
+                    to a supply node rather than to a vibe.
+                </p>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">Python · GPT · NLP · NewsAPI ·
+                            Streamlit</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://github.com/suyashh77/Supply-Chain-Intelligence-Plaform" target="_blank"
+                                rel="noopener">Repository</a>
+                        </span></div>
                 </div>
 
-                <!-- Spotify Comparator -->
-                <a href="#spotify-comparator" class="glass-card project-card">
-                    <div class="project-header">
-                        <h3 class="project-title">Spotify Library Comparator</h3>
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12l7-7M5 5h7v7" />
-                        </svg>
-                    </div>
-                    <p class="project-description">
-                        Compare Spotify playlists with local DJ libraries to flag missing tracks using fuzzy matching.
-                    </p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Spotify API</span>
-                        <span class="tag">OAuth</span>
-                    </div>
-                </a>
-
-                <!-- YouTube Notes Taker -->
-                <a href="#youtube-notes-taker" class="glass-card project-card">
-                    <div class="project-header">
-                        <h3 class="project-title">YouTube Notes Taker</h3>
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12l7-7M5 5h7v7" />
-                        </svg>
-                    </div>
-                    <p class="project-description">
-                        Automated pipeline that monitors a YouTube playlist, transcribes new videos, and generates structured AI-powered summaries on a daily schedule.
-                    </p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">OpenAI</span>
-                        <span class="tag">yt-dlp</span>
-                        <span class="tag">Whisper</span>
-                    </div>
-                </a>
-
-                <!-- WolfAttend -->
-                <a href="#wolfattend" class="glass-card project-card">
-                    <div class="project-header">
-                        <h3 class="project-title">WolfAttend</h3>
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12l7-7M5 5h7v7" />
-                        </svg>
-                    </div>
-                    <p class="project-description">
-                        Frictionless, verified attendance system for NC State using TOTP codes and campus WiFi RADIUS validation — submitted to OIT and DELTA.
-                    </p>
-                    <div class="project-tags">
-                        <span class="tag">Systems Design</span>
-                        <span class="tag">Moodle</span>
-                        <span class="tag">Cisco ISE</span>
-                        <span class="tag">TOTP</span>
-                    </div>
-                </a>
-
-                <!-- Budget Tracker -->
-                <div class="glass-card project-card" style="opacity: 0.7;">
-                    <div class="project-header">
-                        <h3 class="project-title">Budget Tracker</h3>
-                        <span class="tag" style="font-size: 0.7rem;">Coming Soon</span>
-                    </div>
-                    <p class="project-description">
-                        Email-based transaction tracking and expense dashboard.
-                    </p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Gmail API</span>
-                        <span class="tag">Excel</span>
-                    </div>
-                </div>
-
-                <!-- Google Maps Scraper -->
-                <div class="glass-card project-card" style="opacity: 0.7;">
-                    <div class="project-header">
-                        <h3 class="project-title">Google Maps Reviews Scraper</h3>
-                        <span class="tag" style="font-size: 0.7rem;">Research</span>
-                    </div>
-                    <p class="project-description">
-                        POI data collection for infrastructure resilience research.
-                    </p>
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Selenium</span>
-                        <span class="tag">PostgreSQL</span>
-                    </div>
-                </div>
-
-
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Detailed Project Sections (Deep Work) -->
-
-
-    <!-- Project 1: Supply Chain Risk Intelligence -->
-    <section class="section section-bordered" id="risk-intelligence" style="opacity: 0.5;">
-        <div class="container">
-            <div class="project-detail-grid">
-                <div class="project-detail-content">
-                    <h2 class="project-detail-title">Supply Chain Risk Intelligence Platform <span class="tag" style="font-size: 0.7rem; vertical-align: middle; margin-left: 10px;">Under Rework</span></h2>
-
-                    <p class="project-detail-description">
-                        Converts real-time news into structured Risk Indices and Alerts to help
-                        supply chain leaders anticipate disruptions before they happen.
-                    </p>
-
-                    <div class="project-features">
-                        <span class="label">Features</span>
-                        <ul class="feature-list">
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Multi-source news ingestion via NewsAPI
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                NLP + GPT-powered risk scoring
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Corridor and port risk indices
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Executive dashboards with heatmaps
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Export to CSV, PDF, Power BI
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">GPT</span>
-                        <span class="tag">NLP</span>
-                        <span class="tag">NewsAPI</span>
-                        <span class="tag">Streamlit</span>
-                    </div>
-
-                    <a href="https://github.com/suyashh77/Supply-Chain-Intelligence-Plaform" target="_blank"
-                        class="link-arrow">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                        </svg>
-                        View Source on GitHub
-                    </a>
-                </div>
-
-                <div class="project-detail-media">
-                    <span class="label">
-                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z" />
-                        </svg>
-                        Demo Video
-                    </span>
-                    <div class="video-container">
+                <details>
+                    <summary>Demo video</summary>
+                    <div class="video">
                         <iframe src="https://drive.google.com/file/d/18RALz-VznoIOipr43YpK6iHLwOuntwRp/preview"
-                            title="Supply Chain Risk Intelligence Demo" allow="autoplay; encrypted-media"
-                            allowfullscreen></iframe>
+                            title="Supply Chain Risk Intelligence demo" allow="autoplay; encrypted-media" allowfullscreen
+                            loading="lazy"></iframe>
                     </div>
+                </details>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+
+            <!-- 08 -->
+            <article id="stockout-predictor">
+                <div class="head">
+                    <span class="num">08</span>
+                    <h3>Commodity Stockout Risk Platform</h3>
+                    <span class="status open">Under rework</span>
                 </div>
-            </div>
-        </div>
-    </section>
+                <p class="problem">
+                    Uses financial market signals as a proxy for stockout risk — live OHLCV from Yahoo Finance, technical
+                    indicators (ATR, RSI, MACD), a unified 0–1 risk index, a Random Forest shock predictor, and
+                    GPT-generated summaries.
+                </p>
 
-    <!-- Project 2: Commodity Stockout Risk Platform -->
-    <section class="section section-bordered" id="stockout-predictor" style="opacity: 0.5;">
-        <div class="container">
-            <div class="project-detail-grid">
-                <div class="project-detail-content">
-                    <h2 class="project-detail-title">Commodity Stockout Risk Platform <span class="tag" style="font-size: 0.7rem; vertical-align: middle; margin-left: 10px;">Under Rework</span></h2>
+                <h4>Why it's being reworked</h4>
+                <p class="note">
+                    The premise is both the interesting part and the weak part: commodity price volatility is a
+                    <em>leading</em> signal for some disruptions and a <em>lagging</em> one for others, and this version
+                    doesn't distinguish. Until the index is validated against actual stockout events rather than price
+                    moves, it's a market dashboard wearing a supply chain label.
+                </p>
 
-                    <p class="project-detail-description">
-                        Uses financial market signals as proxy for supply chain stockout risk.
-                        Analyzes commodity prices and technical indicators to predict disruptions.
-                    </p>
-
-                    <div class="project-features">
-                        <span class="label">Features</span>
-                        <ul class="feature-list">
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Live OHLCV data from Yahoo Finance
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Technical indicators: ATR, RSI, MACD
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Unified 0–1 Risk Index
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Random Forest shock predictor
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                GPT-powered summaries
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">ML</span>
-                        <span class="tag">Streamlit</span>
-                        <span class="tag">Yahoo Finance</span>
-                    </div>
-
-                    <a href="https://github.com/suyashh77/Commodity-Stockout-Risk-Platform" target="_blank"
-                        class="link-arrow">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                        </svg>
-                        View Source on GitHub
-                    </a>
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">Python · Random Forest · Yahoo Finance ·
+                            Streamlit</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://github.com/suyashh77/Commodity-Stockout-Risk-Platform" target="_blank"
+                                rel="noopener">Repository</a>
+                        </span></div>
                 </div>
 
-                <div class="project-detail-media">
-                    <span class="label">
-                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z" />
-                        </svg>
-                        Demo Video
-                    </span>
-                    <div class="video-container">
+                <details>
+                    <summary>Demo video</summary>
+                    <div class="video">
                         <iframe src="https://drive.google.com/file/d/1tuvD6E9Zwz8vAEsI-k6sBA_TvkIeRedI/preview"
-                            title="Commodity Stockout Risk Demo" allow="autoplay; encrypted-media"
-                            allowfullscreen></iframe>
+                            title="Commodity Stockout Risk demo" allow="autoplay; encrypted-media" allowfullscreen
+                            loading="lazy"></iframe>
                     </div>
-                </div>
-            </div>
+                </details>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
         </div>
     </section>
 
-    <!-- Garmin Wrapped Deep Dive -->
-    <section class="section section-bordered" id="garmin-wrapped">
-        <div class="container">
-            <div class="project-detail-grid garmin-grid">
-                <div class="project-detail-content project-article">
-                    <h2 class="project-detail-title">Garmin Wrapped</h2>
-                    <p class="project-detail-description" style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 2rem;">
-                        <em>How I turned 500,000 data points from a Garmin watch into a personalised annual health story.</em>
-                    </p>
+    <!-- ==================== TOOLS ==================== -->
+    <section class="group" id="tools">
+        <div class="wrap">
+            <div class="group-title">Tools</div>
+            <p class="group-note">
+                Automation I actually use. Each one exists because I was doing something by hand more than once.
+            </p>
 
-                    <h3 class="article-heading" style="margin-top: 0;">The Origin Story</h3>
-                    <p>I've been wearing a Garmin since Black Friday 2022. But every year, when friends post their Spotify Wrapped or Strava Year in Sport, Garmin shows me records and a step count bar chart -- no story, no curation, no narrative. So I built one. This project explains the full system: the data engineering, the statistical methods, the insight logic, the UI, and the design decisions behind every step.</p>
-                    
-                    <p style="margin-top:1rem; margin-bottom: 2rem;"><em>For a detailed explanation of the methodology, architecture, and design decisions behind Garmin Wrapped, please see the <a href="https://github.com/suyashh77/Garmin_Wrapped/blob/main/garmin_wrapped_explained.md" target="_blank" style="color: var(--accent-blue); text-decoration: underline;">detailed methodology write-up</a>.</em></p>
-                    <a href="https://github.com/suyashh77/Garmin_Wrapped" target="_blank" class="link-arrow" style="margin-top: 1rem; display: inline-flex;">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                        </svg>
-                        View Source on GitHub
-                    </a>
+            <!-- 09 -->
+            <article id="payment-tracker">
+                <div class="head">
+                    <span class="num">09</span>
+                    <h3>Payment Tracker</h3>
+                    <span class="status">Running nightly</span>
+                </div>
+                <p class="problem">
+                    Watches Gmail for payment alerts and logs every transaction to Excel — amount, direction,
+                    counterparty, method, card last-4, memo.
+                </p>
+                <p class="note">
+                    Each provider is a drop-in parser plugin rather than another branch in one function, so adding a bank
+                    means adding a file. Deduplicates on message ID; runs at 11pm via Task Scheduler.
+                </p>
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">Python · Gmail API · OAuth2 ·
+                            openpyxl</span></div>
+                </div>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+
+            <!-- 10 -->
+            <article id="youtube-notes">
+                <div class="head">
+                    <span class="num">10</span>
+                    <h3>YouTube Notes Taker</h3>
+                    <span class="status">Shipped</span>
+                </div>
+                <p class="problem">
+                    Monitors a YouTube playlist, transcribes new videos, and writes structured summaries with takeaways
+                    and action items on a daily schedule.
+                </p>
+                <p class="note">
+                    Prefers free YouTube captions and only falls back to Whisper when they're missing; idempotent and
+                    fault-tolerant, with per-run API cost tracked to a spreadsheet.
+                </p>
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">Python · yt-dlp · Whisper ·
+                            OpenAI</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://github.com/suyashh77/youtube-notes-taker" target="_blank"
+                                rel="noopener">Repository</a>
+                        </span></div>
+                </div>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+
+            <!-- 11 -->
+            <article id="spotify-comparator">
+                <div class="head">
+                    <span class="num">11</span>
+                    <h3>Spotify Library Comparator</h3>
+                    <span class="status">Shipped</span>
+                </div>
+                <p class="problem">
+                    Compares a Spotify playlist against a local DJ library and auto-generates a catch-up playlist of
+                    everything missing.
+                </p>
+                <p class="note">
+                    Filenames never match streaming metadata cleanly, so matching is RapidFuzz over normalised
+                    artist–title pairs rather than string equality.
+                </p>
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">Python · Spotify API · OAuth ·
+                            RapidFuzz</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://github.com/suyashh77/spotify_comparer" target="_blank"
+                                rel="noopener">Repository</a>
+                        </span></div>
                 </div>
 
-                <div class="project-detail-media align-sticky">
-                    <span class="label">
-                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24" style="display:inline-block; vertical-align:middle; margin-right:4px;">
-                            <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 12l-5-3v6H5V6h2v6l5-3 5 3V6h2v12h-2v-6l-5 3z" />
-                        </svg>
-                        Project Media
-                    </span>
-                    <div class="garmin-media-container" style="display: flex; flex-direction: column; gap: 2rem;">
-                        <!-- Video Demo -->
-                        <div class="video-container" style="border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow-card);">
-                            <iframe src="https://drive.google.com/file/d/1v76-HtvCe1lg_pzJUUORFfRgEZvCQVsw/preview" title="Garmin Wrapped Demo" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; aspect-ratio: 16/9; border: none;"></iframe>
-                        </div>
-
-                        <!-- Slides Carousel -->
-                        <div class="garmin-carousel-wrapper" style="position: relative; max-width: 100%; margin: 0 auto; overflow: hidden; border-radius: var(--border-radius); box-shadow: var(--shadow-card); border: 1px solid var(--border-color);">
-                            <div class="garmin-carousel-track" id="garminTrack" style="display: flex; transition: transform 0.4s ease-in-out;">
-                                <div style="min-width: 100%; box-sizing: border-box;"><img src="https://drive.google.com/thumbnail?id=1goAMy7UwpaikGS79tO0_pAh-h4YQl8dP&sz=w1200" alt="Slide 1" style="width: 100%; display: block; cursor: pointer;" onclick="window.open('https://drive.google.com/file/d/1goAMy7UwpaikGS79tO0_pAh-h4YQl8dP/view', '_blank')"></div>
-                                <div style="min-width: 100%; box-sizing: border-box;"><img src="https://drive.google.com/thumbnail?id=1dRBNDuNhEm7rt-IMsQ5nekGzsYSavDRb&sz=w1200" alt="Slide 2" style="width: 100%; display: block; cursor: pointer;" onclick="window.open('https://drive.google.com/file/d/1dRBNDuNhEm7rt-IMsQ5nekGzsYSavDRb/view', '_blank')"></div>
-                                <div style="min-width: 100%; box-sizing: border-box;"><img src="https://drive.google.com/thumbnail?id=1d-usBgvTt1E-krf4bFXKHBvxH8fJ3qdI&sz=w1200" alt="Slide 3" style="width: 100%; display: block; cursor: pointer;" onclick="window.open('https://drive.google.com/file/d/1d-usBgvTt1E-krf4bFXKHBvxH8fJ3qdI/view', '_blank')"></div>
-                                <div style="min-width: 100%; box-sizing: border-box;"><img src="https://drive.google.com/thumbnail?id=1cX3JPascP99oRmq3hJ72jeFSJ7NsMKfZ&sz=w1200" alt="Slide 4" style="width: 100%; display: block; cursor: pointer;" onclick="window.open('https://drive.google.com/file/d/1cX3JPascP99oRmq3hJ72jeFSJ7NsMKfZ/view', '_blank')"></div>
-                                <div style="min-width: 100%; box-sizing: border-box;"><img src="https://drive.google.com/thumbnail?id=1frFUcEn71B9nrw5z70Taj8yX4g__M1E_&sz=w1200" alt="Slide 5" style="width: 100%; display: block; cursor: pointer;" onclick="window.open('https://drive.google.com/file/d/1frFUcEn71B9nrw5z70Taj8yX4g__M1E_/view', '_blank')"></div>
-                                <div style="min-width: 100%; box-sizing: border-box;"><img src="https://drive.google.com/thumbnail?id=14MNFpwJjjcIprbHGz70gaiUiwk1GoWe4&sz=w1200" alt="Slide 6" style="width: 100%; display: block; cursor: pointer;" onclick="window.open('https://drive.google.com/file/d/14MNFpwJjjcIprbHGz70gaiUiwk1GoWe4/view', '_blank')"></div>
-                                <div style="min-width: 100%; box-sizing: border-box;"><img src="https://drive.google.com/thumbnail?id=1uDF0dI4poZQRr4LXLuHEHclsKRV6lUzI&sz=w1200" alt="Slide 7" style="width: 100%; display: block; cursor: pointer;" onclick="window.open('https://drive.google.com/file/d/1uDF0dI4poZQRr4LXLuHEHclsKRV6lUzI/view', '_blank')"></div>
-                                <div style="min-width: 100%; box-sizing: border-box;"><img src="https://drive.google.com/thumbnail?id=1kCD3Kf0DtG9aw0vogH546BbyjtcVzr9J&sz=w1200" alt="Slide 8" style="width: 100%; display: block; cursor: pointer;" onclick="window.open('https://drive.google.com/file/d/1kCD3Kf0DtG9aw0vogH546BbyjtcVzr9J/view', '_blank')"></div>
-                            </div>
-                            
-                            <button onclick="moveGarminCarousel(-1)" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); background: rgba(15, 23, 42, 0.7); color: var(--text-primary); border: 1px solid var(--border-color); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
-                            </button>
-                            <button onclick="moveGarminCarousel(1)" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); background: rgba(15, 23, 42, 0.7); color: var(--text-primary); border: 1px solid var(--border-color); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 10; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
-                            </button>
-                            
-                            <div id="garminIndicators" style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10;">
-                                <div class="garmin-dot" onclick="setGarminCarousel(0)" style="width: 24px; height: 8px; border-radius: 4px; background: var(--accent-blue); cursor: pointer; transition: all 0.3s;"></div>
-                                <div class="garmin-dot" onclick="setGarminCarousel(1)" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: all 0.3s;"></div>
-                                <div class="garmin-dot" onclick="setGarminCarousel(2)" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: all 0.3s;"></div>
-                                <div class="garmin-dot" onclick="setGarminCarousel(3)" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: all 0.3s;"></div>
-                                <div class="garmin-dot" onclick="setGarminCarousel(4)" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: all 0.3s;"></div>
-                                <div class="garmin-dot" onclick="setGarminCarousel(5)" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: all 0.3s;"></div>
-                                <div class="garmin-dot" onclick="setGarminCarousel(6)" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: all 0.3s;"></div>
-                                <div class="garmin-dot" onclick="setGarminCarousel(7)" style="width: 8px; height: 8px; border-radius: 50%; background: rgba(255, 255, 255, 0.4); cursor: pointer; transition: all 0.3s;"></div>
-                            </div>
-                        </div>
-                        <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Click any slide to view it in full resolution.</p>
-
-                        <script>
-                            let currentGarminSlide = 0;
-                            const totalGarminSlides = 8;
-                            
-                            function updateGarminCarousel() {
-                                const track = document.getElementById('garminTrack');
-                                const indicators = document.getElementById('garminIndicators').children;
-                                
-                                track.style.transform = `translateX(-${currentGarminSlide * 100}%)`;
-                                
-                                for(let i=0; i<indicators.length; i++) {
-                                    if(i === currentGarminSlide) {
-                                        indicators[i].style.width = '24px';
-                                        indicators[i].style.borderRadius = '4px';
-                                        indicators[i].style.background = 'var(--accent-blue)';
-                                    } else {
-                                        indicators[i].style.width = '8px';
-                                        indicators[i].style.borderRadius = '50%';
-                                        indicators[i].style.background = 'rgba(255, 255, 255, 0.4)';
-                                    }
-                                }
-                            }
-                            
-                            function moveGarminCarousel(direction) {
-                                currentGarminSlide += direction;
-                                if(currentGarminSlide < 0) currentGarminSlide = totalGarminSlides - 1;
-                                if(currentGarminSlide >= totalGarminSlides) currentGarminSlide = 0;
-                                updateGarminCarousel();
-                            }
-                            
-                            function setGarminCarousel(index) {
-                                currentGarminSlide = index;
-                                updateGarminCarousel();
-                            }
-                        </script>
+                <details>
+                    <summary>Demo video</summary>
+                    <div class="video">
+                        <iframe src="https://drive.google.com/file/d/1Cy1aAjHRssSWpCxibkIsxpCaenc8eXRs/preview"
+                            title="Spotify Library Comparator demo" allow="autoplay; encrypted-media" allowfullscreen
+                            loading="lazy"></iframe>
                     </div>
-                </div>
-            </div>
+                </details>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
         </div>
     </section>
 
-    <!-- Project 3: Spotify Library Comparator -->
-    <section class="section section-bordered" id="spotify-comparator">
-        <div class="container">
-            <div class="project-detail-grid">
-                <div class="project-detail-content">
-                    <h2 class="project-detail-title">Spotify Library Comparator</h2>
-
-                    <p class="project-detail-description">
-                        Helps DJs compare Spotify playlists with local track libraries,
-                        flags missing tracks, and auto-generates a catch-up playlist.
-                    </p>
-
-                    <div class="project-features">
-                        <span class="label">Features</span>
-                        <ul class="feature-list">
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Spotify OAuth integration
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Local directory metadata scanning
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Fuzzy matching with RapidFuzz
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Auto-generate "Missing Songs" playlist
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Spotify API</span>
-                        <span class="tag">OAuth</span>
-                        <span class="tag">RapidFuzz</span>
-                    </div>
-
-                    <a href="https://github.com/suyashh77/spotify_comparer" target="_blank" class="link-arrow">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                        </svg>
-                        View Source on GitHub
-                    </a>
-                </div>
-
-                <div class="project-detail-media align-sticky">
-                    <span class="label">
-                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24" style="display:inline-block; vertical-align:middle; margin-right:4px;">
-                            <path d="M8 5v14l11-7z" />
-                        </svg>
-                        Demo Video
-                    </span>
-                    <div class="garmin-media-container" style="display: flex; flex-direction: column; gap: 2rem;">
-                        <div class="video-container" style="border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow-card);">
-                            <iframe src="https://drive.google.com/file/d/1Cy1aAjHRssSWpCxibkIsxpCaenc8eXRs/preview" title="Spotify Comparator Demo" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; aspect-ratio: 16/9; border: none;"></iframe>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-        </div>
-    </section>
-
-    <!-- WolfAttend Deep Dive -->
-    <section class="section section-bordered" id="wolfattend">
-        <div class="container">
-            <div class="project-detail-grid">
-                <div class="project-detail-content">
-                    <h2 class="project-detail-title">WolfAttend</h2>
-
-                    <p class="project-detail-description">
-                        A smart attendance tracking system designed for NC State that combines cryptographic
-                        one-time codes (TOTP) with passive campus WiFi RADIUS validation to deliver verified,
-                        cheat-resistant attendance in under 15 seconds — with zero hardware and no new student apps.
-                        Proposal submitted to NC State OIT and DELTA with active institutional feedback received.
-                    </p>
-
-                    <div class="project-features">
-                        <span class="label">Key Design Elements</span>
-                        <ul class="feature-list">
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                TOTP-based session codes — unique, time-bound, never reusable
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Passive RADIUS validation via Cisco ISE pxGrid — no new tracking infrastructure
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Blocks remote submissions, VPN spoofing, code sharing, and replay attacks
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                No student is ever auto-marked absent — flagged records go to instructor review
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Zero hardware, zero student app installs, near-zero ongoing cost
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                FERPA-compliant — minimal data collection, all on university infrastructure
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="project-tags">
-                        <span class="tag">Systems Design</span>
-                        <span class="tag">Moodle Plugin</span>
-                        <span class="tag">TOTP / RFC 6238</span>
-                        <span class="tag">Cisco ISE</span>
-                        <span class="tag">pxGrid API</span>
-                        <span class="tag">FERPA</span>
-                    </div>
-
-                    <a href="https://github.com/suyashh77/WolfAttend" target="_blank"
-                        class="link-arrow">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                        </svg>
-                        View Full Proposal on GitHub
-                    </a>
-                </div>
-
-                <div class="project-detail-media">
-                    <span class="label">Architecture</span>
-                    <div class="glass-card" style="padding: 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 1.8; color: var(--text-secondary);">
-                        <p style="margin: 0; color: var(--text-primary); font-weight: 600;">Moodle Layer</p>
-                        <p style="margin: 0;">&nbsp;&nbsp;Session management &middot; Submission UI</p>
-                        <p style="margin: 0;">&nbsp;&nbsp;Gradebook integration</p>
-                        <p style="margin: 0;">&nbsp;&nbsp;&darr;</p>
-                        <p style="margin: 0; color: var(--text-primary); font-weight: 600;">Validation Layer</p>
-                        <p style="margin: 0;">&nbsp;&nbsp;TOTP validator &middot; pxGrid client</p>
-                        <p style="margin: 0;">&nbsp;&nbsp;Decision engine &middot; AP zone lookup</p>
-                        <p style="margin: 0;">&nbsp;&nbsp;&darr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;</p>
-                        <p style="margin: 0; display: flex; gap: 2rem;">
-                            <span>Cisco ISE</span>
-                            <span>AP-to-Room Map</span>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- YouTube Notes Taker Deep Dive -->
-    <section class="section section-bordered" id="youtube-notes-taker">
-        <div class="container">
-            <div class="project-detail-grid">
-                <div class="project-detail-content">
-                    <h2 class="project-detail-title">YouTube Notes Taker</h2>
-
-                    <p class="project-detail-description">
-                        Automated pipeline that monitors a YouTube playlist, transcribes new videos using
-                        YouTube captions (with local Whisper as fallback), and generates structured AI-powered
-                        summaries with key takeaways, detailed notes, and action items — all on a daily schedule.
-                    </p>
-
-                    <div class="project-features">
-                        <span class="label">Features</span>
-                        <ul class="feature-list">
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Playlist monitoring and automatic new video detection via yt-dlp
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                YouTube captions with local Whisper fallback — no transcription API costs
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Structured markdown summaries with key takeaways, notes, and action items
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Per-video API cost tracking in Excel
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Idempotent and fault-tolerant — safe to re-run, failed videos retry automatically
-                            </li>
-                            <li class="feature-item">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 13l4 4L19 7" />
-                                </svg>
-                                Schedulable via Windows Task Scheduler or cron
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="project-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">OpenAI</span>
-                        <span class="tag">yt-dlp</span>
-                        <span class="tag">Whisper</span>
-                        <span class="tag">GPT-4o-mini</span>
-                    </div>
-
-                    <a href="https://github.com/suyashh77/youtube-notes-taker" target="_blank"
-                        class="link-arrow">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                        </svg>
-                        View Source on GitHub
-                    </a>
-                </div>
-
-                <div class="project-detail-media">
-                    <span class="label">How It Works</span>
-                    <div class="glass-card" style="padding: 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 1.8; color: var(--text-secondary);">
-                        <p style="margin: 0;">YouTube Playlist</p>
-                        <p style="margin: 0;">&nbsp;&nbsp;&darr; <span style="color: var(--text-muted);">yt-dlp</span></p>
-                        <p style="margin: 0;">Transcription</p>
-                        <p style="margin: 0;">&nbsp;&nbsp;<span style="color: var(--text-muted);">Captions first, Whisper fallback</span></p>
-                        <p style="margin: 0;">&nbsp;&nbsp;&darr; <span style="color: var(--text-muted);">OpenAI API</span></p>
-                        <p style="margin: 0;">Structured Summaries</p>
-                        <p style="margin: 0;">&nbsp;&nbsp;&darr;</p>
-                        <p style="margin: 0;">summaries/ &nbsp;&nbsp; costs.xlsx</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-links">
-                    <a href="index.html" class="footer-link">Home</a>
-                    <a href="projects.html" class="footer-link">Projects</a>
-                    <a href="research.html" class="footer-link">Research</a>
-                    <a href="experience.html" class="footer-link">Experience</a>
-                    <a href="contact.html" class="footer-link">Contact</a>
-                </div>
-
-                <div class="footer-links">
-                    <a href="https://github.com/suyashh77" target="_blank" class="footer-link">GitHub</a>
-                    <a href="https://www.linkedin.com/in/suyash-sapre-2566631b9" target="_blank"
-                        class="footer-link">LinkedIn</a>
-                    <a href="mailto:suyash.sapre@gmail.com" class="footer-link">Email</a>
-                </div>
-            </div>
-
-            <p class="footer-copyright">© 2026 Suyash Sapre</p>
+    <footer>
+        <div class="wrap">
+            <span>© 2026 Suyash Sapre</span>
+            <span class="sp"></span>
+            <a href="https://github.com/suyashh77" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://www.linkedin.com/in/suyash-sapre-2566631b9" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="contact.html">Contact</a>
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="script.js"></script>
 </body>
 
 </html>

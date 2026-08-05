@@ -133,7 +133,7 @@
         .index li {
             display: flex;
             align-items: baseline;
-            gap: 10px;
+            gap: 12px;
             padding: 3px 0;
             font-size: 0.97rem;
         }
@@ -145,17 +145,7 @@
             min-width: 22px;
         }
 
-        .index .dotfill {
-            flex: 1;
-            border-bottom: 1px dotted var(--rule);
-            transform: translateY(-3px);
-        }
 
-        .index .st {
-            font-size: 0.8rem;
-            color: var(--text-3);
-            white-space: nowrap;
-        }
 
         /* ---------- sections ---------- */
         section.group {
@@ -204,18 +194,7 @@
             letter-spacing: -0.01em;
         }
 
-        .status {
-            font-size: 0.78rem;
-            color: var(--text-3);
-            border: 1px solid var(--rule);
-            border-radius: 3px;
-            padding: 1px 7px;
-            white-space: nowrap;
-        }
 
-        .status.open {
-            border-style: dashed;
-        }
 
         .problem {
             margin-top: 12px;
@@ -269,10 +248,6 @@
             color: var(--text-3);
         }
 
-        ul.arrow li::before {
-            content: "→";
-            font-size: 0.85em;
-        }
 
         b {
             font-weight: 600;
@@ -473,9 +448,6 @@
                 padding-top: 36px;
             }
 
-            .index .dotfill {
-                display: none;
-            }
 
             .index li {
                 flex-wrap: wrap;
@@ -497,46 +469,35 @@
             <h1>Projects &amp; Research</h1>
 
             <nav class="index">
-                <h2>Research — Rachunok Lab, NC State ISE</h2>
+                <h2>Research &mdash; Rachunok Lab, NC State ISE</h2>
                 <ol>
-                    <li><span class="n">R1</span><a href="#scraper">Google Maps Review Scraper — NC food access
-                            data</a><span class="dotfill"></span><span class="st"></span></li>
-                    <li><span class="n">R2</span><a href="#geomatch">GeoMatch</a><span class="dotfill"></span><span class="st"></span></li>
+                    <li><span class="n">R1</span><a href="#scraper">Google Maps Review Scraper &mdash; NC food access data</a></li>
+                    <li><span class="n">R2</span><a href="#geomatch">GeoMatch</a></li>
                 </ol>
 
                 <h2>Supply Chain</h2>
                 <ol>
-                    <li><span class="n">→</span><a href="#end-to-end">The end-to-end idea</a><span
-                            class="dotfill"></span><span class="st">what ties these together</span></li>
-                    <li><span class="n">01</span><a href="#return-routing">Return Routing
-                            Optimisation</a><span class="dotfill"></span><span class="st">results complete</span></li>
-                    <li><span class="n">02</span><a href="#risk-intelligence">Supply Chain Risk
-                            Intelligence</a><span class="dotfill"></span><span class="st">rebuilding next</span></li>
-                    <li><span class="n">03</span><a href="#uflp">Facility Location — Greedy-Add Solver</a><span
-                            class="dotfill"></span><span class="st"></span></li>
-                    <li><span class="n">04</span><a href="#consolidation">Consolidation Centres &amp; Load
-                            Building</a><span class="dotfill"></span><span class="st">planned</span></li>
-                    <li><span class="n">05</span><a href="#policypulse">PolicyPulse</a><span
-                            class="dotfill"></span><span class="st">finishing now</span></li>
-                    <li><span class="n">06</span><a href="#stockout-predictor">Commodity Stockout Risk
-                            Platform</a><span class="dotfill"></span><span class="st">under rework</span></li>
+                    <li><span class="n">&rarr;</span><a href="#end-to-end">The end-to-end idea</a></li>
+                    <li><span class="n">01</span><a href="#uflp">Facility Location &mdash; Greedy-Add Solver</a></li>
+                    <li><span class="n">02</span><a href="#consolidation">Consolidation Centres &amp; Cross-Dock Terminals</a></li>
+                    <li><span class="n">03</span><a href="#routing">Routing &mdash; TSP &amp; VRP Solvers</a></li>
+                    <li><span class="n">04</span><a href="#return-routing">Return Routing Optimisation</a></li>
+                    <li><span class="n">05</span><a href="#risk-intelligence">Supply Chain Risk Intelligence</a></li>
+                    <li><span class="n">06</span><a href="#stockout-predictor">Commodity Stockout Risk Platform</a></li>
+                    <li><span class="n">07</span><a href="#policypulse">PolicyPulse</a></li>
                 </ol>
 
                 <h2>Other fun projects</h2>
                 <ol>
-                    <li><span class="n">07</span><a href="#garmin-wrapped">Garmin Wrapped</a><span
-                            class="dotfill"></span><span class="st"></span></li>
-                    <li><span class="n">08</span><a href="#wolfattend">WolfAttend</a><span class="dotfill"></span><span class="st">submitted &amp; declined</span></li>
+                    <li><span class="n">08</span><a href="#garmin-wrapped">Garmin Wrapped</a></li>
+                    <li><span class="n">09</span><a href="#wolfattend">WolfAttend</a></li>
                 </ol>
 
                 <h2>Tools</h2>
                 <ol>
-                    <li><span class="n">09</span><a href="#payment-tracker">Payment Tracker</a><span
-                            class="dotfill"></span><span class="st"></span></li>
-                    <li><span class="n">10</span><a href="#youtube-notes">YouTube Notes Taker</a><span
-                            class="dotfill"></span><span class="st"></span></li>
-                    <li><span class="n">11</span><a href="#spotify-comparator">Spotify Library Comparator</a><span
-                            class="dotfill"></span><span class="st"></span></li>
+                    <li><span class="n">10</span><a href="#payment-tracker">Payment Tracker</a></li>
+                    <li><span class="n">11</span><a href="#youtube-notes">YouTube Notes Taker</a></li>
+                    <li><span class="n">12</span><a href="#spotify-comparator">Spotify Library Comparator</a></li>
                 </ol>
             </nav>
         </div>
@@ -608,7 +569,6 @@
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
-            <!-- R2 -->
             <article id="geomatch">
                 <div class="head">
                     <span class="num">R2</span>
@@ -684,48 +644,128 @@
             <!-- end-to-end framing -->
             <article id="end-to-end">
                 <div class="head">
-                    <span class="num">→</span>
+                    <span class="num">&rarr;</span>
                     <h3>The end-to-end idea</h3>
                 </div>
                 <p class="problem">
-                    Several of these aren't separate projects so much as separate layers of one system. Real supply
-                    chains decide on wildly different clocks — where to put a building (months to years), which truck to
-                    load tonight (days), what route it drives (hours), what comes back (continuously) — and each layer's
-                    decision quietly constrains the next one down. Most tools solve exactly one layer and assume the
-                    others away. I want to build the version that doesn't.
+                    I've been weirdly fascinated by retail supply chains for a while — how they actually work, and how
+                    you'd build the next generation of mathematical models behind resilient, efficient ones. The projects
+                    below are me working through that: learning the math, and learning how it's actually done.
                 </p>
 
-                <pre>Strategic     Where do facilities go?         →  <a href="#uflp">03</a>  facility location
-Tactical      What goes on which truck?      →  <a href="#consolidation">04</a>  consolidation
-Operational   What route does it drive?      →      routing / TSP &amp; VRP
-Reverse       Where does it go coming back?  →  <a href="#return-routing">01</a>  return routing</pre>
+                <pre>Strategic     Where do facilities go?         →  <a href="#uflp">01</a>  facility location
+Tactical      What goes on which truck?      →  <a href="#consolidation">02</a>  consolidation
+Operational   What route does it drive?      →  <a href="#routing">03</a>  routing / TSP &amp; VRP
+Reverse       Where does it go coming back?  →  <a href="#return-routing">04</a>  return routing</pre>
+            </article>
 
-                <h4>The interesting part isn't the layers, it's the seams</h4>
+            <article id="uflp">
+                <div class="head">
+                    <span class="num">01</span>
+                    <h3>Facility Location — Greedy-Add Solver</h3>
+                </div>
+                <p class="problem">
+                    Where should the warehouses go, and how much does it cost you to get that wrong? An interactive
+                    solver for the Uncapacitated Fixed-Charge Location Problem using the Greedy-Add construction
+                    heuristic — 100 randomly generated US customers with demand, and 1–10 candidate facilities you place
+                    by street address.
+                </p>
+                <p class="callout">
+                    I worked on this class of problem during my co-op rotations at UPL, on real warehouse network
+                    questions. This is not that work — it's the same problem rebuilt from scratch on synthetic data, so
+                    there's something I can actually show.
+                </p>
+
+                <h4>The hard part</h4>
+                <p class="note">
+                    Making the heuristic legible. It renders every iteration as a table — which facility was evaluated,
+                    what it saved, why it won — next to a map of the resulting assignment arcs. The point isn't the
+                    optimum; it's watching a greedy method commit to a facility early and seeing exactly where that costs
+                    you.
+                </p>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">React · FastAPI · Leaflet · Tailwind ·
+                            OSM Nominatim</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://github.com/suyashh77/Supply-Chain-Buddy" target="_blank"
+                                rel="noopener">Repository</a>
+                            <a href="https://github.com/suyashh77/supply-chain-simulator" target="_blank"
+                                rel="noopener">Simulator</a>
+                        </span></div>
+                </div>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+
+            <article id="consolidation">
+                <div class="head">
+                    <span class="num">02</span>
+                    <h3>Consolidation Centres &amp; Cross-Dock Terminals</h3>
+                </div>
+                <p class="problem">
+                    I've always wondered how Lowe's and companies at that scale actually run consolidation centres and
+                    cross-dock terminals — how freight from hundreds of suppliers gets pooled, and how anyone decides
+                    what goes on which truck. It looks like a scheduling problem and a packing problem wearing the same
+                    coat, and I want to build it to find out where the real difficulty lives.
+                </p>
+
+                <h4>The math I want to get to</h4>
                 <ul class="pts">
-                    <li>A facility-location model that ignores consolidation will site warehouses that are expensive to
-                        actually serve, because it prices lanes as if every shipment were a full truck.</li>
-                    <li>Load building that ignores the route it feeds will build trucks that are cube-efficient and
-                        route-hostile.</li>
-                    <li>And forward network design that ignores returns undersizes exactly the nodes the return router
-                        later discovers are the binding constraint — the capacity duals in project 01 are already a
-                        signal pointing back up at project 03.</li>
+                    <li>Cross-docking is a truck-to-door assignment problem with time windows — inbound trailers to strip
+                        doors, outbound to stack doors, and a transfer cost between every pair. Get the door layout wrong
+                        and the forklift travel eats the savings.</li>
+                    <li>Load building underneath it is a bin-packing problem with real constraints: trailer cube, weight,
+                        stackability, and delivery sequence, since what goes in last comes out first.</li>
+                    <li>And on top, a timing decision — hold freight one more day for a fuller truck, or ship it now.
+                        That's where the model stops being combinatorial and starts being economic.</li>
                 </ul>
 
-                <p class="note">
-                    So the plan is to build the missing middle, then connect the layers and measure the thing nobody
-                    reports: how much value is lost at the handoffs when each layer is optimised alone. That number is
-                    the whole argument for end-to-end.
+                <h4>The questions I want to answer</h4>
+                <ul class="pts">
+                    <li>When is it worth holding freight to build a fuller truck, and what does that deferral cost
+                        downstream in service?</li>
+                    <li>How do you assign inbound loads to outbound doors and departure windows when both dock capacity
+                        and trailer cube are binding?</li>
+                    <li>Where does a consolidation centre stop paying for itself — at what volume, distance, and supplier
+                        fragmentation does direct-ship win?</li>
+                </ul>
+                <p class="fine">
+                    Nothing built yet. This is the next one I want to work on, and it's the missing middle of the stack
+                    at the top of this section.
                 </p>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
-            <!-- 01 -->
+            <article id="routing">
+                <div class="head">
+                    <span class="num">03</span>
+                    <h3>Routing — TSP &amp; VRP Solvers</h3>
+                </div>
+                <p class="problem">
+                    The truck is loaded. Now what order does it visit the stops in, and how many trucks do you need? This
+                    is the operational layer of the stack above — the travelling salesman problem, then the vehicle
+                    routing problem that generalises it once capacity, time windows and multiple vehicles come in.
+                </p>
+
+                <h4>What I want to build</h4>
+                <ul class="pts">
+                    <li>Exact and heuristic solvers side by side, so you can watch where an exact formulation stops being
+                        tractable and a heuristic has to take over.</li>
+                    <li>The classic constructions and improvements — nearest neighbour, savings, 2-opt and Or-opt — with
+                        every intermediate tour visible rather than just the final answer.</li>
+                    <li>Then the constraints that make it a real problem instead of a textbook one: capacity, time
+                        windows, and a driver's hours.</li>
+                </ul>
+                <p class="fine">
+                    Solver code is written; the write-up and the interactive version are not. Both are coming.
+                </p>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+
             <article id="return-routing">
                 <div class="head">
-                    <span class="num">01</span>
+                    <span class="num">04</span>
                     <h3>Return Routing Optimisation</h3>
-                    <span class="status">Results complete</span>
-                    <span class="status open">Write-up in progress</span>
                 </div>
 
                 <p class="problem">
@@ -839,12 +879,10 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">01</
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
-            <!-- 02 -->
             <article id="risk-intelligence">
                 <div class="head">
-                    <span class="num">02</span>
+                    <span class="num">05</span>
                     <h3>Supply Chain Risk Intelligence</h3>
-                    <span class="status open">Rebuilding next</span>
                 </div>
                 <p class="problem">
                     Converts real-time news into structured risk indices and alerts so supply chain leaders can
@@ -884,81 +922,49 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">01</
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
-            <!-- 03 -->
-            <article id="uflp">
+            <article id="stockout-predictor">
                 <div class="head">
-                    <span class="num">03</span>
-                    <h3>Facility Location — Greedy-Add Solver</h3>
+                    <span class="num">06</span>
+                    <h3>Commodity Stockout Risk Platform</h3>
                 </div>
                 <p class="problem">
-                    Where should the warehouses go, and how much does it cost you to get that wrong? An interactive
-                    solver for the Uncapacitated Fixed-Charge Location Problem using the Greedy-Add construction
-                    heuristic — 100 randomly generated US customers with demand, and 1–10 candidate facilities you place
-                    by street address.
-                </p>
-                <p class="callout">
-                    I worked on this class of problem during my co-op rotations at UPL, on real warehouse network
-                    questions. This is not that work — it's the same problem rebuilt from scratch on synthetic data, so
-                    there's something I can actually show.
+                    Uses financial market signals as a proxy for stockout risk — live OHLCV from Yahoo Finance, technical
+                    indicators (ATR, RSI, MACD), a unified 0–1 risk index, a Random Forest shock predictor, and
+                    GPT-generated summaries.
                 </p>
 
-                <h4>The hard part</h4>
+                <h4>Why it's being reworked</h4>
                 <p class="note">
-                    Making the heuristic legible. It renders every iteration as a table — which facility was evaluated,
-                    what it saved, why it won — next to a map of the resulting assignment arcs. The point isn't the
-                    optimum; it's watching a greedy method commit to a facility early and seeing exactly where that costs
-                    you.
+                    The premise is both the interesting part and the weak part: commodity price volatility is a
+                    <em>leading</em> signal for some disruptions and a <em>lagging</em> one for others, and this version
+                    doesn't distinguish. Until the index is validated against actual stockout events rather than price
+                    moves, it's a market dashboard wearing a supply chain label.
                 </p>
 
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">React · FastAPI · Leaflet · Tailwind ·
-                            OSM Nominatim</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python · Random Forest · Yahoo Finance ·
+                            Streamlit</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
-                            <a href="https://github.com/suyashh77/Supply-Chain-Buddy" target="_blank"
+                            <a href="https://github.com/suyashh77/Commodity-Stockout-Risk-Platform" target="_blank"
                                 rel="noopener">Repository</a>
-                            <a href="https://github.com/suyashh77/supply-chain-simulator" target="_blank"
-                                rel="noopener">Simulator</a>
                         </span></div>
                 </div>
+
+                <details>
+                    <summary>Demo video</summary>
+                    <div class="video">
+                        <iframe src="https://drive.google.com/file/d/1tuvD6E9Zwz8vAEsI-k6sBA_TvkIeRedI/preview"
+                            title="Commodity Stockout Risk demo" allow="autoplay; encrypted-media" allowfullscreen
+                            loading="lazy"></iframe>
+                    </div>
+                </details>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
-            <!-- 04 -->
-            <article id="consolidation">
-                <div class="head">
-                    <span class="num">04</span>
-                    <h3>Consolidation Centres &amp; Load Building</h3>
-                    <span class="status open">Planned</span>
-                </div>
-                <p class="problem">
-                    I've always wondered how Lowe's and companies at that scale actually run consolidation centres and
-                    cross-dock terminals — how freight from hundreds of suppliers gets pooled, and how anyone decides
-                    what goes on which truck. It looks like a scheduling problem and a packing problem wearing the same
-                    coat, and I want to build it to find out where the real difficulty lives.
-                </p>
-
-                <h4>The questions I want to answer</h4>
-                <ul class="pts">
-                    <li>When is it worth holding freight one more day to build a fuller truck, and what does that
-                        deferral cost downstream in service?</li>
-                    <li>How do you assign inbound loads to outbound doors and departure windows when both dock capacity
-                        and trailer cube are binding?</li>
-                    <li>Where does a consolidation centre stop paying for itself — at what volume, distance, and supplier
-                        fragmentation does direct-ship win?</li>
-                </ul>
-                <p class="fine">
-                    Nothing built yet. This entry is here because it's the next thing I want to work on, and because it's
-                    the missing middle of the end-to-end system below.
-                </p>
-                <a class="totop" href="#top">↑ Index</a>
-            </article>
-
-            <!-- 05 -->
             <article id="policypulse">
                 <div class="head">
-                    <span class="num">05</span>
+                    <span class="num">07</span>
                     <h3>PolicyPulse</h3>
-                    <span class="status open">Finishing now</span>
                 </div>
                 <p class="problem">
                     A multi-agent consumer simulation for pre-launch retail policy validation, built as the companion to
@@ -995,47 +1001,6 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">01</
                 </div>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
-
-            <!-- 06 -->
-            <article id="stockout-predictor">
-                <div class="head">
-                    <span class="num">06</span>
-                    <h3>Commodity Stockout Risk Platform</h3>
-                    <span class="status open">Under rework</span>
-                </div>
-                <p class="problem">
-                    Uses financial market signals as a proxy for stockout risk — live OHLCV from Yahoo Finance, technical
-                    indicators (ATR, RSI, MACD), a unified 0–1 risk index, a Random Forest shock predictor, and
-                    GPT-generated summaries.
-                </p>
-
-                <h4>Why it's being reworked</h4>
-                <p class="note">
-                    The premise is both the interesting part and the weak part: commodity price volatility is a
-                    <em>leading</em> signal for some disruptions and a <em>lagging</em> one for others, and this version
-                    doesn't distinguish. Until the index is validated against actual stockout events rather than price
-                    moves, it's a market dashboard wearing a supply chain label.
-                </p>
-
-                <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Python · Random Forest · Yahoo Finance ·
-                            Streamlit</span></div>
-                    <div class="row"><span class="k">Links</span><span class="v">
-                            <a href="https://github.com/suyashh77/Commodity-Stockout-Risk-Platform" target="_blank"
-                                rel="noopener">Repository</a>
-                        </span></div>
-                </div>
-
-                <details>
-                    <summary>Demo video</summary>
-                    <div class="video">
-                        <iframe src="https://drive.google.com/file/d/1tuvD6E9Zwz8vAEsI-k6sBA_TvkIeRedI/preview"
-                            title="Commodity Stockout Risk demo" allow="autoplay; encrypted-media" allowfullscreen
-                            loading="lazy"></iframe>
-                    </div>
-                </details>
-                <a class="totop" href="#top">↑ Index</a>
-            </article>
         </div>
     </section>
 
@@ -1050,7 +1015,7 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">01</
             <!-- 07 -->
             <article id="garmin-wrapped">
                 <div class="head">
-                    <span class="num">07</span>
+                    <span class="num">08</span>
                     <h3>Garmin Wrapped</h3>
                 </div>
                 <p class="problem">
@@ -1111,12 +1076,10 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">01</
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
-            <!-- 08 -->
             <article id="wolfattend">
                 <div class="head">
-                    <span class="num">08</span>
+                    <span class="num">09</span>
                     <h3>WolfAttend</h3>
-                    <span class="status open">Submitted &amp; declined</span>
                 </div>
 
                 <h4>Why I built it</h4>
@@ -1197,7 +1160,7 @@ Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
             <!-- 09 -->
             <article id="payment-tracker">
                 <div class="head">
-                    <span class="num">09</span>
+                    <span class="num">10</span>
                     <h3>Payment Tracker</h3>
                 </div>
                 <p class="problem">
@@ -1215,10 +1178,9 @@ Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
-            <!-- 10 -->
             <article id="youtube-notes">
                 <div class="head">
-                    <span class="num">10</span>
+                    <span class="num">11</span>
                     <h3>YouTube Notes Taker</h3>
                 </div>
                 <p class="problem">
@@ -1240,10 +1202,9 @@ Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
-            <!-- 11 -->
             <article id="spotify-comparator">
                 <div class="head">
-                    <span class="num">11</span>
+                    <span class="num">12</span>
                     <h3>Spotify Library Comparator</h3>
                 </div>
                 <p class="problem">

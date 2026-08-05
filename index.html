@@ -495,24 +495,13 @@
     <header class="page" id="top">
         <div class="wrap">
             <h1>Projects &amp; Research</h1>
-            <p class="lede">
-                I'm fascinated by supply chains — less by the logistics than by the mathematics sitting underneath them.
-                A truck leaving a dock half full, a warehouse built in the wrong place, a returned jacket crossing the
-                country so somebody can look at it: every one of those is a decision made against a model, whether or not
-                anyone wrote the model down. What interests me is writing it down — the formulation, the algorithm, and
-                the point where the elegant version stops surviving contact with real operations.
-            </p>
-            <p class="lede">
-                Most of what follows is me building those models to find out where the difficulty actually lives.
-            </p>
 
             <nav class="index">
                 <h2>Research — Rachunok Lab, NC State ISE</h2>
                 <ol>
                     <li><span class="n">R1</span><a href="#scraper">Google Maps Review Scraper — NC food access
-                            data</a><span class="dotfill"></span><span class="st">~84% collected</span></li>
-                    <li><span class="n">R2</span><a href="#geomatch">GeoMatch</a><span class="dotfill"></span><span
-                            class="st">shipped</span></li>
+                            data</a><span class="dotfill"></span><span class="st"></span></li>
+                    <li><span class="n">R2</span><a href="#geomatch">GeoMatch</a><span class="dotfill"></span><span class="st"></span></li>
                 </ol>
 
                 <h2>Supply Chain</h2>
@@ -524,7 +513,7 @@
                     <li><span class="n">02</span><a href="#risk-intelligence">Supply Chain Risk
                             Intelligence</a><span class="dotfill"></span><span class="st">rebuilding next</span></li>
                     <li><span class="n">03</span><a href="#uflp">Facility Location — Greedy-Add Solver</a><span
-                            class="dotfill"></span><span class="st">shipped</span></li>
+                            class="dotfill"></span><span class="st"></span></li>
                     <li><span class="n">04</span><a href="#consolidation">Consolidation Centres &amp; Load
                             Building</a><span class="dotfill"></span><span class="st">planned</span></li>
                     <li><span class="n">05</span><a href="#policypulse">PolicyPulse</a><span
@@ -533,22 +522,21 @@
                             Platform</a><span class="dotfill"></span><span class="st">under rework</span></li>
                 </ol>
 
-                <h2>Projects</h2>
+                <h2>Other fun projects</h2>
                 <ol>
                     <li><span class="n">07</span><a href="#garmin-wrapped">Garmin Wrapped</a><span
-                            class="dotfill"></span><span class="st">shipped</span></li>
-                    <li><span class="n">08</span><a href="#wolfattend">WolfAttend</a><span class="dotfill"></span><span
-                            class="st">proposal submitted</span></li>
+                            class="dotfill"></span><span class="st"></span></li>
+                    <li><span class="n">08</span><a href="#wolfattend">WolfAttend</a><span class="dotfill"></span><span class="st">submitted &amp; declined</span></li>
                 </ol>
 
                 <h2>Tools</h2>
                 <ol>
                     <li><span class="n">09</span><a href="#payment-tracker">Payment Tracker</a><span
-                            class="dotfill"></span><span class="st">running nightly</span></li>
+                            class="dotfill"></span><span class="st"></span></li>
                     <li><span class="n">10</span><a href="#youtube-notes">YouTube Notes Taker</a><span
-                            class="dotfill"></span><span class="st">shipped</span></li>
+                            class="dotfill"></span><span class="st"></span></li>
                     <li><span class="n">11</span><a href="#spotify-comparator">Spotify Library Comparator</a><span
-                            class="dotfill"></span><span class="st">shipped</span></li>
+                            class="dotfill"></span><span class="st"></span></li>
                 </ol>
             </nav>
         </div>
@@ -569,13 +557,7 @@
                 <div class="head">
                     <span class="num">R1</span>
                     <h3>Google Maps Review Scraper — NC food access data</h3>
-                    <span class="status open">~84% collected</span>
                 </div>
-
-                <p class="callout">
-                    <b>To be clear about credit:</b> the food desert research is Teresa Gorton's and Dr. Rachunok's. I
-                    didn't do the research. I built the scraper and the data pipeline that made the collection possible.
-                </p>
 
                 <p class="problem">
                     Last semester Teresa Gorton and Dr. Rachunok were working on food desert research at NC State, and I
@@ -613,58 +595,6 @@
                     a real food desert or a scraper failure.
                 </p>
 
-                <h4>What actually broke</h4>
-                <p class="note">
-                    The scraping was the easy part. What took months was everything that broke.
-                </p>
-                <ul class="pts arrow">
-                    <li>Lost an 8-hour run to a Wi-Fi blip — moved everything to SQLite, so it now resumes mid-store
-                        instead of restarting, right down to which review sort order it was part-way through.</li>
-                    <li>Silently scraped the wrong Dollar General once — built a geo-matcher to check the store name
-                        against haversine distance from the expected coordinates before trusting anything. Not a strict
-                        distance reject, though: Overture coordinates are routinely 1–2 km off Google's even for the
-                        <em>correct</em> store, and a tight threshold wrongly killed ~25 valid stores.
-                    </li>
-                    <li>Burned Google accounts treating CAPTCHAs and sign-in walls as the same problem — one blocks your
-                        IP, the other blocks your account. A sign-in wall means ban that account and rotate; a CAPTCHA
-                        means write a global pause flag and sleep 30–60 minutes.</li>
-                    <li>Trusted an in-memory counter for <code>reviews_scraped</code> and got 2,263 phantom reviews. The
-                        count is now re-read from disk after every flush, so progress can never drift from what was
-                        actually persisted.</li>
-                    <li>Assumed a scroll stall meant the end of the list. It doesn't — Google stops yielding long before
-                        you've seen everything, so the scraper re-sorts newest → oldest → relevant, because different
-                        sort orders surface different subsets of the same reviews.</li>
-                </ul>
-
-                <h4>What I'd tell myself at the start</h4>
-                <ul class="pts">
-                    <li><b>Resumability is the whole game.</b> An 8-hour run that loses everything is worth zero. State
-                        belongs in SQLite, not memory.</li>
-                    <li><b>Clean abstractions can be the wrong abstractions.</b> The first version was a tidy
-                        config-driven package; one selector change on Google's side meant edits across three files. It's
-                        in <code>Archive/</code> along with three other architectures that didn't survive production.
-                    </li>
-                    <li><b>Parallelism wasn't the bottleneck.</b> I fixed SQLite contention with WAL and immediate-mode
-                        store claiming, then found Google's rate limits were the real ceiling all along.</li>
-                    <li><b>Shipping it to other people is a design spec.</b> A Tkinter GUI build let non-technical
-                        classmates run batches on their own laptops — it contributed 19,992 reviews and 25 batch DBs, and
-                        every complaint they filed (leaked tabs, one bad store halting the batch, no checkpointing)
-                        became a requirement for the next version.</li>
-                </ul>
-
-                <h4>Output and honesty</h4>
-                <p class="note">
-                    <b>4,889 stores · 1,201,237 reviews · 578 NC cities · 13 categories.</b> It's about 84% done, and
-                    every gap is documented in the repo's quality report rather than buried — the text corpus is really
-                    ~608K reviews because 49.4% of Google reviews are rating-only; 157 stores were over-scraped by the
-                    wrong-location bug before the geo guardrail existed; Costco is missing entirely. The path from
-                    "usable" to "authoritative" is itemised and effort-estimated in the future-work doc.
-                </p>
-                <p class="note">
-                    Thank you to Dr. Ben Rachunok and everyone in the lab — the weekly discussions taught me as much as
-                    building this did.
-                </p>
-
                 <div class="meta">
                     <div class="row"><span class="k">Stack</span><span class="v">Python · Playwright · SQLite (WAL) ·
                             Overture Maps · DuckDB · Tkinter · Linux VMs</span></div>
@@ -674,8 +604,6 @@
                             <a href="https://github.com/suyashh77/gmaps-scraper/blob/main/Data/Data%20Quality%20Report.md"
                                 target="_blank" rel="noopener">Quality report</a>
                         </span></div>
-                    <div class="row"><span class="k">Data</span><span class="v">The dataset itself isn't in the repo —
-                            it's research data belonging to the project. Contact the group for access.</span></div>
                 </div>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
@@ -685,37 +613,52 @@
                 <div class="head">
                     <span class="num">R2</span>
                     <h3>GeoMatch</h3>
-                    <span class="status">Shipped · v1.0</span>
                 </div>
-                <p class="problem">
-                    The wrong-Dollar-General problem, generalised into a library. The same physical place looks different
-                    in every data source: <code>"Food Lion #1542, 2410 Wade Ave Ste 100"</code>, <code>"Food Lion, Wade
-                        Avenue, Raleigh"</code> and <code>"FOOD LION 2410 WADE AVE RALEIGH NC 27607"</code> are one
-                    store, three records, zero exact matches. GeoMatch links them in one function call — offline, no API
-                    keys, nothing leaves your machine.
-                </p>
 
-                <h4>The hard part</h4>
+                <h4>Why I built it</h4>
                 <p class="note">
-                    Being explainable and un-opinionated at the same time. Every match returns a calibrated probability
-                    <em>and</em> a plain-English reason — <em>"accepted by rule: house number + street + ZIP/city all
-                        match"</em>. And <code>link</code> never auto-filters: you get every candidate pair with its full
-                    feature row, veto flag, and parsed components for both sides, and you pick the threshold. A matcher
-                    that silently drops pairs is unusable for research, because the drops are exactly what you need to
-                    audit.
+                    Working on the scraper, I kept running into the same problem: I had a list of stores from one source
+                    and a list from another, and I needed to know which rows were the same real place. They never match
+                    exactly.
+                </p>
+                <pre>"Food Lion #1542, 2410 Wade Ave Ste 100"
+"Food Lion, Wade Avenue, Raleigh"
+"FOOD LION 2410 WADE AVE RALEIGH NC 27607"</pre>
+                <p class="note">
+                    One store. Three records. Zero exact matches. A human can see they're the same in a second; a
+                    spreadsheet can't, and I had thousands of them. The existing options either wanted an API key —
+                    meaning the addresses leave your machine, which you can't do with someone else's research data — or
+                    depended on a C library that's painful to install. So I wrote one that runs offline and installs
+                    anywhere.
                 </p>
 
+                <h4>How it works</h4>
+                <p class="note">
+                    It never compares the two strings directly. It takes them apart first.
+                </p>
                 <ul class="pts">
-                    <li>Seven layers: normalise → parse → hard rules → similarity features → scoring → calibration →
-                        explanation.</li>
-                    <li>A token state machine pulls house number, street, suffix, unit, city, state, ZIP and POI name
-                        using a pure-Python USPS Pub 28 expander — <b>no libpostal</b>, so it installs anywhere.</li>
-                    <li>Non-negotiable identifiers veto or accept before any scoring: a ZIP / house-number / state
-                        mismatch rejects outright; a matching identifier triple accepts outright.</li>
-                    <li>Optional ONNX transformer features (~15MB, no PyTorch) when names need semantic comparison.</li>
-                    <li>Also exposes <code>dedupe</code> and <code>standardize</code>, plus a pandas <code>.geo</code>
-                        accessor.</li>
+                    <li><b>Clean up.</b> Lowercase, strip punctuation, and expand the abbreviations the post office uses
+                        — <code>Ave</code> and <code>Avenue</code>, <code>Ste</code> and <code>Suite</code>,
+                        <code>N</code> and <code>North</code> — so both sides speak the same dialect.</li>
+                    <li><b>Take it apart.</b> Split each address into labelled pieces: house number, street name, suffix,
+                        unit, city, state, ZIP, and the business name.</li>
+                    <li><b>Check the deal-breakers first.</b> Some things can't disagree. Different ZIP, different house
+                        number, different state? Rejected immediately, no matter how similar the names look — this is the
+                        rule that catches a Dollar General matched to the wrong Dollar General. Matching on all three?
+                        Accepted immediately.</li>
+                    <li><b>Then score what's left.</b> Compare each piece separately — how close are the street names,
+                        the business names, the coordinates — and combine those into one number between 0 and 1 that
+                        means what it says: 0.9 should be right about 90% of the time.</li>
+                    <li><b>Say why.</b> Every pair comes back with a sentence explaining the verdict, like <em>"accepted
+                            by rule: house number + street + ZIP/city all match."</em></li>
                 </ul>
+
+                <h4>The one design decision I'd defend hardest</h4>
+                <p class="note">
+                    It never throws anything away for you. You get every candidate pair with its score, its reasons and
+                    its parsed pieces, and <em>you</em> pick the cutoff. A matcher that silently drops pairs is useless
+                    for research, because the pairs it dropped are exactly the ones you need to check.
+                </p>
 
                 <div class="meta">
                     <div class="row"><span class="k">Stack</span><span class="v">Python ≥3.10 · pandas · RapidFuzz ·
@@ -946,7 +889,6 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">01</
                 <div class="head">
                     <span class="num">03</span>
                     <h3>Facility Location — Greedy-Add Solver</h3>
-                    <span class="status">Shipped</span>
                 </div>
                 <p class="problem">
                     Where should the warehouses go, and how much does it cost you to get that wrong? An interactive
@@ -1100,9 +1042,9 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">01</
     <!-- ==================== PROJECTS ==================== -->
     <section class="group" id="projects">
         <div class="wrap">
-            <div class="group-title">Projects</div>
+            <div class="group-title">Other fun projects</div>
             <p class="group-note">
-                Things I built because I wanted them to exist.
+                Built because I wanted them to exist.
             </p>
 
             <!-- 07 -->
@@ -1110,7 +1052,6 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">01</
                 <div class="head">
                     <span class="num">07</span>
                     <h3>Garmin Wrapped</h3>
-                    <span class="status">Shipped</span>
                 </div>
                 <p class="problem">
                     Turning roughly 500,000 data points from a Garmin watch into a personalised annual health story.
@@ -1175,30 +1116,65 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">01</
                 <div class="head">
                     <span class="num">08</span>
                     <h3>WolfAttend</h3>
-                    <span class="status">Proposal submitted — OIT &amp; DELTA</span>
+                    <span class="status open">Submitted &amp; declined</span>
                 </div>
-                <p class="problem">
-                    A frictionless, verified attendance system for NC State. Every existing option makes you choose
-                    between friction (roll call, QR queues) and fraud (a code your friend texts you from home).
-                    WolfAttend removes the choice by binding the code to the network the student is actually standing on.
-                </p>
 
-                <h4>The hard part</h4>
+                <h4>Why I built it</h4>
                 <p class="note">
-                    This one is a threat model, not a feature list. A rotating TOTP session code alone is defeated by
-                    screenshot sharing; WiFi presence alone is defeated by VPN spoofing. Validating the TOTP
-                    <em>against a Cisco ISE pxGrid AP-to-room map</em> closes both at once, and replay dies with the time
-                    window. The constraints mattered more than the mechanism: zero new hardware, zero student apps, never
-                    auto-mark anyone absent, FERPA-compliant by construction.
+                    A professor and I kept coming back to the same complaint: taking attendance in a big lecture makes
+                    you choose between speed and honesty. Calling names burns ten minutes. Passing a sheet around means
+                    people sign for friends. Putting a code on the projector means it gets texted to whoever's still in
+                    bed. Every option is either slow or easy to cheat. We figured there had to be a better way, so I
+                    designed one and emailed it to the university.
                 </p>
 
-                <pre>Moodle layer          →  session start, TOTP issue, roster write-back
-Validation layer      →  TOTP check × live client-to-AP association
-Cisco ISE (pxGrid)    →  AP-to-room map, device presence</pre>
+                <h4>How it works</h4>
+                <p class="note">
+                    Two signals, because neither one is enough on its own.
+                </p>
+                <ul class="pts">
+                    <li><b>A code that expires.</b> The instructor starts the session and a rotating code appears.
+                        Students enter it in under 15 seconds. On its own this is defeated by a screenshot.</li>
+                    <li><b>Proof the phone is in the room.</b> The campus WiFi already knows which access point every
+                        device is connected to, and which access point covers which room. Checking that log confirms
+                        physical presence without any new hardware, any app, or anyone scanning anything. On its own
+                        this is defeated by a VPN.</li>
+                </ul>
+                <p class="note">
+                    Together they close both holes: the code proves you're there <em>now</em>, the network proves you're
+                    there <em>physically</em>. It checks every device a student has registered, so leaving your laptop at
+                    home doesn't count against you, and the output is only ever <b>present</b> or <b>flagged for
+                        review</b> — it never marks anyone absent automatically. It lives inside the LMS, so there's
+                    nothing new to buy and nothing new for students to install.
+                </p>
+
+                <pre>LMS (Moodle → Canvas)  →  session start, code issue, roster write-back
+Validation layer       →  code check × live device-to-access-point match
+Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
+
+                <h4>What happened</h4>
+                <p class="note">
+                    I wrote up the full design and deployment plan and sent it to NC State's IT leadership. They took it
+                    seriously, agreed secure attendance is a real problem, had a developer review it — and turned it
+                    down, for two reasons worth repeating.
+                </p>
+                <ul class="pts">
+                    <li>NC State is migrating from Moodle to Canvas over the next two years, so there's no appetite for
+                        building anything new on Moodle. They're already looking at secure attendance options for Canvas.
+                    </li>
+                    <li>The one that actually matters: their developer pointed out that students mostly use cell data
+                        rather than campus WiFi. My whole presence signal assumes they're on the campus network. If
+                        they're not, the second factor doesn't exist.</li>
+                </ul>
+                <p class="note">
+                    That second point is the useful part. I'd threat-modelled the ways someone could <em>beat</em> the
+                    system and never seriously checked the assumption the system rests on. The design is sound; the
+                    premise needed a measurement I didn't take. It's the cheapest lesson I've had all year.
+                </p>
 
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Systems design · Moodle · Cisco ISE /
-                            pxGrid · TOTP · RADIUS · FERPA</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Systems design · Moodle / Canvas LTI ·
+                            Cisco ISE pxGrid · TOTP · RADIUS · FERPA</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
                             <a href="https://github.com/suyashh77/WolfAttend" target="_blank" rel="noopener">Full
                                 proposal</a>
@@ -1223,7 +1199,6 @@ Cisco ISE (pxGrid)    →  AP-to-room map, device presence</pre>
                 <div class="head">
                     <span class="num">09</span>
                     <h3>Payment Tracker</h3>
-                    <span class="status">Running nightly</span>
                 </div>
                 <p class="problem">
                     Watches Gmail for payment alerts and logs every transaction to Excel — amount, direction,
@@ -1245,7 +1220,6 @@ Cisco ISE (pxGrid)    →  AP-to-room map, device presence</pre>
                 <div class="head">
                     <span class="num">10</span>
                     <h3>YouTube Notes Taker</h3>
-                    <span class="status">Shipped</span>
                 </div>
                 <p class="problem">
                     Monitors a YouTube playlist, transcribes new videos, and writes structured summaries with takeaways
@@ -1271,7 +1245,6 @@ Cisco ISE (pxGrid)    →  AP-to-room map, device presence</pre>
                 <div class="head">
                     <span class="num">11</span>
                     <h3>Spotify Library Comparator</h3>
-                    <span class="status">Shipped</span>
                 </div>
                 <p class="problem">
                     Compares a Spotify playlist against a local DJ library and auto-generates a catch-up playlist of

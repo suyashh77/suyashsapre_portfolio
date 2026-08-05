@@ -457,7 +457,6 @@
 </head>
 
 <body>
-
     <div class="topbar">
         <div class="wrap">
             <span class="name">Suyash Sapre</span>
@@ -513,20 +512,20 @@
                 group at NC State ISE, from January 2026.
             </p>
 
-            <!-- R1 -->
             <article id="scraper">
                 <div class="head">
                     <span class="num">R1</span>
-                    <h3>Google Maps Review Scraper — NC food access data</h3>
+                    <h3>Google Maps Review Scraper &mdash; NC food access data</h3>
                 </div>
 
-                <p class="problem">
+                <h4>Why</h4>
+                <p class="note">
                     Last semester Teresa Gorton and Dr. Rachunok were working on food desert research at NC State, and I
                     got to help by building a Google Maps scraper. Most food desert research measures access in miles.
-                    They were looking at it through Penchansky &amp; Thomas's five dimensions of access — availability,
-                    accessibility, accommodation, affordability, acceptability — measured through what people actually
-                    write in Google Maps reviews. That approach had been demonstrated for Raleigh; the job was to scale
-                    it to the whole state.
+                    They were looking at it through Penchansky &amp; Thomas's five dimensions of access &mdash;
+                    availability, accessibility, accommodation, affordability, acceptability &mdash; measured through
+                    what people actually write in Google Maps reviews. That approach had been demonstrated for Raleigh;
+                    the job was to scale it to the whole state.
                 </p>
                 <p class="note">
                     We ended up covering nearly <b>5,000 grocery stores across almost 600 NC cities</b>, pulling in over
@@ -538,8 +537,8 @@
                     Two stages. First, resolve a universe of stores: 451,296 Overture Maps POIs down to North Carolina,
                     enriched to Google <code>place_id</code>s, fuzzy-matched and manually reviewed, then filtered from
                     424 raw Google categories down to the 13 that are actually grocery. Second, scrape reviews for the
-                    survivors — headless Playwright on Linux VMs, running continuously, restarting itself on crash and
-                    draining a batch until it's done.
+                    survivors &mdash; headless Playwright on Linux VMs, running continuously, restarting itself on crash
+                    and draining a batch until it's done.
                 </p>
                 <pre>Overture Maps US POIs                     451,296
  └─ NC filter                             16,680
@@ -549,16 +548,11 @@
              └─ Category filter           424 GMaps categories → 13 in, 411 out
                 └─ Closed-store + place_id dedup
                    └─ Review scraping     1,201,237 reviews</pre>
-                <p class="note">
-                    Every dropped store is kept with a machine-readable reason in a 7,497-row exclusion audit, and every
-                    review carries a provenance tag for the batch it came from. A filtered-out store is a research
-                    finding, not a deleted row — without that trail nobody downstream can tell whether a coverage gap is
-                    a real food desert or a scraper failure.
-                </p>
 
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Python · Playwright · SQLite (WAL) ·
-                            Overture Maps · DuckDB · Tkinter · Linux VMs</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &middot; Playwright &middot;
+                            SQLite (WAL) &middot; Overture Maps &middot; DuckDB &middot; Tkinter &middot; Linux VMs</span>
+                    </div>
                     <div class="row"><span class="k">Links</span><span class="v">
                             <a href="https://github.com/suyashh77/gmaps-scraper" target="_blank" rel="noopener">Code
                                 &amp; docs</a>
@@ -575,7 +569,7 @@
                     <h3>GeoMatch</h3>
                 </div>
 
-                <h4>Why I built it</h4>
+                <h4>Why</h4>
                 <p class="note">
                     Working on the scraper, I kept running into the same problem: I had a list of stores from one source
                     and a list from another, and I needed to know which rows were the same real place. They never match
@@ -586,10 +580,10 @@
 "FOOD LION 2410 WADE AVE RALEIGH NC 27607"</pre>
                 <p class="note">
                     One store. Three records. Zero exact matches. A human can see they're the same in a second; a
-                    spreadsheet can't, and I had thousands of them. The existing options either wanted an API key —
-                    meaning the addresses leave your machine, which you can't do with someone else's research data — or
-                    depended on a C library that's painful to install. So I wrote one that runs offline and installs
-                    anywhere.
+                    spreadsheet can't, and I had thousands of them. The existing options either wanted an API key &mdash;
+                    meaning the addresses leave your machine, which you can't do with someone else's research data
+                    &mdash; or depended on a C library that's painful to install. So I wrote one that runs offline and
+                    installs anywhere.
                 </p>
 
                 <h4>How it works</h4>
@@ -598,31 +592,25 @@
                 </p>
                 <ul class="pts">
                     <li><b>Clean up.</b> Lowercase, strip punctuation, and expand the abbreviations the post office uses
-                        — <code>Ave</code> and <code>Avenue</code>, <code>Ste</code> and <code>Suite</code>,
-                        <code>N</code> and <code>North</code> — so both sides speak the same dialect.</li>
-                    <li><b>Take it apart.</b> Split each address into labelled pieces: house number, street name, suffix,
-                        unit, city, state, ZIP, and the business name.</li>
+                        &mdash; <code>Ave</code> and <code>Avenue</code>, <code>Ste</code> and <code>Suite</code>,
+                        <code>N</code> and <code>North</code> &mdash; so both sides speak the same dialect.</li>
+                    <li><b>Take it apart.</b> Split each address into labelled pieces: house number, street name,
+                        suffix, unit, city, state, ZIP, and the business name.</li>
                     <li><b>Check the deal-breakers first.</b> Some things can't disagree. Different ZIP, different house
-                        number, different state? Rejected immediately, no matter how similar the names look — this is the
-                        rule that catches a Dollar General matched to the wrong Dollar General. Matching on all three?
-                        Accepted immediately.</li>
-                    <li><b>Then score what's left.</b> Compare each piece separately — how close are the street names,
-                        the business names, the coordinates — and combine those into one number between 0 and 1 that
-                        means what it says: 0.9 should be right about 90% of the time.</li>
-                    <li><b>Say why.</b> Every pair comes back with a sentence explaining the verdict, like <em>"accepted
-                            by rule: house number + street + ZIP/city all match."</em></li>
+                        number, different state? Rejected immediately, no matter how similar the names look &mdash; this
+                        is the rule that catches a Dollar General matched to the wrong Dollar General. Matching on all
+                        three? Accepted immediately.</li>
+                    <li><b>Then score what's left.</b> Compare each piece separately &mdash; how close are the street
+                        names, the business names, the coordinates &mdash; and combine those into one number between 0
+                        and 1 that means what it says: 0.9 should be right about 90% of the time.</li>
+                    <li><b>Say why.</b> Every pair comes back with a sentence explaining the verdict, like
+                        <em>"accepted by rule: house number + street + ZIP/city all match."</em></li>
                 </ul>
 
-                <h4>The one design decision I'd defend hardest</h4>
-                <p class="note">
-                    It never throws anything away for you. You get every candidate pair with its score, its reasons and
-                    its parsed pieces, and <em>you</em> pick the cutoff. A matcher that silently drops pairs is useless
-                    for research, because the pairs it dropped are exactly the ones you need to check.
-                </p>
-
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Python ≥3.10 · pandas · RapidFuzz ·
-                            scikit-learn · pgeocode · ONNX Runtime · pytest · Apache-2.0</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &ge;3.10 &middot; pandas &middot;
+                            RapidFuzz &middot; scikit-learn &middot; pgeocode &middot; ONNX Runtime &middot; pytest
+                            &middot; Apache-2.0</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
                             <a href="https://github.com/suyashh77/geomatch" target="_blank"
                                 rel="noopener">Repository</a>
@@ -637,20 +625,16 @@
     <section class="group" id="supply-chain">
         <div class="wrap">
             <div class="group-title">Supply Chain</div>
-            <p class="group-note">
-                Different layers of the same system, built one at a time.
-            </p>
 
-            <!-- end-to-end framing -->
             <article id="end-to-end">
                 <div class="head">
                     <span class="num">&rarr;</span>
                     <h3>The end-to-end idea</h3>
                 </div>
                 <p class="problem">
-                    I've been weirdly fascinated by retail supply chains for a while — how they actually work, and how
-                    you'd build the next generation of mathematical models behind resilient, efficient ones. The projects
-                    below are me working through that: learning the math, and learning how it's actually done.
+                    I've been weirdly fascinated by retail supply chains for a while &mdash; how they actually work, and
+                    how you'd build the next generation of mathematical models behind resilient, efficient ones. The
+                    projects below are me working through that: learning the math, and learning how it's actually done.
                 </p>
 
                 <pre>Strategic     Where do facilities go?         →  <a href="#uflp">01</a>  facility location
@@ -662,31 +646,34 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
             <article id="uflp">
                 <div class="head">
                     <span class="num">01</span>
-                    <h3>Facility Location — Greedy-Add Solver</h3>
+                    <h3>Facility Location &mdash; Greedy-Add Solver</h3>
                 </div>
-                <p class="problem">
-                    Where should the warehouses go, and how much does it cost you to get that wrong? An interactive
-                    solver for the Uncapacitated Fixed-Charge Location Problem using the Greedy-Add construction
-                    heuristic — 100 randomly generated US customers with demand, and 1–10 candidate facilities you place
-                    by street address.
-                </p>
-                <p class="callout">
-                    I worked on this class of problem during my co-op rotations at UPL, on real warehouse network
-                    questions. This is not that work — it's the same problem rebuilt from scratch on synthetic data, so
-                    there's something I can actually show.
+
+                <h4>Why</h4>
+                <p class="note">
+                    Where should the warehouses go, and how much does it cost you to get that wrong? I worked on this
+                    class of problem during my co-op rotations at UPL, on real warehouse network questions. This is not
+                    that work &mdash; it's the same problem rebuilt from scratch on synthetic data, so there's something
+                    I can actually show.
                 </p>
 
-                <h4>The hard part</h4>
+                <h4>How it works</h4>
                 <p class="note">
-                    Making the heuristic legible. It renders every iteration as a table — which facility was evaluated,
-                    what it saved, why it won — next to a map of the resulting assignment arcs. The point isn't the
-                    optimum; it's watching a greedy method commit to a facility early and seeing exactly where that costs
-                    you.
+                    It solves the Uncapacitated Fixed-Charge Location Problem with the Greedy-Add construction
+                    heuristic: 100 randomly generated US customers with demand, and 1&ndash;10 candidate facilities you
+                    place by street address. The heuristic opens one facility at a time, each time picking whichever
+                    candidate saves the most, and stops when nothing left saves anything.
+                </p>
+                <p class="note">
+                    The point was making that legible. It renders every iteration as a table &mdash; which facility was
+                    evaluated, what it saved, why it won &mdash; next to a map of the resulting assignment arcs. The
+                    interesting part isn't the optimum; it's watching a greedy method commit to a facility early and
+                    seeing exactly where that costs you.
                 </p>
 
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">React · FastAPI · Leaflet · Tailwind ·
-                            OSM Nominatim</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">React &middot; FastAPI &middot; Leaflet
+                            &middot; Tailwind &middot; OSM Nominatim</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
                             <a href="https://github.com/suyashh77/Supply-Chain-Buddy" target="_blank"
                                 rel="noopener">Repository</a>
@@ -702,57 +689,59 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                     <span class="num">02</span>
                     <h3>Consolidation Centres &amp; Cross-Dock Terminals</h3>
                 </div>
-                <p class="problem">
+
+                <h4>Why</h4>
+                <p class="note">
                     I've always wondered how Lowe's and companies at that scale actually run consolidation centres and
-                    cross-dock terminals — how freight from hundreds of suppliers gets pooled, and how anyone decides
-                    what goes on which truck. It looks like a scheduling problem and a packing problem wearing the same
-                    coat, and I want to build it to find out where the real difficulty lives.
+                    cross-dock terminals &mdash; how freight from hundreds of suppliers gets pooled, and how anyone
+                    decides what goes on which truck. It looks like a scheduling problem and a packing problem wearing
+                    the same coat, and I want to build it to find out where the real difficulty lives.
                 </p>
-
-                <h4>The math I want to get to</h4>
-                <ul class="pts">
-                    <li>Cross-docking is a truck-to-door assignment problem with time windows — inbound trailers to strip
-                        doors, outbound to stack doors, and a transfer cost between every pair. Get the door layout wrong
-                        and the forklift travel eats the savings.</li>
-                    <li>Load building underneath it is a bin-packing problem with real constraints: trailer cube, weight,
-                        stackability, and delivery sequence, since what goes in last comes out first.</li>
-                    <li>And on top, a timing decision — hold freight one more day for a fuller truck, or ship it now.
-                        That's where the model stops being combinatorial and starts being economic.</li>
-                </ul>
-
-                <h4>The questions I want to answer</h4>
                 <ul class="pts">
                     <li>When is it worth holding freight to build a fuller truck, and what does that deferral cost
                         downstream in service?</li>
                     <li>How do you assign inbound loads to outbound doors and departure windows when both dock capacity
                         and trailer cube are binding?</li>
-                    <li>Where does a consolidation centre stop paying for itself — at what volume, distance, and supplier
-                        fragmentation does direct-ship win?</li>
+                    <li>Where does a consolidation centre stop paying for itself &mdash; at what volume, distance, and
+                        supplier fragmentation does direct-ship win?</li>
                 </ul>
-                <p class="fine">
-                    Nothing built yet. This is the next one I want to work on, and it's the missing middle of the stack
-                    at the top of this section.
+
+                <h4>How it works</h4>
+                <p class="note">
+                    Nothing built yet, so this is the math I'm heading for rather than a description of running code.
                 </p>
+                <ul class="pts">
+                    <li>Cross-docking is a truck-to-door assignment problem with time windows &mdash; inbound trailers
+                        to strip doors, outbound to stack doors, and a transfer cost between every pair. Get the door
+                        layout wrong and the forklift travel eats the savings.</li>
+                    <li>Load building underneath it is a bin-packing problem with real constraints: trailer cube,
+                        weight, stackability, and delivery sequence, since what goes in last comes out first.</li>
+                    <li>And on top, a timing decision &mdash; hold freight one more day for a fuller truck, or ship it
+                        now. That's where the model stops being combinatorial and starts being economic.</li>
+                </ul>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
             <article id="routing">
                 <div class="head">
                     <span class="num">03</span>
-                    <h3>Routing — TSP &amp; VRP Solvers</h3>
+                    <h3>Routing &mdash; TSP &amp; VRP Solvers</h3>
                 </div>
-                <p class="problem">
-                    The truck is loaded. Now what order does it visit the stops in, and how many trucks do you need? This
-                    is the operational layer of the stack above — the travelling salesman problem, then the vehicle
-                    routing problem that generalises it once capacity, time windows and multiple vehicles come in.
+
+                <h4>Why</h4>
+                <p class="note">
+                    The truck is loaded. Now what order does it visit the stops in, and how many trucks do you need?
+                    This is the operational layer of the stack above &mdash; the travelling salesman problem, then the
+                    vehicle routing problem that generalises it once capacity, time windows and multiple vehicles come
+                    in.
                 </p>
 
-                <h4>What I want to build</h4>
+                <h4>How it works</h4>
                 <ul class="pts">
-                    <li>Exact and heuristic solvers side by side, so you can watch where an exact formulation stops being
-                        tractable and a heuristic has to take over.</li>
-                    <li>The classic constructions and improvements — nearest neighbour, savings, 2-opt and Or-opt — with
-                        every intermediate tour visible rather than just the final answer.</li>
+                    <li>Exact and heuristic solvers side by side, so you can watch where an exact formulation stops
+                        being tractable and a heuristic has to take over.</li>
+                    <li>The classic constructions and improvements &mdash; nearest neighbour, savings, 2-opt and Or-opt
+                        &mdash; with every intermediate tour visible rather than just the final answer.</li>
                     <li>Then the constraints that make it a real problem instead of a textbook one: capacity, time
                         windows, and a driver's hours.</li>
                 </ul>
@@ -768,28 +757,30 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                     <h3>Return Routing Optimisation</h3>
                 </div>
 
-                <p class="problem">
-                    I returned a North Face jacket. It was unworn — wrong size, sent back within a few days — and it
-                    still got shipped across the country to a facility so somebody could open the box and decide it was
-                    resellable. Everything needed to make that call was knowable before the box moved. That's the whole
-                    project: <em>decide where a return goes before it ships, not after.</em>
+                <h4>Why</h4>
+                <p class="note">
+                    I returned a North Face jacket. It was unworn &mdash; wrong size, sent back within a few days
+                    &mdash; and it still got shipped across the country to a facility so somebody could open the box and
+                    decide it was resellable. Everything needed to make that call was knowable before the box moved.
                 </p>
                 <p class="note">
-                    Most retailers route every return to a central warehouse, inspect it there, and only then decide what
-                    to do with it. Deciding after the item has already travelled wastes the shipping and lets value
-                    decay; the industry loses an estimated 10–20% of a product's value this way. This system decides the
-                    destination at the moment the return label is generated, using the expected recovery value of each
-                    possible route across a capacitated network.
+                    Most retailers route every return to a central warehouse, inspect it there, and only then decide
+                    what to do with it. Deciding after the item has already travelled wastes the shipping and lets value
+                    decay; the industry loses an estimated 10&ndash;20% of a product's value this way. So: decide where
+                    a return goes <em>before</em> it ships, not after.
                 </p>
 
                 <h4>How it works</h4>
+                <p class="note">
+                    Three layers, fired at the moment the return label is generated.
+                </p>
                 <ul class="pts">
-                    <li><b>L1</b> — predicts a probability distribution over the item's condition from label-time
+                    <li><b>L1</b> &mdash; predicts a probability distribution over the item's condition from label-time
                         features only.</li>
-                    <li><b>L2</b> — prices every route in expected dollars:
+                    <li><b>L2</b> &mdash; prices every route in expected dollars:
                         <code>EV(j) = Σₖ P(k) × [R(j,k) − T(j) − P(j,k)]</code></li>
-                    <li><b>L3</b> — an integer program assigns the whole day's returns under every facility's capacity
-                        limit.</li>
+                    <li><b>L3</b> &mdash; an integer program assigns the whole day's returns under every facility's
+                        capacity limit.</li>
                 </ul>
 
                 <h4>Results</h4>
@@ -805,31 +796,31 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                         </thead>
                         <tbody>
                             <tr>
-                                <td>P0 — centralised (strawman)</td>
+                                <td>P0 &mdash; centralised (strawman)</td>
                                 <td>$39.46</td>
                                 <td>$15.07</td>
                                 <td>0%</td>
                             </tr>
                             <tr>
-                                <td>PNEAR — nearest DC (baseline)</td>
+                                <td>PNEAR &mdash; nearest DC (baseline)</td>
                                 <td>$40.46</td>
                                 <td>$13.63</td>
                                 <td>0%</td>
                             </tr>
                             <tr>
-                                <td>P1 — EV routing, mail only</td>
+                                <td>P1 &mdash; EV routing, mail only</td>
                                 <td>$41.57</td>
                                 <td>$11.70</td>
                                 <td>0%</td>
                             </tr>
                             <tr class="hl">
-                                <td>P2 — EV routing + free in-store</td>
+                                <td>P2 &mdash; EV routing + free in-store</td>
                                 <td>$45.66</td>
                                 <td>$9.70</td>
                                 <td>29.4%</td>
                             </tr>
                             <tr class="oracle">
-                                <td>Oracle — perfect condition info</td>
+                                <td>Oracle &mdash; perfect condition info</td>
                                 <td>$46.75</td>
                                 <td>$8.10</td>
                                 <td>30.7%</td>
@@ -838,41 +829,35 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                     </table>
                 </div>
                 <p class="note">
-                    <b>+$5.20 recovered per return</b> over the credible baseline — about <b>$520,000/year</b> at 100,000
-                    returns. Paired over the same returns: 95% bootstrap CI <b>[+$4.92, +$5.48]</b>, <b>t = 36.3</b>,
-                    Cohen's <b>d = 0.57</b>, with 61.9% of returns routed differently. Using label-time features alone,
-                    it captures <b>83%</b> of the value a perfect-information router would achieve.
-                </p>
-
-                <h4>The part worth volunteering before you're asked</h4>
-                <p class="note">
-                    Most of that is not the machine learning. The Layer-1 quality sweep doubles as a decomposition: at
-                    <code>skill = 0</code> the classifier is switched off entirely and every return gets the population
-                    base rate, so whatever survives is earned by the channel change and the optimiser alone.
-                    <b>Free in-store returns plus capacity-aware routing account for +$4.68 — 90% of the uplift. The
-                        trained condition classifier accounts for +$0.51 — 10%.</b>
+                    <b>+$5.20 recovered per return</b> over the credible baseline &mdash; about <b>$520,000/year</b> at
+                    100,000 returns. Paired over the same returns: 95% bootstrap CI <b>[+$4.92, +$5.48]</b>,
+                    <b>t = 36.3</b>, Cohen's <b>d = 0.57</b>, with 61.9% of returns routed differently. Using label-time
+                    features alone, it captures <b>83%</b> of the value a perfect-information router would achieve.
                 </p>
                 <p class="note">
-                    Most of the money is a policy change and an assignment problem. Leading with the classifier because
-                    it is the most technically interesting part would be the easiest and least honest thing to do with
-                    these results. It also sharpens the roadmap: of the value attributable to condition
-                    <em>information</em> at all, the model captures 34% — the rest needs better data, not a better model,
-                    which is the case for capturing customer photos at return initiation (~$98k/year at the same volume).
+                    Most of that is not the machine learning, and it's worth saying so before anyone asks. The Layer-1
+                    quality sweep doubles as a decomposition: at <code>skill = 0</code> the classifier is switched off
+                    entirely and every return gets the population base rate, so whatever survives is earned by the
+                    channel change and the optimiser alone. <b>Free in-store returns plus capacity-aware routing account
+                        for +$4.68 &mdash; 90% of the uplift. The trained condition classifier accounts for +$0.51
+                        &mdash; 10%.</b> Most of the money is a policy change and an assignment problem.
                 </p>
                 <p class="note">
-                    The second output is a capacity plan. The dual on each capacity constraint says what one more unit of
-                    daily throughput at that node is worth, which turns a router into a where-to-invest recommendation.
+                    The second output is a capacity plan. The dual on each capacity constraint says what one more unit
+                    of daily throughput at that node is worth, which turns a router into a where-to-invest
+                    recommendation.
                 </p>
                 <p class="fine">
-                    The North Face anecdote is motivation only — it contributed no data. The network, capacities,
+                    The North Face anecdote is motivation only &mdash; it contributed no data. The network, capacities,
                     recovery rates, costs, and the returns themselves are synthetic; parameter ranges are anchored to
                     published industry figures, and no value is claimed to be measured from any real company. Every
                     figure above is scored against the item's <em>true</em> condition, which no model ever saw.
                 </p>
 
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Python · PuLP (ILP) · scikit-learn ·
-                            multinomial logistic · bootstrap inference · LP duality · Monte Carlo</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &middot; PuLP (ILP) &middot;
+                            scikit-learn &middot; multinomial logistic &middot; bootstrap inference &middot; LP duality
+                            &middot; Monte Carlo</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">Repository and full write-up going
                             public shortly.</span></div>
                 </div>
@@ -884,35 +869,38 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                     <span class="num">05</span>
                     <h3>Supply Chain Risk Intelligence</h3>
                 </div>
-                <p class="problem">
-                    Converts real-time news into structured risk indices and alerts so supply chain leaders can
-                    anticipate disruptions instead of reacting to them. Multi-source ingestion via NewsAPI, NLP + GPT
-                    risk scoring, corridor and port indices, executive heatmaps, and export to CSV / PDF / Power BI.
+
+                <h4>Why</h4>
+                <p class="note">
+                    Disruptions show up in the news days before they show up in anyone's numbers. I wanted to see
+                    whether that gap could be turned into a usable signal &mdash; something that tells a supply chain
+                    team to look at a corridor or a port <em>before</em> the shipment is already late.
                 </p>
 
-                <h4>Why it's getting rebuilt</h4>
+                <h4>How it works</h4>
                 <p class="note">
-                    The scoring layer is an LLM asked to rate a headline, which is not a risk model — no calibration, no
-                    base rate, no way for it to be wrong in a measurable direction. The version that exists is a
-                    convincing demo of the wrong thing.
+                    Multi-source news ingestion via NewsAPI, NLP and GPT risk scoring, corridor and port risk indices,
+                    executive heatmaps, and export to CSV, PDF or Power BI.
                 </p>
                 <p class="note">
-                    The rebuild replaces it with event extraction against a defined taxonomy plus an explicit exposure
-                    map, so an index number traces back to a named supply node rather than to a vibe — and so the whole
-                    thing can be scored against disruptions that actually happened. This is the next one I'm working on.
+                    I'm rebuilding it, because the scoring layer is an LLM asked to rate a headline, and that is not a
+                    risk model &mdash; no calibration, no base rate, no way for it to be wrong in a measurable
+                    direction. The rebuild replaces it with event extraction against a defined taxonomy plus an explicit
+                    exposure map, so an index number traces back to a named supply node rather than to a vibe, and the
+                    whole thing can be scored against disruptions that actually happened.
                 </p>
 
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Python · GPT · NLP · NewsAPI ·
-                            Streamlit</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &middot; GPT &middot; NLP
+                            &middot; NewsAPI &middot; Streamlit</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
                             <a href="https://github.com/suyashh77/Supply-Chain-Intelligence-Plaform" target="_blank"
-                                rel="noopener">Current version</a>
+                                rel="noopener">Repository</a>
                         </span></div>
                 </div>
 
                 <details>
-                    <summary>Demo video of the current version</summary>
+                    <summary>Demo video</summary>
                     <div class="video">
                         <iframe src="https://drive.google.com/file/d/18RALz-VznoIOipr43YpK6iHLwOuntwRp/preview"
                             title="Supply Chain Risk Intelligence demo" allow="autoplay; encrypted-media" allowfullscreen
@@ -927,23 +915,29 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                     <span class="num">06</span>
                     <h3>Commodity Stockout Risk Platform</h3>
                 </div>
-                <p class="problem">
-                    Uses financial market signals as a proxy for stockout risk — live OHLCV from Yahoo Finance, technical
-                    indicators (ATR, RSI, MACD), a unified 0–1 risk index, a Random Forest shock predictor, and
-                    GPT-generated summaries.
+
+                <h4>Why</h4>
+                <p class="note">
+                    Commodity markets price scarcity for a living. If a raw material is about to get tight, the futures
+                    curve tends to know before a planner does &mdash; so I wanted to see how far you could get using
+                    market data as an early proxy for stockout risk.
                 </p>
 
-                <h4>Why it's being reworked</h4>
+                <h4>How it works</h4>
                 <p class="note">
-                    The premise is both the interesting part and the weak part: commodity price volatility is a
-                    <em>leading</em> signal for some disruptions and a <em>lagging</em> one for others, and this version
-                    doesn't distinguish. Until the index is validated against actual stockout events rather than price
-                    moves, it's a market dashboard wearing a supply chain label.
+                    Live OHLCV from Yahoo Finance, technical indicators (ATR, RSI, MACD), a unified 0&ndash;1 risk
+                    index, a Random Forest shock predictor, and GPT-generated summaries on top.
+                </p>
+                <p class="note">
+                    It's being reworked, because the premise is both the interesting part and the weak part: commodity
+                    price volatility is a <em>leading</em> signal for some disruptions and a <em>lagging</em> one for
+                    others, and this version doesn't distinguish. Until the index is validated against actual stockout
+                    events rather than price moves, it's a market dashboard wearing a supply chain label.
                 </p>
 
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Python · Random Forest · Yahoo Finance ·
-                            Streamlit</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &middot; Random Forest &middot;
+                            Yahoo Finance &middot; Streamlit</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
                             <a href="https://github.com/suyashh77/Commodity-Stockout-Risk-Platform" target="_blank"
                                 rel="noopener">Repository</a>
@@ -966,77 +960,70 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                     <span class="num">07</span>
                     <h3>PolicyPulse</h3>
                 </div>
-                <p class="problem">
-                    A multi-agent consumer simulation for pre-launch retail policy validation, built as the companion to
-                    the return routing system above. The optimiser says what to do economically; PolicyPulse asks the
-                    question an EV calculator structurally cannot — <em>will consumers actually accept it?</em> A policy
-                    that is financially optimal but behaviourally unacceptable drives churn and backlash that never shows
-                    up in the objective function.
-                </p>
 
-                <h4>The hard part</h4>
+                <h4>Why</h4>
                 <p class="note">
-                    The claim being tested is that emergent group dynamics — the pile-on, the counter-narrative, the
-                    influencer amplification — are fundamentally different from the sum of individual stated preferences.
-                    Focus groups and surveys capture the latter. So the simulation has to be capable of producing
-                    cascades rather than averages, which means agents need persistent memory and a feed algorithm, not
-                    just a good prompt.
+                    The return routing optimiser says what to do economically. It structurally cannot answer the other
+                    question: <em>will customers accept it?</em> A policy that is financially optimal but behaviourally
+                    unacceptable drives churn and backlash that never shows up in the objective function. Focus groups
+                    and surveys capture what people say individually; they don't capture the pile-on, the
+                    counter-narrative, or the influencer amplification, which is where the damage actually comes from.
                 </p>
 
+                <h4>How it works</h4>
                 <ul class="pts">
                     <li>Takes a proposed policy change, generates <b>500 agents</b> across five retail personas, and
                         simulates <b>45 days</b> of reaction.</li>
+                    <li>Agents get persistent memory and a feed algorithm rather than just a prompt, because a
+                        simulation has to be capable of producing cascades rather than averages.</li>
                     <li>Outputs a sentiment trajectory, churn probability by segment, cascade detection, fee-threshold
                         comparison across runs, and an agent interview explaining individual decisions.</li>
-                    <li>Built on MiroFish / OASIS (CAMEL-AI), with a Neo4j knowledge graph for brand ↔ policy ↔ segment ↔
-                        competitor relationships and Zep Cloud for per-agent persistent memory.</li>
+                    <li>Built on MiroFish / OASIS (CAMEL-AI), with a Neo4j knowledge graph for brand &harr; policy
+                        &harr; segment &harr; competitor relationships and Zep Cloud for per-agent memory.</li>
                 </ul>
+                <p class="fine">
+                    Spec and simulation core are written; the report layer and validation runs are what's left. This is
+                    the one I'm finishing last, and there are no results to claim yet.
+                </p>
 
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Claude Sonnet · OASIS / MiroFish ·
-                            Neo4j · Zep Cloud · FastAPI · Streamlit · PRAW · Ollama (Qwen2.5-32B) fallback</span></div>
-                    <div class="row"><span class="k">Status</span><span class="v">Spec and simulation core are written;
-                            the report layer and validation runs are what's left. No results yet, and none
-                            claimed.</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Claude Sonnet &middot; OASIS / MiroFish
+                            &middot; Neo4j &middot; Zep Cloud &middot; FastAPI &middot; Streamlit &middot; PRAW &middot;
+                            Ollama (Qwen2.5-32B) fallback</span></div>
                 </div>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
         </div>
     </section>
 
-    <!-- ==================== PROJECTS ==================== -->
+    <!-- ==================== OTHER FUN PROJECTS ==================== -->
     <section class="group" id="projects">
         <div class="wrap">
             <div class="group-title">Other fun projects</div>
-            <p class="group-note">
-                Built because I wanted them to exist.
-            </p>
 
-            <!-- 07 -->
             <article id="garmin-wrapped">
                 <div class="head">
                     <span class="num">08</span>
                     <h3>Garmin Wrapped</h3>
                 </div>
-                <p class="problem">
-                    Turning roughly 500,000 data points from a Garmin watch into a personalised annual health story.
-                    Every year friends post their Spotify Wrapped; Garmin shows me records and a step-count bar chart —
-                    no story, no curation. So I built the narrative layer.
-                </p>
 
-                <h4>The hard part</h4>
+                <h4>Why</h4>
                 <p class="note">
-                    Not computing insights — <em>rejecting</em> them. Rather than showing everything (a dashboard), it
-                    answers one question: what are the most interesting things your data revealed this year? Every
-                    candidate insight passes two gates before it reaches you — is there enough data to make this claim
-                    reliably, and is this fact actually worth one of your ten slides? The survivors are then ordered into
-                    a Freytag dramatic arc rather than by score.
+                    Every year friends post their Spotify Wrapped; Garmin shows me records and a step-count bar chart
+                    &mdash; no story, no curation. So I built the narrative layer.
                 </p>
 
+                <h4>How it works</h4>
+                <p class="note">
+                    Rather than showing everything (a dashboard), it answers one question: what are the most interesting
+                    things your data revealed this year? Every candidate insight passes two gates before it reaches you
+                    &mdash; is there enough data to make this claim reliably, and is this fact actually worth one of
+                    your ten slides? The survivors are then ordered into a Freytag dramatic arc rather than by score.
+                </p>
                 <ul class="pts">
                     <li>Prophet-based decomposition for genuine anomaly detection, not "low step day".</li>
-                    <li>Granger-gated cross-metric insights — sleep vs. next-day activity, tested before it's claimed.
-                    </li>
+                    <li>Granger-gated cross-metric insights &mdash; sleep vs. next-day activity, tested before it's
+                        claimed.</li>
                     <li>Population comparisons anchored in peer-reviewed epidemiological studies; personality archetypes
                         like Weekend Warrior, Steady Pacer, Cool Engine.</li>
                     <li>gpt-4o for climax slides, gpt-4o-mini for context slides, template fallback when there's no API
@@ -1044,8 +1031,8 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                 </ul>
 
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Python · SQLite · Prophet · Granger
-                            causality · Streamlit · gpt-4o</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &middot; SQLite &middot; Prophet
+                            &middot; Granger causality &middot; Streamlit &middot; gpt-4o</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
                             <a href="https://github.com/suyashh77/Garmin_Wrapped" target="_blank"
                                 rel="noopener">Repository</a>
@@ -1082,13 +1069,13 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                     <h3>WolfAttend</h3>
                 </div>
 
-                <h4>Why I built it</h4>
+                <h4>Why</h4>
                 <p class="note">
-                    A professor and I kept coming back to the same complaint: taking attendance in a big lecture makes
-                    you choose between speed and honesty. Calling names burns ten minutes. Passing a sheet around means
-                    people sign for friends. Putting a code on the projector means it gets texted to whoever's still in
-                    bed. Every option is either slow or easy to cheat. We figured there had to be a better way, so I
-                    designed one and emailed it to the university.
+                    A professor and I were talking and we kept coming back to the same complaint: taking attendance in a
+                    big lecture makes you choose between speed and honesty. Calling names burns ten minutes. Passing a
+                    sheet around means people sign for friends. Putting a code on the projector means it gets texted to
+                    whoever's still in bed. Every option is either slow or easy to cheat. We figured there had to be a
+                    better way, so I designed one and emailed it to the university.
                 </p>
 
                 <h4>How it works</h4>
@@ -1105,10 +1092,10 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                 </ul>
                 <p class="note">
                     Together they close both holes: the code proves you're there <em>now</em>, the network proves you're
-                    there <em>physically</em>. It checks every device a student has registered, so leaving your laptop at
-                    home doesn't count against you, and the output is only ever <b>present</b> or <b>flagged for
-                        review</b> — it never marks anyone absent automatically. It lives inside the LMS, so there's
-                    nothing new to buy and nothing new for students to install.
+                    there <em>physically</em>. It checks every device a student has registered, so leaving your laptop
+                    at home doesn't count against you, and the output is only ever <b>present</b> or <b>flagged for
+                        review</b> &mdash; it never marks anyone absent automatically. It lives inside the LMS, so
+                    there's nothing new to buy and nothing new for students to install.
                 </p>
 
                 <pre>LMS (Moodle → Canvas)  →  session start, code issue, roster write-back
@@ -1117,27 +1104,25 @@ Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
 
                 <h4>What happened</h4>
                 <p class="note">
-                    I wrote up the full design and deployment plan and sent it to NC State's IT leadership. They took it
-                    seriously, agreed secure attendance is a real problem, had a developer review it — and turned it
-                    down, for two reasons worth repeating.
+                    I wrote up the full design and deployment plan and sent it to NC State's IT leadership, for funzies.
+                    They agreed secure attendance is a real problem, had a developer review it &mdash; and turned it
+                    down. NC State is migrating from Moodle to Canvas over the next two years, so there's no appetite
+                    for building anything new on Moodle, and they're already looking at secure attendance options for
+                    Canvas.
                 </p>
-                <ul class="pts">
-                    <li>NC State is migrating from Moodle to Canvas over the next two years, so there's no appetite for
-                        building anything new on Moodle. They're already looking at secure attendance options for Canvas.
-                    </li>
-                    <li>The one that actually matters: their developer pointed out that students mostly use cell data
-                        rather than campus WiFi. My whole presence signal assumes they're on the campus network. If
-                        they're not, the second factor doesn't exist.</li>
-                </ul>
                 <p class="note">
-                    That second point is the useful part. I'd threat-modelled the ways someone could <em>beat</em> the
-                    system and never seriously checked the assumption the system rests on. The design is sound; the
-                    premise needed a measurement I didn't take. It's the cheapest lesson I've had all year.
+                    The one that actually matters: their developer pointed out that students mostly use cell data rather
+                    than campus WiFi. My whole presence signal assumes they're on the campus network. If they're not,
+                    the second factor doesn't exist.
+                </p>
+                <p class="note">
+                    We went back and forth on BLE signals and such, but this one seems like a problem I don't have the
+                    skills to solve with Claude Code.
                 </p>
 
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Systems design · Moodle / Canvas LTI ·
-                            Cisco ISE pxGrid · TOTP · RADIUS · FERPA</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Systems design &middot; Moodle / Canvas
+                            LTI &middot; Cisco ISE pxGrid &middot; TOTP &middot; RADIUS &middot; FERPA</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
                             <a href="https://github.com/suyashh77/WolfAttend" target="_blank" rel="noopener">Full
                                 proposal</a>
@@ -1145,7 +1130,6 @@ Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
                 </div>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
-
         </div>
     </section>
 
@@ -1153,27 +1137,30 @@ Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
     <section class="group" id="tools">
         <div class="wrap">
             <div class="group-title">Tools</div>
-            <p class="group-note">
-                Automation I actually use. Each one exists because I was doing something by hand more than once.
-            </p>
 
-            <!-- 09 -->
             <article id="payment-tracker">
                 <div class="head">
                     <span class="num">10</span>
                     <h3>Payment Tracker</h3>
                 </div>
-                <p class="problem">
-                    Watches Gmail for payment alerts and logs every transaction to Excel — amount, direction,
-                    counterparty, method, card last-4, memo.
-                </p>
+
+                <h4>Why</h4>
                 <p class="note">
-                    Each provider is a drop-in parser plugin rather than another branch in one function, so adding a bank
-                    means adding a file. Deduplicates on message ID; runs at 11pm via Task Scheduler.
+                    I wanted to know where my money actually went without typing anything into a spreadsheet, and every
+                    payment I make already sends me an email about it.
                 </p>
+
+                <h4>How it works</h4>
+                <p class="note">
+                    It watches Gmail for payment alerts and logs every transaction to Excel &mdash; amount, direction,
+                    counterparty, method, card last-4, memo. Each provider is a drop-in parser plugin rather than
+                    another branch in one function, so adding a bank means adding a file. It deduplicates on message ID
+                    and runs at 11pm via Task Scheduler.
+                </p>
+
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Python · Gmail API · OAuth2 ·
-                            openpyxl</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &middot; Gmail API &middot;
+                            OAuth2 &middot; openpyxl</span></div>
                 </div>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
@@ -1183,17 +1170,24 @@ Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
                     <span class="num">11</span>
                     <h3>YouTube Notes Taker</h3>
                 </div>
-                <p class="problem">
-                    Monitors a YouTube playlist, transcribes new videos, and writes structured summaries with takeaways
-                    and action items on a daily schedule.
-                </p>
+
+                <h4>Why</h4>
                 <p class="note">
-                    Prefers free YouTube captions and only falls back to Whisper when they're missing; idempotent and
-                    fault-tolerant, with per-run API cost tracked to a spreadsheet.
+                    I save far more talks and lectures to a watch-later playlist than I will ever actually watch. I
+                    wanted the takeaways without the two hours.
                 </p>
+
+                <h4>How it works</h4>
+                <p class="note">
+                    It monitors a playlist, transcribes anything new, and writes a structured summary with takeaways and
+                    action items on a daily schedule. It prefers the free YouTube captions and only falls back to
+                    Whisper when they're missing; it's idempotent and fault-tolerant, and it tracks per-run API cost to
+                    a spreadsheet so I can see what the habit costs.
+                </p>
+
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Python · yt-dlp · Whisper ·
-                            OpenAI</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &middot; yt-dlp &middot; Whisper
+                            &middot; OpenAI</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
                             <a href="https://github.com/suyashh77/youtube-notes-taker" target="_blank"
                                 rel="noopener">Repository</a>
@@ -1207,17 +1201,23 @@ Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
                     <span class="num">12</span>
                     <h3>Spotify Library Comparator</h3>
                 </div>
-                <p class="problem">
-                    Compares a Spotify playlist against a local DJ library and auto-generates a catch-up playlist of
-                    everything missing.
-                </p>
+
+                <h4>Why</h4>
                 <p class="note">
-                    Filenames never match streaming metadata cleanly, so matching is RapidFuzz over normalised
-                    artist–title pairs rather than string equality.
+                    I DJ off a local music library, but I find new tracks on Spotify. Working out which ones I hadn't
+                    downloaded yet meant scrolling two lists side by side.
                 </p>
+
+                <h4>How it works</h4>
+                <p class="note">
+                    It compares a Spotify playlist against the local folder and auto-generates a catch-up playlist of
+                    everything missing. Filenames never match streaming metadata cleanly, so matching is fuzzy
+                    &mdash; RapidFuzz over normalised artist&ndash;title pairs rather than string equality.
+                </p>
+
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Python · Spotify API · OAuth ·
-                            RapidFuzz</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &middot; Spotify API &middot;
+                            OAuth &middot; RapidFuzz</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
                             <a href="https://github.com/suyashh77/spotify_comparer" target="_blank"
                                 rel="noopener">Repository</a>
@@ -1239,7 +1239,7 @@ Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
 
     <footer>
         <div class="wrap">
-            <span>© 2026 Suyash Sapre</span>
+            <span>&copy; 2026 Suyash Sapre</span>
             <span class="sp"></span>
             <a href="https://github.com/suyashh77" target="_blank" rel="noopener">GitHub</a>
             <a href="https://www.linkedin.com/in/suyash-sapre-2566631b9" target="_blank" rel="noopener">LinkedIn</a>

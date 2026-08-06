@@ -646,37 +646,68 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
             <article id="uflp">
                 <div class="head">
                     <span class="num">01</span>
-                    <h3>Facility Location &mdash; Greedy-Add Solver</h3>
+                    <h3>Facility Location</h3>
                 </div>
 
                 <h4>Why</h4>
                 <p class="note">
-                    Where should the warehouses go, and how much does it cost you to get that wrong? I worked on this
-                    class of problem during my co-op rotations at UPL, on real warehouse network questions. This is not
-                    that work &mdash; it's the same problem rebuilt from scratch on synthetic data, so there's something
-                    I can actually show.
+                    At UPL I got to work on redesigning our 3PL warehouse network strategy &mdash; SKU placement across
+                    warehouses, import port allocation, and inventory positioning against seasonal demand. I did
+                    something similar in school, where our project advised the City of Goldsboro on fire station siting:
+                    8 candidate sites, 2,724 demand points, drive-time and drive-distance matrices, and a hard
+                    4-minute first-truck response standard.
+                </p>
+                <p class="note">
+                    The big takeaway is that <b>"optimal" is a function of which objective you picked.</b> Goldsboro's
+                    answer changes depending on whether you minimise total distance, minimise the worst-case response,
+                    or maximise the population covered inside 4 minutes. Same 8 candidates, different stations open.
+                    That's the whole point of this project.
                 </p>
 
                 <h4>How it works</h4>
                 <p class="note">
-                    It solves the Uncapacitated Fixed-Charge Location Problem with the Greedy-Add construction
-                    heuristic: 100 randomly generated US customers with demand, and 1&ndash;10 candidate facilities you
-                    place by street address. The heuristic opens one facility at a time, each time picking whichever
-                    candidate saves the most, and stops when nothing left saves anything.
+                    Four families of model over the same candidate set, so the answers can be put side by side.
                 </p>
-                <p class="note">
-                    The point was making that legible. It renders every iteration as a table &mdash; which facility was
-                    evaluated, what it saved, why it won &mdash; next to a map of the resulting assignment arcs. The
-                    interesting part isn't the optimum; it's watching a greedy method commit to a facility early and
-                    seeing exactly where that costs you.
-                </p>
+                <p class="note"><b>Cost-minimising</b></p>
+                <ul class="pts">
+                    <li><b>UFLP</b> &mdash; uncapacitated fixed-charge location, exact ILP (PuLP/CBC). Minimise fixed
+                        cost plus total transport cost.</li>
+                    <li><b>CFLP</b> &mdash; adds capacity constraints per facility. Surfaces the <em>capacity
+                            premium</em>: the extra distance overflow demand has to travel once a facility's cap binds.
+                        Sweeps capacity levels to show where it starts to hurt and where it goes infeasible.</li>
+                    <li><b>p-median</b> &mdash; fix the facility count, minimise total weighted distance.</li>
+                </ul>
+                <p class="note"><b>Coverage-driven</b></p>
+                <ul class="pts">
+                    <li><b>LSCP</b> &mdash; minimum facilities to cover every demand point within threshold T.</li>
+                    <li><b>MCLP</b> &mdash; fix the budget, maximise demand covered within T. Reports the coverage
+                        neighbourhood distribution |N&#7522;(T)| so you can see which points only one facility can reach
+                        &mdash; those are the fragile ones.</li>
+                    <li><b>p-center</b> &mdash; minimax. Minimise the worst-case distance any customer travels. Reports
+                        the theoretical lower bound max&#7522; min&#11388; d&#7522;&#11388; and flags when the solution
+                        hits it, so you know it's provably optimal rather than just solver-optimal.</li>
+                </ul>
+                <p class="note"><b>Heuristic</b></p>
+                <ul class="pts">
+                    <li><b>Greedy-Add</b> &mdash; opens one facility at a time, each time picking whichever candidate
+                        saves the most, and stops when nothing saves anything.</li>
+                    <li><b>Greedy-Drop</b> &mdash; starts with everything open, closes the least useful.</li>
+                    <li>Both benchmarked against the exact ILP: gap and runtime, side by side.</li>
+                </ul>
+                <p class="note"><b>Multi-objective</b></p>
+                <ul class="pts">
+                    <li><b>Weighted-sum</b> &mdash; normalise distance and time to [0,1], sweep w from 0 to 1, trace the
+                        Pareto frontier. Flags the exact weights where the open-facility set flips.</li>
+                    <li><b>&epsilon;-constraint</b> &mdash; minimise time subject to total distance &le; &epsilon;.
+                        Gives the complete frontier rather than just the supported points.</li>
+                </ul>
 
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">React &middot; FastAPI &middot; Leaflet
-                            &middot; Tailwind &middot; OSM Nominatim</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &middot; PuLP / CBC &middot;
+                            pandas &middot; React &middot; FastAPI &middot; Leaflet &middot; OSM Nominatim</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
                             <a href="https://github.com/suyashh77/Supply-Chain-Buddy" target="_blank"
-                                rel="noopener">Repository</a>
+                                rel="noopener">Greedy-Add solver</a>
                             <a href="https://github.com/suyashh77/supply-chain-simulator" target="_blank"
                                 rel="noopener">Simulator</a>
                         </span></div>
@@ -732,22 +763,62 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                 <p class="note">
                     The truck is loaded. Now what order does it visit the stops in, and how many trucks do you need?
                     This is the operational layer of the stack above &mdash; the travelling salesman problem, then the
-                    vehicle routing problem that generalises it once capacity, time windows and multiple vehicles come
-                    in.
+                    vehicle routing problem that generalises it once capacity and multiple vehicles come in. I wanted
+                    to find out for myself where exact solving stops being worth the wait.
                 </p>
 
                 <h4>How it works</h4>
-                <ul class="pts">
-                    <li>Exact and heuristic solvers side by side, so you can watch where an exact formulation stops
-                        being tractable and a heuristic has to take over.</li>
-                    <li>The classic constructions and improvements &mdash; nearest neighbour, savings, 2-opt and Or-opt
-                        &mdash; with every intermediate tour visible rather than just the final answer.</li>
-                    <li>Then the constraints that make it a real problem instead of a textbook one: capacity, time
-                        windows, and a driver's hours.</li>
-                </ul>
-                <p class="fine">
-                    Solver code is written; the write-up and the interactive version are not. Both are coming.
+                <p class="note">
+                    Three layers, run on the same instances so the answers are comparable.
                 </p>
+                <ul class="pts">
+                    <li><b>Construction</b> &mdash; nearest neighbour, nearest insertion, Clarke-Wright savings, sweep.
+                        Fast, no guarantees.</li>
+                    <li><b>Improvement</b> &mdash; 2-opt and Or-opt on the constructions, plus capacity-checked
+                        relocate and swap moves across routes, since per-route local search can never move work between
+                        vehicles.</li>
+                    <li><b>Exact</b> &mdash; both models are cutting-plane loops: solve, and if what comes back isn't a
+                        valid set of routes, add the constraint it violated and solve again. DFJ with lazy subtour
+                        elimination for the TSP; a two-index formulation with lazy capacity cuts
+                        (<code>x(E(S)) &le; |S| &minus; &lceil;d(S)/Q&rceil;</code>) for the CVRP.</li>
+                </ul>
+
+                <h4>What it found</h4>
+                <p class="note">
+                    Benchmarked over 150 instances &mdash; sizes 10 to 100, 15 seeds each, uniform and clustered
+                    layouts. The same cutting-plane idea behaves completely differently on the two problems: DFJ proves
+                    a <b>150-node TSP optimal in about 21 seconds</b>, while the CVRP model already <b>fails to prove
+                        optimality on 43% of 15-customer instances</b> inside a 45-second limit.
+                </p>
+                <p class="note">
+                    That gap isn't about size, it's about how well the relaxation describes the problem. Drop subtour
+                    constraints from a TSP and what's left is still tour-shaped, so a handful of cuts closes it. Drop
+                    capacity constraints from a CVRP and what's left barely resembles routing &mdash; the solver
+                    proposes overloaded trucks and each cut forbids exactly one violation, so cuts pile up faster than
+                    the bound moves. The practical read: for a TSP, just solve it exactly. For a CVRP past about
+                    fifteen customers, the exact model's real job is calibrating the heuristics on small instances so
+                    you can trust them on large ones.
+                </p>
+                <p class="note">
+                    The result I didn't expect: <b>on the TSP, the better construction heuristic produces the worse
+                        final answer.</b> Nearest insertion beats nearest neighbour by a wide margin on its own
+                    &mdash; 19.9% vs 24.2% above optimal at n=100 &mdash; but run identical local search on both and it
+                    reverses, to 4.47% and 3.22%. Nearest neighbour's flaw is a few long crossing edges, which is
+                    exactly what 2-opt removes; nearest insertion spreads its error thinly as slightly-wrong local
+                    orderings that no single move can fix. Judge a construction heuristic on what it leaves for the
+                    search, not on its own tour length.
+                </p>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &middot; PuLP / CBC &middot;
+                            NumPy &middot; pandas &middot; matplotlib &middot; pytest</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://github.com/suyashh77/route-optimizer" target="_blank"
+                                rel="noopener">Repository</a>
+                            <a href="https://github.com/suyashh77/route-optimizer#results" target="_blank"
+                                rel="noopener">Full results</a>
+                        </span></div>
+                </div>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
@@ -1146,16 +1217,19 @@ Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
 
                 <h4>Why</h4>
                 <p class="note">
-                    I wanted to know where my money actually went without typing anything into a spreadsheet, and every
-                    payment I make already sends me an email about it.
+                    I wanted my Excel budget dashboard to fill itself instead of me typing into it.
                 </p>
 
                 <h4>How it works</h4>
                 <p class="note">
-                    It watches Gmail for payment alerts and logs every transaction to Excel &mdash; amount, direction,
-                    counterparty, method, card last-4, memo. Each provider is a drop-in parser plugin rather than
-                    another branch in one function, so adding a bank means adding a file. It deduplicates on message ID
-                    and runs at 11pm via Task Scheduler.
+                    The trick is upstream of the code: I set every bank and card alert threshold to <b>$0.01</b>, so
+                    every single transaction emails itself to me. From there it's a parsing job &mdash; watch Gmail,
+                    pull out amount, direction, counterparty, method, card last-4 and memo, and write the row into the
+                    dashboard.
+                </p>
+                <p class="note">
+                    Each provider is a drop-in parser plugin rather than another branch in one function, so adding a
+                    bank means adding a file. It deduplicates on message ID and runs at 11pm via Task Scheduler.
                 </p>
 
                 <div class="meta">
@@ -1173,8 +1247,7 @@ Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
 
                 <h4>Why</h4>
                 <p class="note">
-                    I save far more talks and lectures to a watch-later playlist than I will ever actually watch. I
-                    wanted the takeaways without the two hours.
+                    I watch a lot of videos while I'm on the bike, and I wanted notes so I don't forget them.
                 </p>
 
                 <h4>How it works</h4>

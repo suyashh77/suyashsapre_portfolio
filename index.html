@@ -1034,33 +1034,83 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
 
                 <h4>Why</h4>
                 <p class="note">
-                    The return routing optimiser says what to do economically. It structurally cannot answer the other
-                    question: <em>will customers accept it?</em> A policy that is financially optimal but behaviourally
-                    unacceptable drives churn and backlash that never shows up in the objective function. Focus groups
-                    and surveys capture what people say individually; they don't capture the pile-on, the
-                    counter-narrative, or the influencer amplification, which is where the damage actually comes from.
+                    The return routing optimiser above says what's cheapest. It produces recommendations like "charge
+                    $9.95 for mail-in returns beyond 10 miles" that are correct on expected value and can still be
+                    commercially catastrophic, because an EV calculator has no term for a Reddit thread. PolicyPulse
+                    models the other half: <em>will customers accept it?</em>
+                </p>
+                <p class="note">
+                    A survey asks 500 people what they think of a $9.95 fee and averages the answers. That captures
+                    stated preference. It can't capture the mechanism that actually decides the outcome — one
+                    micro-influencer post reaching 80,000 people, a deal-seeker cohort amplifying it, and a pile-on
+                    producing a brand-level result nothing in the individual answers predicted. The point is to model
+                    <em>dynamics</em> rather than preferences.
                 </p>
 
                 <h4>How it works</h4>
                 <ul class="pts">
-                    <li>Takes a proposed policy change, generates <b>500 agents</b> across five retail personas, and
-                        simulates <b>45 days</b> of reaction.</li>
-                    <li>Agents get persistent memory and a feed algorithm rather than just a prompt, because a
-                        simulation has to be capable of producing cascades rather than averages.</li>
-                    <li>Outputs a sentiment trajectory, churn probability by segment, cascade detection, fee-threshold
-                        comparison across runs, and an agent interview explaining individual decisions.</li>
-                    <li>Built on MiroFish / OASIS (CAMEL-AI), with a Neo4j knowledge graph for brand &harr; policy
-                        &harr; segment &harr; competitor relationships and Zep Cloud for per-agent memory.</li>
+                    <li><b>The policy becomes a per-segment shock.</b> This is the judgement layer and the only part
+                        that's genuinely hard. Fees are judged relative to basket size, not in absolute dollars —
+                        $9.95 is a fifth of a deal seeker's $45 order and a sixteenth of a loyal customer's $165 one.
+                        Relative cost passes through a saturating curve, <code>disutility = fee_sensitivity &times;
+                            tanh(relative_cost / scale)</code>, because a $50 fee isn't five times as infuriating as a
+                        $10 one, it's simply unacceptable either way.</li>
+                    <li><b>500 agents across five personas</b> start at their own segment's shock rather than at zero,
+                        then run 45 days of feed exposure. The feed is 6 reach-weighted posts, 2 homophily, 1 recency,
+                        1 random, with reach decaying each round and posts expiring after 12 — loud voices dominate,
+                        echo chambers form, and old opinions stop circulating.</li>
+                    <li><b>Two independent state variables.</b> Sentiment moves <em>toward</em> the feed signal and is
+                        pulled partway back to the agent's own baseline; churn tracks the sentiment level and can
+                        recover, escalating faster than it decays. Keeping them separate matters: an agent can find a
+                        fee unfair and still not leave.</li>
+                    <li><b>Reporting is deterministic.</b> The only LLM call in the project is the interview — filter
+                        for "a deal seeker who churned" and Claude reads that agent's 45-day memory log and voices it
+                        in first person. Keeping the model out of the aggregation path is what makes the numbers
+                        reproducible.</li>
                 </ul>
-                <p class="fine">
-                    Spec and simulation core are written; the report layer and validation runs are what's left. This is
-                    the one I'm finishing last, and there are no results to claim yet.
+                <p class="note">
+                    The result I like most is emergent rather than designed. On a keepit policy, the sustainability
+                    cohort reads "keep it, we'll refund you anyway" as manufactured waste, so it's the one policy whose
+                    day-1 reaction splits the population by sign: every other segment starts positive (deal seekers at
+                    <b>+0.67</b>) while sustainability starts at <b>&minus;0.19</b>. Over 45 days the majority drags
+                    them up to <b>+0.15</b> &mdash; still the lowest segment, and the only one with any churn at all. A
+                    dissenting minority getting partially converted is exactly what a survey cannot produce.
+                </p>
+
+                <h4>What I got wrong</h4>
+                <p class="note">
+                    An earlier version had <b>22 passing tests alongside a simulation that ignored its own primary
+                        input.</b> <code>policy_variables</code> flowed through the function signature, onto the
+                    dataclass, into the report and onto the screen — present everywhere it could be <em>seen</em>, and
+                    absent from the one place it had to be <em>used</em>. Running the same seed against a $4.95 fee, a
+                    $12.95 fee and a $50 keepit threshold produced byte-identical output. The dashboard rendered a
+                    smooth, plausible sentiment curve that was pure RNG.
+                </p>
+                <p class="note">
+                    Every test asserted structure — 500 agents, 45 rounds, no duplicate posts — and none asserted the
+                    causal property the whole system exists to model. The most valuable test here turned out to be
+                    three lines: run at $4.95, run at $12.95, assert the results differ. Structural tests prove code
+                    runs; behavioural tests prove it means something. There are 71 tests now, and that one is in them.
+                </p>
+                <p class="note">
+                    Fixed, the fee ladder moves monotonically at every step — day-45 sentiment from <b>&minus;0.082</b>
+                    at $4.95 to <b>&minus;0.162</b> at $12.95, against a per-seed standard deviation of 0.011, so the
+                    signal clears the noise by roughly 8:1 and every seed agrees on the sign. Two related fixes were
+                    needed to get there: sentiment had been <em>accumulating</em> the feed signal, which has no fixed
+                    point and marched every run into the &plusmn;1 clamp, and churn integrated only downward deltas, so
+                    symmetric noise ratcheted it upward forever. A model whose only equilibrium is its own boundary
+                    isn't modelling anything.
                 </p>
 
                 <div class="meta">
-                    <div class="row"><span class="k">Stack</span><span class="v">Claude Sonnet &middot; OASIS / MiroFish
-                            &middot; Neo4j &middot; Zep Cloud &middot; FastAPI &middot; Streamlit &middot; PRAW &middot;
-                            Ollama (Qwen2.5-32B) fallback</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &middot; Streamlit &middot;
+                            Plotly &middot; PyYAML &middot; Claude Sonnet (interview only) &middot; pytest</span></div>
+                    <div class="row"><span class="k">Status</span><span class="v">Working prototype, not validated.
+                            Every parameter is a reasoned prior rather than a fitted value, and no backtest against
+                            real policy launches exists yet &mdash; H&amp;M and Zara both introduced return fees in
+                            2022 with a public record of the response, and until the tool reproduces known outcomes it
+                            is an argument, not a measurement. The rank ordering is trustworthy; the magnitudes are a
+                            parameter choice.</span></div>
                 </div>
                 <a class="totop" href="#top">↑ Index</a>
             </article>

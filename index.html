@@ -145,6 +145,31 @@
             min-width: 22px;
         }
 
+        .index li {
+            align-items: flex-start;
+        }
+
+        .index .n {
+            padding-top: 2px;
+        }
+
+        .index .lesson {
+            display: block;
+            color: var(--text-3);
+            font-size: 0.85rem;
+            line-height: 1.45;
+            margin-top: 1px;
+        }
+
+        .scope {
+            color: var(--text-3);
+            font-size: 0.88rem;
+            margin-top: 28px;
+            padding-top: 18px;
+            border-top: 1px solid var(--rule);
+            max-width: 66ch;
+        }
+
 
 
         /* ---------- sections ---------- */
@@ -471,35 +496,41 @@
             <nav class="index">
                 <h2>Research &mdash; Rachunok Lab, NC State ISE</h2>
                 <ol>
-                    <li><span class="n">R1</span><a href="#scraper">Google Maps Review Scraper &mdash; NC food access data</a></li>
-                    <li><span class="n">R2</span><a href="#geomatch">GeoMatch</a></li>
+                    <li><span class="n">R1</span><span class="ix"><a href="#scraper">Google Maps Review Scraper &mdash; NC food access data</a><span class="lesson">The scraping was the easy part; making a coverage gap distinguishable from a scraper bug took months.</span></span></li>
+                    <li><span class="n">R2</span><span class="ix"><a href="#geomatch">GeoMatch</a><span class="lesson">A matcher that silently drops pairs is useless for research &mdash; the drops are what you need to audit.</span></span></li>
                 </ol>
 
                 <h2>Supply Chain</h2>
                 <ol>
-                    <li><span class="n">&rarr;</span><a href="#end-to-end">The end-to-end idea</a></li>
-                    <li><span class="n">01</span><a href="#uflp">Facility Location &mdash; Greedy-Add Solver</a></li>
-                    <li><span class="n">02</span><a href="#consolidation">Consolidation Centres &amp; Cross-Dock Terminals</a></li>
-                    <li><span class="n">03</span><a href="#routing">Routing &mdash; TSP &amp; VRP Solvers</a></li>
-                    <li><span class="n">04</span><a href="#return-routing">Return Routing Optimisation</a></li>
-                    <li><span class="n">05</span><a href="#risk-intelligence">Supply Chain Risk Intelligence</a></li>
-                    <li><span class="n">06</span><a href="#stockout-predictor">Commodity Stockout Risk Platform</a></li>
-                    <li><span class="n">07</span><a href="#policypulse">PolicyPulse</a></li>
+                    <li><span class="n">&rarr;</span><span class="ix"><a href="#end-to-end">The end-to-end idea</a><span class="lesson">Each layer&rsquo;s decision quietly constrains the one below it.</span></span></li>
+                    <li><span class="n">01</span><span class="ix"><a href="#uflp">Facility Location &mdash; Greedy-Add Solver</a><span class="lesson">&ldquo;Optimal&rdquo; is a function of which objective you picked.</span></span></li>
+                    <li><span class="n">02</span><span class="ix"><a href="#consolidation">Consolidation Centres &amp; Cross-Dock Terminals</a><span class="lesson">Holding freight for a fuller truck is where the model stops being combinatorial and turns economic.</span></span></li>
+                    <li><span class="n">03</span><span class="ix"><a href="#routing">Routing &mdash; TSP &amp; VRP Solvers</a><span class="lesson">Tractability comes from how well the relaxation describes the problem, not from problem size.</span></span></li>
+                    <li><span class="n">04</span><span class="ix"><a href="#return-routing">Return Routing Optimisation</a><span class="lesson">90% of the gain was the policy change, not the model I would rather have credited.</span></span></li>
+                    <li><span class="n">05</span><span class="ix"><a href="#risk-intelligence">Supply Chain Risk Intelligence</a><span class="lesson">An LLM rating a headline is not a risk model: no calibration, no base rate, no way to be wrong.</span></span></li>
+                    <li><span class="n">06</span><span class="ix"><a href="#stockout-predictor">Commodity Stockout Risk Platform</a><span class="lesson">Validate against the event you care about, not the signal that happens to be easy to measure.</span></span></li>
+                    <li><span class="n">07</span><span class="ix"><a href="#policypulse">PolicyPulse</a><span class="lesson">A fee does not remove a cost, it moves it onto the customer &mdash; who can cost you more by leaving.</span></span></li>
                 </ol>
 
                 <h2>Other fun projects</h2>
                 <ol>
-                    <li><span class="n">08</span><a href="#garmin-wrapped">Garmin Wrapped</a></li>
-                    <li><span class="n">09</span><a href="#wolfattend">WolfAttend</a></li>
+                    <li><span class="n">08</span><span class="ix"><a href="#garmin-wrapped">Garmin Wrapped</a><span class="lesson">The hard part is rejecting insights, not computing them.</span></span></li>
+                    <li><span class="n">09</span><span class="ix"><a href="#wolfattend">WolfAttend</a><span class="lesson">I threat-modelled every way to beat it and never checked the assumption it rests on.</span></span></li>
                 </ol>
 
                 <h2>Tools</h2>
                 <ol>
-                    <li><span class="n">10</span><a href="#payment-tracker">Payment Tracker</a></li>
-                    <li><span class="n">11</span><a href="#youtube-notes">YouTube Notes Taker</a></li>
-                    <li><span class="n">12</span><a href="#spotify-comparator">Spotify Library Comparator</a></li>
+                    <li><span class="n">10</span><span class="ix"><a href="#payment-tracker">Payment Tracker</a><span class="lesson">The trick was upstream of the code: set every alert threshold to one cent.</span></span></li>
+                    <li><span class="n">11</span><span class="ix"><a href="#youtube-notes">YouTube Notes Taker</a><span class="lesson">Prefer the free captions; only pay for transcription when they are missing.</span></span></li>
+                    <li><span class="n">12</span><span class="ix"><a href="#spotify-comparator">Spotify Library Comparator</a><span class="lesson">Filenames never match streaming metadata, so match fuzzily or not at all.</span></span></li>
                 </ol>
             </nav>
+
+            <p class="scope">
+                All of this is the movement side of a supply chain &mdash; where things go, and what it costs to get
+                them there. Forecasting and demand planning sit upstream of every one of these decisions and are
+                deliberately out of scope.
+            </p>
         </div>
     </header>
 
@@ -704,6 +735,7 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                 </ul>
 
                 <div class="meta">
+                    <div class="row"><span class="k">Runs</span><span class="v">Quarterly to annually. A network redesign is a capital decision, so an hour of solve time costs nothing.</span></div>
                     <div class="row"><span class="k">Stack</span><span class="v">Python &middot; PuLP / CBC &middot;
                             pandas &middot; React &middot; FastAPI &middot; Leaflet &middot; OSM Nominatim</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
@@ -751,6 +783,9 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                     <li>And on top, a timing decision &mdash; hold freight one more day for a fuller truck, or ship it
                         now. That's where the model stops being combinatorial and starts being economic.</li>
                 </ul>
+                <div class="meta">
+                    <div class="row"><span class="k">Runs</span><span class="v">Nightly, against tomorrow&rsquo;s departures &mdash; the answer has to exist before the doors open.</span></div>
+                </div>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
 
@@ -811,6 +846,7 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                 </p>
 
                 <div class="meta">
+                    <div class="row"><span class="k">Runs</span><span class="v">Nightly. Routes are cut once a day, so the solver gets hours rather than seconds, which is exactly why exact solving is worth trying here.</span></div>
                     <div class="row"><span class="k">Stack</span><span class="v">Python &middot; PuLP / CBC &middot;
                             NumPy &middot; pandas &middot; matplotlib &middot; pytest</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
@@ -927,11 +963,16 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                 </p>
 
                 <div class="meta">
+                    <div class="row"><span class="k">Runs</span><span class="v">At label generation, per return &mdash; it has to answer in the time a web page takes to load. Only the assignment ILP batches, once a day.</span></div>
                     <div class="row"><span class="k">Stack</span><span class="v">Python &middot; PuLP (ILP) &middot;
                             scikit-learn &middot; multinomial logistic &middot; bootstrap inference &middot; LP duality
                             &middot; Monte Carlo</span></div>
-                    <div class="row"><span class="k">Links</span><span class="v">Repository and full write-up going
-                            public shortly.</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://github.com/suyashh77/return-routing-optimisation" target="_blank"
+                                rel="noopener">Repository</a>
+                            <a href="https://github.com/suyashh77/return-routing-optimisation#results"
+                                target="_blank" rel="noopener">Full results</a>
+                        </span></div>
                 </div>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
@@ -963,6 +1004,7 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                 </p>
 
                 <div class="meta">
+                    <div class="row"><span class="k">Runs</span><span class="v">Continuously. News arrives whether or not you are ready for it.</span></div>
                     <div class="row"><span class="k">Stack</span><span class="v">Python &middot; GPT &middot; NLP
                             &middot; NewsAPI &middot; Streamlit</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
@@ -1008,6 +1050,7 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                 </p>
 
                 <div class="meta">
+                    <div class="row"><span class="k">Runs</span><span class="v">Daily, after market close.</span></div>
                     <div class="row"><span class="k">Stack</span><span class="v">Python &middot; Random Forest &middot;
                             Yahoo Finance &middot; Streamlit</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
@@ -1116,6 +1159,7 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                 </p>
 
                 <div class="meta">
+                    <div class="row"><span class="k">Runs</span><span class="v">Once per decision, before launch. Minutes per run is fine, and that slack is what pays for the expensive engine.</span></div>
                     <div class="row"><span class="k">Stack</span><span class="v">Python &middot; OASIS (CAMEL-AI)
                             &middot; Streamlit &middot; Plotly &middot; PyYAML &middot; Claude &middot; pytest</span>
                     </div>

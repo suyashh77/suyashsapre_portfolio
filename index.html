@@ -153,14 +153,6 @@
             padding-top: 2px;
         }
 
-        .index .lesson {
-            display: block;
-            color: var(--text-3);
-            font-size: 0.85rem;
-            line-height: 1.45;
-            margin-top: 1px;
-        }
-
         .scope {
             color: var(--text-3);
             font-size: 0.88rem;
@@ -496,33 +488,33 @@
             <nav class="index">
                 <h2>Research &mdash; Rachunok Lab, NC State ISE</h2>
                 <ol>
-                    <li><span class="n">R1</span><span class="ix"><a href="#scraper">Google Maps Review Scraper &mdash; NC food access data</a><span class="lesson">The scraping was the easy part; making a coverage gap distinguishable from a scraper bug took months.</span></span></li>
-                    <li><span class="n">R2</span><span class="ix"><a href="#geomatch">GeoMatch</a><span class="lesson">A matcher that silently drops pairs is useless for research &mdash; the drops are what you need to audit.</span></span></li>
+                    <li><span class="n">R1</span><a href="#scraper">Google Maps Review Scraper &mdash; NC food access data</a></li>
+                    <li><span class="n">R2</span><a href="#geomatch">GeoMatch</a></li>
                 </ol>
 
                 <h2>Supply Chain</h2>
                 <ol>
-                    <li><span class="n">&rarr;</span><span class="ix"><a href="#end-to-end">The end-to-end idea</a><span class="lesson">Each layer&rsquo;s decision quietly constrains the one below it.</span></span></li>
-                    <li><span class="n">01</span><span class="ix"><a href="#uflp">Facility Location &mdash; Greedy-Add Solver</a><span class="lesson">&ldquo;Optimal&rdquo; is a function of which objective you picked.</span></span></li>
-                    <li><span class="n">02</span><span class="ix"><a href="#consolidation">Consolidation Centres &amp; Cross-Dock Terminals</a><span class="lesson">Holding freight for a fuller truck is where the model stops being combinatorial and turns economic.</span></span></li>
-                    <li><span class="n">03</span><span class="ix"><a href="#routing">Routing &mdash; TSP &amp; VRP Solvers</a><span class="lesson">Tractability comes from how well the relaxation describes the problem, not from problem size.</span></span></li>
-                    <li><span class="n">04</span><span class="ix"><a href="#return-routing">Return Routing Optimisation</a><span class="lesson">90% of the gain was the policy change, not the model I would rather have credited.</span></span></li>
-                    <li><span class="n">05</span><span class="ix"><a href="#risk-intelligence">Supply Chain Risk Intelligence</a><span class="lesson">An LLM rating a headline is not a risk model: no calibration, no base rate, no way to be wrong.</span></span></li>
-                    <li><span class="n">06</span><span class="ix"><a href="#stockout-predictor">Commodity Stockout Risk Platform</a><span class="lesson">Validate against the event you care about, not the signal that happens to be easy to measure.</span></span></li>
-                    <li><span class="n">07</span><span class="ix"><a href="#policypulse">PolicyPulse</a><span class="lesson">A fee does not remove a cost, it moves it onto the customer &mdash; who can cost you more by leaving.</span></span></li>
+                    <li><span class="n">&rarr;</span><a href="#end-to-end">The end-to-end idea</a></li>
+                    <li><span class="n">01</span><a href="#uflp">Facility Location &mdash; Greedy-Add Solver</a></li>
+                    <li><span class="n">02</span><a href="#consolidation">Consolidation Centres &amp; Cross-Dock Terminals</a></li>
+                    <li><span class="n">03</span><a href="#routing">Routing &mdash; TSP &amp; VRP Solvers</a></li>
+                    <li><span class="n">04</span><a href="#return-routing">Return Routing Optimisation</a></li>
+                    <li><span class="n">05</span><a href="#risk-intelligence">Supply Chain Risk Intelligence</a></li>
+                    <li><span class="n">06</span><a href="#stockout-predictor">Commodity Stockout Risk Platform</a></li>
+                    <li><span class="n">07</span><a href="#policypulse">PolicyPulse</a></li>
                 </ol>
 
                 <h2>Other fun projects</h2>
                 <ol>
-                    <li><span class="n">08</span><span class="ix"><a href="#garmin-wrapped">Garmin Wrapped</a><span class="lesson">The hard part is rejecting insights, not computing them.</span></span></li>
-                    <li><span class="n">09</span><span class="ix"><a href="#wolfattend">WolfAttend</a><span class="lesson">I threat-modelled every way to beat it and never checked the assumption it rests on.</span></span></li>
+                    <li><span class="n">08</span><a href="#garmin-wrapped">Garmin Wrapped</a></li>
+                    <li><span class="n">09</span><a href="#wolfattend">WolfAttend</a></li>
                 </ol>
 
                 <h2>Tools</h2>
                 <ol>
-                    <li><span class="n">10</span><span class="ix"><a href="#payment-tracker">Payment Tracker</a><span class="lesson">The trick was upstream of the code: set every alert threshold to one cent.</span></span></li>
-                    <li><span class="n">11</span><span class="ix"><a href="#youtube-notes">YouTube Notes Taker</a><span class="lesson">Prefer the free captions; only pay for transcription when they are missing.</span></span></li>
-                    <li><span class="n">12</span><span class="ix"><a href="#spotify-comparator">Spotify Library Comparator</a><span class="lesson">Filenames never match streaming metadata, so match fuzzily or not at all.</span></span></li>
+                    <li><span class="n">10</span><a href="#payment-tracker">Payment Tracker</a></li>
+                    <li><span class="n">11</span><a href="#youtube-notes">YouTube Notes Taker</a></li>
+                    <li><span class="n">12</span><a href="#spotify-comparator">Spotify Library Comparator</a></li>
                 </ol>
             </nav>
 
@@ -756,35 +748,216 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
 
                 <h4>Why</h4>
                 <p class="note">
-                    I've always wondered how Lowe's and companies at that scale actually run consolidation centres and
-                    cross-dock terminals &mdash; how freight from hundreds of suppliers gets pooled, and how anyone
-                    decides what goes on which truck. It looks like a scheduling problem and a packing problem wearing
-                    the same coat, and I want to build it to find out where the real difficulty lives.
+                    I've always wondered how Lowe's and companies at that scale actually run consolidation centres
+                    &mdash; how freight from hundreds of suppliers gets pooled, and how anyone decides what goes on
+                    which truck. A consolidation centre makes two decisions and they interact. <b>When do you release a
+                        truck?</b> Holding freight fills trailers and cuts cost per hundredweight, but every shipment on
+                    the dock is a shipment not at the DC. <b>What goes on the truck?</b> A trailer has a weight ceiling
+                    and a cube ceiling, and freight that fills one leaves the other slack &mdash; so the second decision
+                    changes how many trailers the first one has to pay for.
                 </p>
-                <ul class="pts">
-                    <li>When is it worth holding freight to build a fuller truck, and what does that deferral cost
-                        downstream in service?</li>
-                    <li>How do you assign inbound loads to outbound doors and departure windows when both dock capacity
-                        and trailer cube are binding?</li>
-                    <li>Where does a consolidation centre stop paying for itself &mdash; at what volume, distance, and
-                        supplier fragmentation does direct-ship win?</li>
-                </ul>
+                <p class="note">
+                    So I built both on the same generated freight, priced everything off a realistic LTL rate structure,
+                    and asked where a consolidation centre stops paying for itself at all.
+                </p>
 
                 <h4>How it works</h4>
                 <p class="note">
-                    Nothing built yet, so this is the math I'm heading for rather than a description of running code.
+                    <b>The freight cost model first, because it makes or breaks everything else.</b> LTL freight is not
+                    linear in weight. A tariff quotes a rate per hundredweight that <em>drops at published weight
+                        breaks</em>, and the bracket's rate applies to the whole shipment &mdash; breaks at 500 / 1,000
+                    / 2,000 / 5,000 / 10,000 / 20,000 lb, running from $42.00/cwt down to $9.60/cwt. On top of the
+                    staircase sits the <b>over-declare rule</b>: a shipment may be billed as if it weighed exactly a
+                    higher break point whenever the cheaper rate more than offsets the phantom weight. A 4,800 lb
+                    shipment moves as 5,000 lb and costs 23% less than its own bracket says. So the billed cost is the
+                    <em>lower envelope</em> of the staircase, not the staircase itself. Model freight as linear in
+                    weight and every conclusion about consolidation is worthless, because crossing a break is the whole
+                    point of pooling.
                 </p>
                 <ul class="pts">
-                    <li>Cross-docking is a truck-to-door assignment problem with time windows &mdash; inbound trailers
-                        to strip doors, outbound to stack doors, and a transfer cost between every pair. Get the door
-                        layout wrong and the forklift travel eats the savings.</li>
-                    <li>Load building underneath it is a bin-packing problem with real constraints: trailer cube,
-                        weight, stackability, and delivery sequence, since what goes in last comes out first.</li>
-                    <li>And on top, a timing decision &mdash; hold freight one more day for a fuller truck, or ship it
-                        now. That's where the model stops being combinatorial and starts being economic.</li>
+                    <li><b>Dispatch.</b> Freight accumulates and a policy decides each day whether to release: a fixed
+                        schedule, a fill threshold, or whichever comes first. The policies differ in a second way that
+                        matters more than the trigger &mdash; a fill-triggered release ships the full trailers and
+                        <em>holds the remainder</em>, while a time-triggered release ships everything, however empty.
+                        That asymmetry is what produces the cost-versus-dwell curve.</li>
+                    <li><b>Load build.</b> Vector bin packing, not 3D geometric packing: a shipment is a resource vector
+                        (weight, cube), with no orientation or stacking rule. That's the right abstraction for the
+                        question being asked &mdash; which ceiling binds. Four heuristics, including
+                        <code>residual_fit</code>, which picks the shipment whose resource vector has the highest cosine
+                        similarity with the trailer's <em>remaining</em> capacity. Since an empty 53' van's residual
+                        points at 45,000 lb / 3,800 ft&sup3; &mdash; 11.8 lb/ft&sup3; &mdash; maximising that cosine
+                        means picking freight whose density matches the density the trailer still has room for. It's the
+                        formal version of mixing dense and light freight on the same load.</li>
+                    <li><b>Break-even.</b> Landed cost of shipping every supplier direct to the DC, against pooling
+                        through a centre first, swept across supplier count, shipment size and geometry. Two choices
+                        deliberately made <em>against</em> consolidation: tenders are pooled by (supplier, day) so
+                        pooling can't "recover" an LTL penalty I invented, and every leg is priced at min(LTL, TL) so a
+                        supplier with enough freight to justify a truck buys one. Supplier&rarr;DC distance uses the law
+                        of cosines on a random bearing, so the centre is not assumed to be on the way.</li>
                 </ul>
+                <p class="note">
+                    <b>One simplification worth stating, because it shapes two of the findings.</b> The rate table
+                    scales <em>linearly</em> with distance; real tariffs taper the mileage factor, so real long-haul LTL
+                    is much cheaper per mile than this. With linear scaling and truckload at $2.75/mi, a truckload wins
+                    above ~1,100 lb on any lane &mdash; distance cancels out of both sides &mdash; where real crossovers
+                    sit at 10,000+ lb. The staircase here therefore prices <em>small tenders</em>, and the outbound leg
+                    is effectively a flat charge per trailer.
+                </p>
+
+                <h4>What it found</h4>
+                <p class="note">
+                    <b>Waiting is worth a lot, and the price is a long tail.</b> Shipping to a fill threshold instead of
+                    a clock costs <b>$3.83/cwt against $7.44/cwt</b> &mdash; &minus;$3.61/cwt (95% CI
+                    [&minus;3.74, &minus;3.48], Cohen's d = &minus;9.71), cheaper on all 30 paired freight streams
+                    &mdash; for 1.68 extra days of mean dwell. But the mean hides the real cost: under a pure fill rule
+                    the <em>worst</em> shipment waits <b>30.8 days</b> while p95 dwell is only 6.0. A fill rule has no
+                    upper bound on how long an awkward shipment can sit in the remainder, because there is always
+                    something better to load. That's the argument for a hybrid, and it shows up in no average anywhere.
+                    The clock rule isn't even monotone: releasing every 7 days is <b>9.4% more expensive per cwt</b>
+                    than every 5, because seven days of arrivals overshoot one trailer and spawn a near-empty second one
+                    every cycle.
+                </p>
+                <p class="note">
+                    <b>The weight breaks do not drive the release decision, which is not what I expected.</b> I'd
+                    assumed optimal fill thresholds would snap to weight breaks &mdash; plateaus and jumps rather than a
+                    smooth curve. They don't. At $2.75/mi truckload, only <b>1.0%</b> of dispatched trailers were
+                    cheaper rated as LTL, so the outbound leg is a flat charge and cost per cwt is almost exactly
+                    proportional to 1/fill: the correlation across all 510 runs is <b>0.9993</b>. There's nothing for a
+                    threshold to snap to. The staircase is real and it does bind &mdash; but on the <em>inbound</em>
+                    leg, where individual supplier tenders sit deep in the expensive brackets. Over-declaring binds on
+                    <b>32.7% of tenders</b> and takes 4.6% off the total freight bill.
+                </p>
+                <p class="note">
+                    <b>Which ceiling binds is set by the freight mix, and it flips.</b> Plot every dispatched trailer by
+                    weight and cube utilisation and you get an L: trailers pin against one ceiling or the other, almost
+                    never both. Sweeping the light-freight share at constant total weight, the binding constraint flips
+                    at <b>43% light freight, where mean freight density is 11.9 lb/ft&sup3;</b> &mdash; against the
+                    trailer's own break-even density of 45,000/3,800 = <b>11.84 lb/ft&sup3;</b>. That flip point isn't a
+                    fitted number; it's the trailer's geometry showing up in the data. It's also where trailer count is
+                    minimised, because it's the only mix where both ceilings can be reached at once.
+                </p>
+
+                <div class="scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Packer</th>
+                                <th>Trailers / 1,000 shipments</th>
+                                <th>Weight util</th>
+                                <th>Cube util</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="hl">
+                                <td><code>residual_fit</code> &mdash; adaptive</td>
+                                <td>22.73</td>
+                                <td>0.901</td>
+                                <td>0.856</td>
+                            </tr>
+                            <tr>
+                                <td><code>ffd_scalarized(0.5)</code> &mdash; fixed 50/50 blend</td>
+                                <td>22.99</td>
+                                <td>0.891</td>
+                                <td>0.846</td>
+                            </tr>
+                            <tr>
+                                <td><code>ffd_weight</code></td>
+                                <td>26.27</td>
+                                <td>0.780</td>
+                                <td>0.740</td>
+                            </tr>
+                            <tr>
+                                <td><code>ffd_cube</code></td>
+                                <td>26.29</td>
+                                <td>0.779</td>
+                                <td>0.739</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="note">
+                    The adaptive packer saves <b>3.54 trailers per 1,000 shipments</b> over sorting on weight alone
+                    (95% CI [2.99, 3.99], &minus;13.5%, d = &minus;2.47; 26 wins, 4 ties, 0 losses over 30 paired
+                    instances) and matches the LP lower bound <code>ceil(max(&Sigma;W/45000,
+                        &Sigma;V/3800))</code> on <b>100% of instances</b> &mdash; it cannot be improved on.
+                    <b>But my own claim that no fixed rule could match it doesn't hold.</b> A flat 50/50 blend of
+                    normalised weight and cube captures 93% of the gain: <code>residual_fit</code> beats it by 0.26
+                    trailers per 1,000 (&minus;1.1%, d = &minus;0.26; 2 wins, 28 ties, 0 losses), and across the mix
+                    sweep the fixed blend actually <em>wins</em> one instance. Adapting to the residual is not wrong, it
+                    is barely distinguishable.
+                </p>
+                <p class="note">
+                    <b>Fragmentation is a real cost and it lands entirely on the inbound leg.</b> Going from a few
+                    dominant suppliers to all suppliers alike, at fixed total volume, drops mean tender weight from
+                    1,306 lb to 1,029 lb and raises inbound cost by <b>+$4.94/cwt (+19.3%, d = 1.71)</b>. Outbound fill
+                    is untouched at 0.98 &mdash; the centre absorbs fragmentation completely on the way out and pays for
+                    it completely on the way in.
+                </p>
+                <p class="note">
+                    <b>And the break-even is driven by shipment size first, geography second, supplier count third</b>
+                    &mdash; spreads of 107, 46 and 24 points of mean saving across the three axes. Supplier count acts
+                    almost entirely <em>through</em> tender size: at fixed volume, going from 10 to 100 suppliers cuts
+                    what each one tenders, and consolidation improves from +4.0% to +28.9%. It's the same mechanism, not
+                    a third one.
+                </p>
+
+                <div class="scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>&gamma; = supplier&rarr;centre / centre&rarr;DC</th>
+                                <th>Break-even tender weight</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>0.10 &mdash; suppliers clustered at the centre</td>
+                                <td>2,100 &ndash; 3,950 lb</td>
+                            </tr>
+                            <tr>
+                                <td>0.25</td>
+                                <td>1,200 &ndash; 2,100 lb</td>
+                            </tr>
+                            <tr>
+                                <td>0.50</td>
+                                <td>780 &ndash; 1,200 lb</td>
+                            </tr>
+                            <tr>
+                                <td>1.00 &mdash; centre no closer than the DC</td>
+                                <td>never wins in the swept range</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="note">
+                    The cost decomposition is the part that changed how I think about this. Averaged over the grid, the
+                    consolidated stack is inbound LTL $46.08/cwt, <b>the centre's own fixed cost $54.67/cwt</b>,
+                    outbound linehaul $4.38/cwt, handling $3.20/cwt. The fixed cost is the largest single line &mdash;
+                    larger than all the freight it handles &mdash; because at 7,400 lb/day this centre is grossly
+                    under-utilised. It's constant per cwt across the grid while direct-ship cost per cwt falls as
+                    tenders grow toward a truckload, so <em>that</em>, not the weight table, is what sets the crossover.
+                    A siting decision should start with throughput, not with rates.
+                </p>
+                <p class="fine">
+                    All freight is synthetic. The rate table's <em>structure</em> &mdash; break points, the shape of the
+                    taper, the over-declare rule &mdash; is representative of published LTL tariffs, but no figure in it
+                    is claimed to be measured from any real carrier or shipper, and the linear mileage scaling is a
+                    documented simplification carried into the findings above. Nothing here is a rate quote. Every
+                    headline number is a paired comparison on identical freight streams with a 95% percentile-bootstrap
+                    CI, and every function that consumes randomness takes an explicit generator, so any figure
+                    regenerates exactly.
+                </p>
+
                 <div class="meta">
-                    <div class="row"><span class="k">Runs</span><span class="v">Nightly, against tomorrow&rsquo;s departures &mdash; the answer has to exist before the doors open.</span></div>
+                    <div class="row"><span class="k">Runs</span><span class="v">Dispatch decides daily, load build runs per outbound wave &mdash; so the budget is seconds, and no exact solver is warranted at this scale. The whole study reruns from scratch in about 30 seconds.</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &middot; NumPy &middot; pandas
+                            &middot; matplotlib &middot; pytest</span></div>
+                    <div class="row"><span class="k">Scale</span><span class="v">40 suppliers &middot; 90-day horizon
+                            &middot; 510 runs &middot; 30 seeds per experiment &middot; 95 tests</span></div>
+                    <div class="row"><span class="k">Not for</span><span class="v">A load plan. Vector packing answers
+                            which ceiling binds; it says nothing about where a pallet physically goes. Dock door
+                            assignment, downstream inventory effects, and routing onward from the centre are all out of
+                            scope.</span></div>
                 </div>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
@@ -891,7 +1064,7 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                         capacity limit.</li>
                 </ul>
 
-                <h4>Results</h4>
+                <h4>What it found</h4>
                 <div class="scroll">
                     <table>
                         <thead>
@@ -1122,22 +1295,22 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                         point where saving money starts costing you more than it saves.</li>
                 </ul>
                 <p class="note">
+                    <b>Two versions, kept honest against each other.</b> There are two simulators doing the same job. In
+                    the fast one, customers are just numbers following rules &mdash; it's free, it gives the same answer
+                    every time, and a full run takes <b>half a second</b>, so you can try hundreds of settings. In the
+                    slow one, every customer is a real AI that writes actual posts and replies to other people. It costs
+                    <b>$174 and up</b> per run and takes minutes, but it reads the actual wording of the announcement,
+                    which is the only way to check whether <em>how</em> you say something changes how it lands.
+                </p>
+
+                <h4>What it found</h4>
+                <p class="note">
                     The bit that surprised me: <b>casual shoppers turn out to be worth more than bargain hunters,
                         even though far fewer of them leave.</b> Bargain hunters complain the loudest and are the
                     cheapest to lose. The customers who quietly stop coming back are the expensive ones.
                 </p>
-
-                <h4>Two versions, kept honest against each other</h4>
                 <p class="note">
-                    There are two simulators doing the same job. In the fast one, customers are just numbers following
-                    rules &mdash; it's free, it gives the same answer every time, and a full run takes <b>half a
-                        second</b>, so you can try hundreds of settings. In the slow one, every customer is a real AI
-                    that writes actual posts and replies to other people. It costs <b>$174 and up</b> per run and takes
-                    minutes, but it reads the actual wording of the announcement, which is the only way to check
-                    whether <em>how</em> you say something changes how it lands.
-                </p>
-                <p class="note">
-                    Running both is the point. If the expensive one agrees with the cheap one, you can trust the cheap
+                    Running both simulators is the point. If the expensive one agrees with the cheap one, you can trust the cheap
                     one to do the exploring. On which customer types get hit hardest, they agree <b>80%</b> of the
                     time. They don't agree on the exact numbers, and I wouldn't expect them to &mdash; the fast version
                     knows how everyone privately feels, while the AI version only ever sees what people chose to post,
@@ -1165,6 +1338,10 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                     </div>
                     <div class="row"><span class="k">Scale</span><span class="v">500 customers &middot; 45 simulated
                             days &middot; half a second per run &middot; 132 tests</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://github.com/suyashh77/PolicyPulse" target="_blank"
+                                rel="noopener">Repository</a>
+                        </span></div>
                     <div class="row"><span class="k">Good for</span><span class="v">Which option is worse, which
                             customers to worry about, and roughly how much worse it gets as the fee goes up.</span>
                     </div>
@@ -1286,7 +1463,7 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
 Validation layer       →  code check × live device-to-access-point match
 Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
 
-                <h4>What happened</h4>
+                <h4>What it found</h4>
                 <p class="note">
                     I wrote up the full design and deployment plan and sent it to NC State's IT leadership, for funzies.
                     They agreed secure attendance is a real problem, had a developer review it &mdash; and turned it

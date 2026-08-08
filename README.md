@@ -1,4 +1,4 @@
-# suyashsapre.github.io
+# suyashsapre_portfolio
 
 Personal site for Suyash Sapre — a single page listing projects and research.
 
@@ -8,23 +8,35 @@ Personal site for Suyash Sapre — a single page listing projects and research.
 index.html         The whole site. Self-contained: inline CSS, no JS, no build step.
 projects.html      Redirect to index.html (kept so old links resolve).
 research.html      Redirect to index.html#research.
-brand-playbook.md  Positioning notes. Not published.
-assets/            Images. Currently unreferenced by index.html.
+assets/            profile.jpg, used as the og:image for link previews.
 ```
 
 ## Editing
 
 Open `index.html` and edit it. There is no build, no dependency, and no framework.
 
-Entries live in three `<section class="group">` blocks — Research, Projects, Tools — plus a closing
-"Where this is going" section. To add an entry:
+The page is a header block — name, positioning, availability, contact links, then a
+`<nav class="index">` — followed by four `<section class="group">` blocks: Research,
+Supply Chain, Other fun projects, Tools.
 
-1. Add an `<article id="your-slug">` to the right section, following the shape of the ones around
-   it: a `.head` row (number, title, `.status`), a `.problem` paragraph, then `<h4>` subheads.
-2. Add a matching row to the `<nav class="index">` at the top so it shows up in the index.
+To add an entry:
 
-Status labels are `<span class="status">` for finished work and `<span class="status open">` for
-anything unfinished — the dashed border is the signal.
+1. Add an `<article id="your-slug">` to the right section, following the shape of the ones
+   around it: a `.head` row (number + title), then `<h4>` subheads.
+2. Add a matching `<li>` to the `<nav class="index">` at the top so it shows up in the index.
+   The index lists titles only — no descriptions.
+
+Every article uses the same three subheads, in this order:
+
+```
+Why             the problem, and why it was worth doing
+How it works    the method — what was actually built
+What it found   results. Omit for projects with nothing measured yet.
+```
+
+Close each article with a `.meta` block. Conventional rows are `Runs` (how often the thing
+executes, which sets the runtime budget), `Stack`, `Scale`, `Links`, and `Good for` / `Not for`
+where the limits are worth stating up front.
 
 ## Deploying
 

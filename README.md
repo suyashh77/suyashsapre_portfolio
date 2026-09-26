@@ -1,6 +1,6 @@
 # suyashsapre_portfolio
 
-Personal site for Suyash Sapre — a single page listing projects and research.
+Personal site for Suyash Sapre — a single page listing data stories, projects, and research.
 
 ## Files
 
@@ -16,8 +16,8 @@ assets/            profile.jpg, used as the og:image for link previews.
 Open `index.html` and edit it. There is no build, no dependency, and no framework.
 
 The page is a header block — name, positioning, availability, contact links, then a
-`<nav class="index">` — followed by four `<section class="group">` blocks: Research,
-Supply Chain, Other fun projects, Tools.
+`<nav class="index">` — followed by five `<section class="group">` blocks: Data Stories,
+Research, Supply Chain, Other fun projects, Tools.
 
 To add an entry:
 

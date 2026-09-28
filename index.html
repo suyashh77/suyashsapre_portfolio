@@ -512,6 +512,7 @@
                     <li><span class="n">03</span><a href="#homedepot-lowes">Home Depot vs Lowe&rsquo;s &mdash; The Customer or the Map?</a></li>
                     <li><span class="n">04</span><a href="#dunkin-starbucks">Dunkin&rsquo; vs Starbucks &mdash; Two Coffee Clocks</a></li>
                     <li><span class="n">05</span><a href="#gyms">Where America Works Out &mdash; Gyms by Card and Phone Data</a></li>
+                    <li><span class="n">06</span><a href="#gas-station-run">The Gas-Station Run &mdash; Receipts, Clustered</a></li>
                 </ol>
 
                 <h2>Research &mdash; Rachunok Lab, NC State ISE</h2>
@@ -590,10 +591,10 @@
                 <p class="note">Walmart and Target are often described as stores for two different Americas. I asked whether card and phone data actually show two different sets of shoppers.</p>
 
                 <h4>How it works</h4>
-                <p class="note">A data-driven article that combines card-panel demographics, store-level card spending and cross-shopping lists, and phone-based visit patterns for 28 chains. Every chart shows the whole field in gray with the two chains picked out in colour.</p>
+                <p class="note">A data-driven article that combines card-panel demographics, store-level card spending and cross-shopping lists, phone-based visit patterns for 28 chains, and a k-means clustering of 1,593 brands by who pays for them. Every chart shows the whole field in gray with the two chains picked out in colour.</p>
 
                 <h4>What it found</h4>
-                <p class="note">55% of Target&rsquo;s card customers also bought at Walmart in the same month. The difference is the trip: a Walmart shopper spent $1,696 there in a year across 27 transactions, a Target shopper $573 across 11. Target leans on Saturdays and December; Walmart gets the weekly run.</p>
+                <p class="note">55% of Target&rsquo;s card customers also bought at Walmart in the same month. The difference is the trip: a Walmart shopper spent $1,696 there in a year across 27 transactions, a Target shopper $573 across 11. Target leans on Saturdays and December; Walmart gets the weekly run. Clustered by who pays, the two chains share a group when brands are split two ways but part at five: Walmart lands with Dollar General and Home Depot, Target with Starbucks and Chick-fil-A.</p>
 
                 <div class="meta">
                     <div class="row"><span class="k">Data</span><span class="v">ConsumerEdge &middot; SafeGraph &middot; Advan &middot; Consumer Profiles (licensed via Dewey)</span></div>
@@ -642,10 +643,10 @@
                 <p class="note">Two coffee chains sell the same daily habit. I asked whether their customers differ, or only the place each chain holds in the day and the week.</p>
 
                 <h4>How it works</h4>
-                <p class="note">Hour-of-day and day-of-week visit shapes across 1,720 chains, store-level card purchase frequency and ticket compared state by state, and card spending that counts Starbucks card and app reloads separately from caf&eacute; purchases.</p>
+                <p class="note">Hour-of-day and day-of-week visit shapes across 1,720 chains, store-level card purchase frequency and ticket compared state by state, and card spending that counts Starbucks card and app reloads separately from caf&eacute; purchases, and an event study of rival store openings with placebo tests.</p>
 
                 <h4>What it found</h4>
-                <p class="note">Dunkin&rsquo; is the cheaper weekday routine: 31.8% of its visits fall between 5 and 10 a.m. (top 4% of chains), and its customers make 2.21 card purchases a month at $9.22. Starbucks peaks at noon, gets more of its visits at the weekend (31.4% vs 29.9%) and averages $12.47. Starbucks reloads ($748M) now exceed direct caf&eacute; card purchases ($682M), so card counts understate its visits.</p>
+                <p class="note">Dunkin&rsquo; is the cheaper weekday routine: 31.8% of its visits fall between 5 and 10 a.m. (top 4% of chains), and its customers make 2.21 card purchases a month at $9.22. Starbucks peaks at noon, gets more of its visits at the weekend (31.4% vs 29.9%) and averages $12.47. Starbucks reloads ($748M) now exceed direct caf&eacute; card purchases ($682M), so card counts understate its visits. When a Starbucks opened within a kilometre of a Dunkin&rsquo;, Dunkin&rsquo;s visits didn&rsquo;t measurably change (224 openings); the rival Starbucks noticed was 7 Brew, about 3% fewer visits within a kilometre.</p>
 
                 <div class="meta">
                     <div class="row"><span class="k">Data</span><span class="v">ConsumerEdge &middot; SafeGraph &middot; Advan &middot; Consumer Profiles (licensed via Dewey)</span></div>
@@ -677,6 +678,31 @@
                     <div class="row"><span class="k">Data</span><span class="v">ConsumerEdge &middot; SafeGraph &middot; Advan &middot; Consumer Profiles (licensed via Dewey) &middot; U.S. Census Bureau</span></div>
                     <div class="row"><span class="k">Links</span><span class="v">
                             <a href="https://suyashh77.github.io/data-stories/gyms/" target="_blank" rel="noopener">Read the story</a>
+                            <a href="https://suyashh77.github.io/data-stories/" target="_blank" rel="noopener">All data stories</a>
+                            <a href="https://github.com/suyashh77/data-stories" target="_blank" rel="noopener">Repository</a>
+                        </span></div>
+                </div>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+            <article id="gas-station-run">
+                <div class="head">
+                    <span class="num">06</span>
+                    <h3>The Gas-Station Run &mdash; Receipts, Clustered</h3>
+                </div>
+
+                <h4>Why</h4>
+                <p class="note">A convenience store is open all day. I asked whether it really sells the same things all day, what a gas-station basket looks like, and what happens when a Sheetz or Wawa opens nearby.</p>
+
+                <h4>How it works</h4>
+                <p class="note">K-means clustering of 2,184 hourly sales mixes from about 980 million receipts, with stability checks; market-basket lift with bootstrap intervals and a timing adjustment; and an event study of Sheetz and Wawa openings in phone-visit data, with placebo tests.</p>
+
+                <h4>What it found</h4>
+                <p class="note">Sorted only by what sold, the day falls into three runs in clock order, and 153 of 168 weekday-hours land in the same group every month. 30.8% of baskets are fuel and nothing else. Coffee and hot food look like a pair but mostly share the morning; coffee and a pastry are a real pair. A new Sheetz or Wawa costs the station within a kilometre about 2% of its visits.</p>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Data</span><span class="v">PDI convenience-store transactions &middot; Advan (licensed via Dewey)</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v">
+                            <a href="https://suyashh77.github.io/data-stories/gas-station-run/" target="_blank" rel="noopener">Read the story</a>
                             <a href="https://suyashh77.github.io/data-stories/" target="_blank" rel="noopener">All data stories</a>
                             <a href="https://github.com/suyashh77/data-stories" target="_blank" rel="noopener">Repository</a>
                         </span></div>

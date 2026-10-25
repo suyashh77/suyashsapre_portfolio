@@ -1,0 +1,136 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TimesFM grocery forecasting: matched-input comparison</title>
+<meta name="description" content="A corrected comparison of TimesFM 3.0 and gradient boosting using the same local sales histories and input types.">
+<style>:root{--ink:#203330;--muted:#52635e;--line:#dce3dd;--green:#14745c}*{box-sizing:border-box}body{margin:0;background:#f6f7f4;color:var(--ink);font:17px/1.65 system-ui,-apple-system,Segoe UI,sans-serif}header,main,footer{max-width:1000px;margin:auto;padding:28px 28px}nav{display:flex;gap:12px 26px;flex-wrap:wrap;font-size:14px}a{color:var(--green);text-underline-offset:3px}h1{font-size:clamp(32px,5vw,48px);line-height:1.15;letter-spacing:-.03em;max-width:830px;margin:34px 0 24px}h2{font-size:26px;line-height:1.25}h3{font-size:20px}p{max-width:850px}section{border-top:1px solid var(--line);padding:26px 0}.summary{background:#e5f0e8;padding:20px 24px;border-radius:6px}.table-wrap{overflow-x:auto;margin:22px 0}table{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}th,td{text-align:right;padding:13px 11px;border-bottom:1px solid var(--line);vertical-align:top}th:first-child,td:first-child{text-align:left}th{border-bottom-color:var(--ink)}.note{font-size:14px;color:var(--muted)}.label{font-size:12px;letter-spacing:.09em;color:var(--green);font-weight:650}footer{border-top:1px solid var(--line);font-size:14px}@media(max-width:600px){header,main,footer{padding:22px 18px}table{font-size:13px}th,td{padding:10px 8px}}</style></head><body>
+<header><nav><a href="initial-study.html">Initial exploration (unequal inputs)</a><a href="https://suyashh77.github.io/suyashsapre_portfolio/">Portfolio</a><a href="https://github.com/suyashh77/retail-demand-timesfm">Code and saved results</a><a href="https://github.com/suyashh77/retail-demand-timesfm/blob/codex/retail-demand-study/docs/MATCHED_COMPARISON.md">Exact comparison methods</a></nav>
+<h1>TimesFM and gradient boosting, given the same local inputs</h1>
+<p class="summary"><strong>Corrected comparison:</strong> With sales and calendar inputs, TimesFM scored 9.68% WAPE and gradient boosting scored 12.30%. This replaces the earlier headline comparison with unequal inputs.</p>
+<p class="note">Historical experiment · Favorita store 1, Quito · Four product groups · 14-day forecasts · Correction on previously examined test dates</p></header>
+<main><section><div class="label">SITUATION AND TASK</div><h2>Does a pretrained model forecast grocery sales well?</h2>
+<p>TimesFM learns patterns from many numerical sequences before it is used on a new forecasting task. Version 3.0 can forecast related series together and use known future inputs. This study checks how those forecasts compare with a conventional model fitted to earlier store sales.</p>
+<p>The initial comparison gave the fitted model promotions and transactions that calendar-only TimesFM did not receive. This follow-up matches the available input types and local history windows before comparing the scores.</p></section>
+<section><div class="label">ANALYSIS</div><h2>Same product groups, local history and forecast dates</h2><p>Both workflows have access to the same four product groups and the same latest 256 daily observations. They predict the same fourteen days at the same twelve weekly test starts. The sales-only pair excludes calendar, promotions and transactions. The calendar pair adds only calendar signals. The full-input pair adds the four promotion series and historical store transactions to both workflows. Future realized transactions and sales are excluded.</p><p>TimesFM uses the saved official checkpoint forecasts, whose inputs have not changed. Its weights remain unchanged. Each gradient boosting model is fitted separately per target and forecast start, using supervised examples drawn entirely from that 256-day window. Each example includes sales summaries for all four groups, a horizon indicator and only the allowed covariates. The 28-day feature warm-up is inside the shared window, leaving fewer labeled training days than 256. Matching available local data does not equate the feature representation, external pretraining, model capacity or fitting procedure.</p><p>Sales can be fractional and may understate demand during stockouts. Future promotion availability is assumed. No future realized sales or transactions are supplied.</p></section>
+<section><div class="label">RESULT</div><h2>Forecast errors for the three matched pairs</h2><p>WAPE adds the size of all forecast mistakes and divides by total recorded sales. Lower is better.</p><div class="table-wrap"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Inputs available to both models</th>
+      <th>TimesFM WAPE</th>
+      <th>Gradient boosting WAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sales histories only</td>
+      <td>10.16%</td>
+      <td>11.98%</td>
+    </tr>
+    <tr>
+      <td>Sales + calendar</td>
+      <td>9.68%</td>
+      <td>12.30%</td>
+    </tr>
+    <tr>
+      <td>Sales + calendar + promotions + past transactions</td>
+      <td>9.99%</td>
+      <td>11.14%</td>
+    </tr>
+  </tbody>
+</table></div><h3>Where the calendar pair did well and poorly</h3><div class="table-wrap"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Product group, calendar pair</th>
+      <th>TimesFM WAPE</th>
+      <th>Gradient boosting WAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>BEVERAGES</td>
+      <td>8.53%</td>
+      <td>9.43%</td>
+    </tr>
+    <tr>
+      <td>BREAD/BAKERY</td>
+      <td>9.74%</td>
+      <td>10.04%</td>
+    </tr>
+    <tr>
+      <td>DAIRY</td>
+      <td>9.26%</td>
+      <td>9.05%</td>
+    </tr>
+    <tr>
+      <td>GROCERY I</td>
+      <td>10.74%</td>
+      <td>15.89%</td>
+    </tr>
+  </tbody>
+</table></div><h3>Full inputs tell a different product-level story</h3><div class="table-wrap"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Product group, full-input pair</th>
+      <th>TimesFM WAPE</th>
+      <th>Gradient boosting WAPE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>BEVERAGES</td>
+      <td>8.59%</td>
+      <td>8.41%</td>
+    </tr>
+    <tr>
+      <td>BREAD/BAKERY</td>
+      <td>10.31%</td>
+      <td>9.34%</td>
+    </tr>
+    <tr>
+      <td>DAIRY</td>
+      <td>9.90%</td>
+      <td>8.74%</td>
+    </tr>
+    <tr>
+      <td>GROCERY I</td>
+      <td>11.16%</td>
+      <td>14.32%</td>
+    </tr>
+  </tbody>
+</table></div><p>With full inputs, gradient boosting did better on three of the four groups. TimesFM did better on grocery I and had lower pooled error. Grocery I accounts for about 44.6% of the scored quantity, so the overall ranking gives that group considerable weight.</p><p class="note">These are the updated product-group results. The earlier ranking against the original boosting baseline is a different comparison.</p></section>
+<section><h2>Does the available history change the comparison?</h2><p>With the corrected calendar boosting representation kept fixed, extending its local window from 256 to 365 days changed WAPE from 12.30% to 10.82%. The latter has more local history than the TimesFM context and is a separate sensitivity check. The original 9.69% boosting score used a different, own-group feature representation, a year of labels and extra covariates. Changes from that old score cannot be attributed solely to removing covariates. See results/matched_inputs/history_sensitivity/ for the forecasts and declared settings.</p></section>
+<section><h2>How well did the uncertainty ranges work?</h2><div class="table-wrap"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Shared inputs</th>
+      <th>TimesFM 80% coverage</th>
+      <th>Boosting 80% coverage</th>
+      <th>TimesFM quantile loss</th>
+      <th>Boosting quantile loss</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Sales histories only</td>
+      <td>88.7%</td>
+      <td>87.2%</td>
+      <td>60.10</td>
+      <td>70.13</td>
+    </tr>
+    <tr>
+      <td>Sales + calendar</td>
+      <td>87.8%</td>
+      <td>83.3%</td>
+      <td>56.78</td>
+      <td>72.82</td>
+    </tr>
+    <tr>
+      <td>Sales + calendar + promotions + past transactions</td>
+      <td>85.1%</td>
+      <td>81.5%</td>
+      <td>58.98</td>
+      <td>68.24</td>
+    </tr>
+  </tbody>
+</table></div><p>Coverage describes how often actual sales fell inside the estimated middle-80% range. A wider range can cover more outcomes. Quantile loss checks all nine predicted quantiles, with lower better. Coverage, width and quantile loss should be considered together.</p><p class="note">TimesFM uses native quantiles. Gradient boosting uses offsets estimated from earlier calibration errors. The procedures differ, and the pooled scores reflect differences in product-group size.</p></section>
+<section><h2>What happened in the ordering simulation?</h2><p>Under the same illustrative weekly-order rule, calendar TimesFM filled 99.47% of the recorded sales quantity and calendar gradient boosting filled 99.65%. Default replay costs were 24,542 and 27,466 illustrative units respectively. Buffers differ by workflow because each is estimated from that workflow's earlier aggregate errors. This is a model-plus-buffer policy comparison, not measured retailer savings. Native daily prediction intervals do not set these buffers.</p><p class="note">The replay omits expiry, capacity, buying costs and terminal valuation. Costs are illustrative units.</p></section>
+<section><h2>What the comparison supports</h2><p>This correction was designed after the original results had been examined. It reuses the same historical test period and does not provide a new untouched validation. There is one store, overlapping forecast windows, assumed-known promotions and possible pretraining overlap. No significance or statistical equivalence claim is made. The fixed boosting settings were inherited from the original run, without a new parameter search.</p><p>The next study should test new stores and periods, compare additional inputs separately, and evaluate shortages and stock held under realistic operating constraints.</p><p><a href="https://github.com/suyashh77/retail-demand-timesfm/blob/codex/retail-demand-study/results/matched_inputs/paired_comparison.csv">Saved paired results</a> · <a href="https://github.com/suyashh77/retail-demand-timesfm/blob/codex/retail-demand-study/results/matched_inputs/review_audit.json">Arithmetic audit</a> · <a href="https://github.com/suyashh77/retail-demand-timesfm/blob/codex/retail-demand-study/docs/MATCHED_COMPARISON.md">Methods and reproduction</a></p></section></main>
+<footer><p>TimesFM forecasts were reused from the recorded official-checkpoint run. All matched gradient boosting models were fitted for this correction. <a href="https://research.google/blog/timesfm-3-a-zero-shot-foundation-model-for-multivariate-forecasting/">Official TimesFM explanation</a> · <a href="https://www.kaggle.com/competitions/store-sales-time-series-forecasting/data">Original data</a></p><p>Downloaded TimesFM 3.0 weights have a non-commercial, non-production license. This page presents saved research outputs.</p></footer></body></html>

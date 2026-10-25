@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Testing TimesFM 3.0 on grocery sales | Suyash Sapre</title>
+<meta name="description" content="A single-store experiment comparing TimesFM 3.0 with weekly forecasts and gradient boosting, including product-level results, prediction intervals, methods and limitations.">
+<link rel="canonical" href="https://suyashh77.github.io/suyashsapre_portfolio/timesfm-retail/">
+<meta property="og:type" content="article"><meta property="og:title" content="Testing TimesFM 3.0 on grocery sales">
+<meta property="og:description" content="A pretrained model came close to a fitted baseline. What did the product-level forecasts and uncertainty estimates reveal?">
+<meta property="og:url" content="https://suyashh77.github.io/suyashsapre_portfolio/timesfm-retail/"><meta name="author" content="Suyash Sapre">
+<style>
+        :root {
+            --text: #16181d;
+            --text-2: #4a4f57;
+            --text-3: #82888f;
+            --rule: #e3e5e8;
+            --rule-2: #f0f1f3;
+            --link: #1d4ed8;
+            --bg: #ffffff;
+            --bg-2: #f7f8f9;
+            --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            font-size: 16.5px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .wrap {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        a {
+            color: var(--link);
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            text-decoration-thickness: 1px;
+        }
+
+        a:hover {
+            text-decoration-thickness: 2px;
+        }
+
+        code {
+            font-family: var(--mono);
+            font-size: 0.87em;
+            color: var(--text-2);
+        }
+
+        em {
+            font-style: italic;
+        }
+
+        /* ---------- top bar ---------- */
+        .topbar {
+            border-bottom: 1px solid var(--rule);
+            font-size: 0.9rem;
+        }
+
+        .topbar .wrap {
+            padding-top: 16px;
+            padding-bottom: 16px;
+        }
+
+        .topbar .name {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* ---------- header ---------- */
+        header.page {
+            padding: 56px 0 8px;
+        }
+
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .contact {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 18px;
+            margin-top: 18px;
+            font-size: 0.92rem;
+        }
+
+        .lede {
+            color: var(--text-2);
+            margin-top: 14px;
+            font-size: 1rem;
+        }
+
+        .lede+.lede {
+            margin-top: 12px;
+        }
+
+        /* ---------- index ---------- */
+        .index {
+            margin: 40px 0 8px;
+            border-top: 1px solid var(--rule);
+            padding-top: 28px;
+        }
+
+        .index h2 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            margin-bottom: 10px;
+        }
+
+        .index h2:not(:first-of-type) {
+            margin-top: 26px;
+        }
+
+        .index ol {
+            list-style: none;
+        }
+
+        .index li {
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            padding: 3px 0;
+            font-size: 0.97rem;
+        }
+
+        .index .n {
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            color: var(--text-3);
+            min-width: 22px;
+        }
+
+        .index li {
+            align-items: flex-start;
+        }
+
+        .index .n {
+            padding-top: 2px;
+        }
+
+
+
+        /* ---------- sections ---------- */
+        section.group {
+            margin-top: 64px;
+        }
+
+        .group-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--text);
+        }
+
+        .group-note {
+            color: var(--text-3);
+            font-size: 0.88rem;
+            margin-top: 10px;
+        }
+
+        /* ---------- entries ---------- */
+        article {
+            padding: 36px 0;
+            border-bottom: 1px solid var(--rule);
+            scroll-margin-top: 24px;
+        }
+
+        .head {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 8px 12px;
+        }
+
+        .num {
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            color: var(--text-3);
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+
+
+        .problem {
+            margin-top: 12px;
+        }
+
+        h4 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            margin: 22px 0 6px;
+        }
+
+        p+p {
+            margin-top: 12px;
+        }
+
+        .note {
+            color: var(--text-2);
+        }
+
+        .fine {
+            color: var(--text-3);
+            font-size: 0.88rem;
+        }
+
+        .callout {
+            border-left: 2px solid var(--rule);
+            padding-left: 16px;
+            margin-top: 14px;
+            color: var(--text-2);
+        }
+
+        ul.pts {
+            list-style: none;
+            color: var(--text-2);
+            margin-top: 8px;
+        }
+
+        ul.pts li {
+            padding-left: 16px;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        ul.pts li::before {
+            content: "·";
+            position: absolute;
+            left: 4px;
+            color: var(--text-3);
+        }
+
+
+        b {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .meta {
+            margin-top: 20px;
+            font-size: 0.88rem;
+            color: var(--text-3);
+        }
+
+        .meta .row {
+            display: flex;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .meta .k {
+            min-width: 62px;
+            flex-shrink: 0;
+        }
+
+        .meta .v {
+            color: var(--text-2);
+        }
+
+        .meta a {
+            margin-right: 14px;
+            white-space: nowrap;
+        }
+
+        /* ---------- table ---------- */
+        .scroll {
+            overflow-x: auto;
+            margin: 14px 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 460px;
+            font-size: 0.9rem;
+        }
+
+        th,
+        td {
+            text-align: right;
+            padding: 6px 10px;
+            border-bottom: 1px solid var(--rule-2);
+            font-variant-numeric: tabular-nums;
+        }
+
+        th:first-child,
+        td:first-child {
+            text-align: left;
+        }
+
+        thead th {
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-3);
+            font-weight: 600;
+            border-bottom: 1px solid var(--text);
+        }
+
+        tr.hl td {
+            font-weight: 600;
+            background: var(--bg-2);
+        }
+
+        tr.oracle td {
+            color: var(--text-3);
+            font-style: italic;
+        }
+
+        /* ---------- pre ---------- */
+        pre {
+            font-family: var(--mono);
+            font-size: 0.78rem;
+            line-height: 1.65;
+            color: var(--text-2);
+            background: var(--bg-2);
+            border: 1px solid var(--rule);
+            border-radius: 4px;
+            padding: 14px 16px;
+            overflow-x: auto;
+            margin: 14px 0;
+        }
+
+        /* ---------- details ---------- */
+        details {
+            margin-top: 18px;
+        }
+
+        summary {
+            cursor: pointer;
+            font-size: 0.88rem;
+            color: var(--link);
+            list-style: none;
+            width: fit-content;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::before {
+            content: "▸ ";
+        }
+
+        details[open] summary::before {
+            content: "▾ ";
+        }
+
+        summary:hover {
+            text-decoration: underline;
+        }
+
+        .video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            margin-top: 12px;
+            border: 1px solid var(--rule);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .video iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .slides {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .slides img {
+            width: 100%;
+            display: block;
+            border: 1px solid var(--rule);
+            border-radius: 3px;
+        }
+
+        /* ---------- interests ---------- */
+        .interests {
+            margin-top: 8px;
+        }
+
+        .interests dt {
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        .interests dd {
+            color: var(--text-2);
+        }
+
+        blockquote {
+            border-left: 2px solid var(--rule);
+            padding-left: 16px;
+            margin-top: 16px;
+            margin-bottom: 16px;
+            color: var(--text-2);
+        }
+
+        .totop {
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 0.85rem;
+        }
+
+        footer {
+            border-top: 1px solid var(--rule);
+            margin-top: 64px;
+            padding: 28px 0 64px;
+            font-size: 0.88rem;
+            color: var(--text-3);
+        }
+
+        footer .wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: baseline;
+        }
+
+        footer .sp {
+            margin-left: auto;
+        }
+
+        @media (max-width: 600px) {
+            header.page {
+                padding-top: 36px;
+            }
+
+
+            .index li {
+                flex-wrap: wrap;
+            }
+        }
+
+
+header.study {padding:42px 0 28px;border-bottom:1px solid var(--rule)}
+.study h1 {max-width:650px}.eyebrow {color:var(--text-2);font-size:.85rem;margin:0 0 14px}
+.study .lede {font-size:1.08rem;line-height:1.65}.study-links {display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:22px;font-size:.94rem}
+.prose {padding-bottom:44px}.prose h2 {font-size:1.42rem;line-height:1.35;letter-spacing:-.015em;margin:44px 0 20px;scroll-margin-top:20px}
+.prose h3 {font-size:1.1rem;line-height:1.4;margin:28px 0 12px}.prose p {margin:0 0 16px}
+.prose ol,.prose ul {padding-left:22px;margin:20px 0}.prose li {margin:0 0 10px}
+.prose a {overflow-wrap:anywhere}.table-scroll {overflow-x:auto;margin:24px 0}
+.prose table {width:100%;border-collapse:collapse;font-size:.94rem;line-height:1.5}
+.prose th,.prose td {padding:12px 10px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+.prose th {border-bottom-color:var(--text);font-weight:600}.prose th:last-child,.prose td:last-child {text-align:right}
+.study-note {background:var(--bg-2);padding:18px 20px;margin:28px 0 0;font-size:.93rem;color:var(--text-2)}
+.study-nav {display:flex;flex-wrap:wrap;gap:10px 24px;margin:26px 0;font-size:.92rem}
+.study-footer {border-top:1px solid var(--rule);padding:26px 0 40px;font-size:.9rem;color:var(--text-2)}
+@media(max-width:520px){header.study{padding-top:30px}.study h1{font-size:1.65rem}.prose h2{font-size:1.25rem}.prose table{font-size:.85rem}}
+</style></head><body>
+<div class="topbar"><div class="wrap"><a class="name" href="../">Suyash Sapre</a> / Research notes</div></div>
+<header class="study"><div class="wrap"><p class="eyebrow">RETAIL FORECASTING · OCTOBER 25, 2026</p>
+<h1>Testing TimesFM 3.0 on grocery sales</h1>
+<p class="lede">Could a model trained on many time series provide useful forecasts for a grocery store without being trained specifically for that store?</p>
+<div class="study-links"><a href="forecasts.html">Explore the saved forecasts</a><a href="https://github.com/suyashh77/retail-demand-timesfm">Project code and results</a><a href="https://github.com/suyashh77/retail-demand-timesfm/blob/codex/retail-demand-study/docs/METHODS.md">Exact methods</a><a href="https://github.com/suyashh77/retail-demand-timesfm/blob/codex/retail-demand-study/docs/REVIEW.md">Evidence review</a></div>
+<p class="study-note"><strong>The observed result:</strong> calendar-aware TimesFM scored 9.68% forecast error, compared with 9.69% for gradient boosting and 12.56% for repeating the previous week. This is a historical, single-store experiment. The inputs differ between workflows, and the evidence does not establish a general winner.</p>
+</div></header>
+<main class="wrap prose"><p class="study-note"><strong>Initial exploration with unequal inputs.</strong> <a href="./">Current matched-input correction</a> replaces the original headline comparison below.</p><nav class="study-nav" aria-label="Study sections"><a href="#situation">Situation</a><a href="#task">Task</a><a href="#analysis">Analysis</a><a href="#result">Result</a></nav>
+
+<h2 id="situation">Situation: I wanted to test the model's promise on a real problem</h2>
+<p>Google describes TimesFM as a model that can forecast a sequence of numbers using patterns learned from many other sequences. Give it daily sales, for example, and it predicts the sales that come next. The original TimesFM research appeared at ICML in 2024. This project uses the later TimesFM 3.0 release, which also accepts related sales histories and extra information about the past or future. [1, 2]</p>
+<p>A language model learns by predicting tokens, which are pieces of text. TimesFM learns patterns in numerical sequences. Google reports that version 3.0 was trained on over a trillion real and synthetic time points. It groups observations into patches of 32 time points and uses them to predict future values. Version 3.0 can forecast a horizon in one pass, using related series and known future inputs. The comparison with a language model explains learning patterns across tasks; it does not imply human reasoning or reliable forecasts on every new dataset. [2]</p>
+<p>The attraction is practical. A retailer can try an already trained model without first training a new forecasting model for that retailer's data. Google calls this <strong>zero-shot forecasting</strong>. The model still needs useful input data, and its forecasts still need to be checked.</p>
+<p>Retail demand was a useful place to investigate this. A store has to order stock before it knows how much customers will buy. Ordering too little can leave shelves empty. Ordering too much ties up stock and can increase waste. Sales also change with the day of the week, holidays, and promotions.</p>
+<p>TimesFM can also be tested on other quantities recorded over time, such as electricity use, website traffic, or workload. Its usefulness has to be established for each application. Predicting a stable weekly sales pattern and predicting an unexpected disruption are different challenges.</p>
+<p>I wanted to see how the model behaved on actual grocery sales and whether useful forecasts led to sensible inventory decisions.</p>
+<h2 id="task">Task: compare it with understandable alternatives</h2>
+<p>The aim was to compare TimesFM with a simple weekly forecast and a conventional machine-learning model, then check whether adding information helped. I also wanted to follow the forecasts into a small inventory simulation.</p>
+<p>There are several established ways to forecast retail sales. A store might begin by expecting next Wednesday to resemble last Wednesday. Exponential smoothing estimates a changing sales level and seasonal pattern. ARIMA uses relationships between earlier observations and their changes. Regression and tree-based models can learn from inputs such as recent sales, weekday, and promotion plans. These approaches fit their patterns to the available business data. [3]</p>
+<p>This project tests two alternatives: the weekly-repeat rule and gradient boosting, a machine-learning method that combines many small decision rules. ARIMA and exponential smoothing provide background context here. They were not run, so this experiment cannot establish that TimesFM beats them.</p>
+<p>The main difference in this comparison is how the models obtain their patterns. The gradient boosting model learns from this retail dataset. TimesFM arrives with patterns learned during Google's earlier training. In this project, its model weights remain unchanged.</p>
+<h2 id="analysis">Analysis: use real sales, hide the answers, and compare the predictions</h2>
+<h3>The data</h3>
+<p>I used the public Corporacion Favorita Store Sales dataset from Ecuador. The original competition data covers many stores and product families. I chose store 1 in Quito and four groups: beverages, bread/bakery, dairy, and grocery I. [4]</p>
+<p>These are groups of products, rather than individual products. The sales field measures quantity and can contain fractions because some items are sold by weight. It does not measure revenue. Recorded sales may also understate what customers wanted if the store ran out of stock.</p>
+<p>The prepared panel covers January 2015 to August 2017. It contains 3,824 recorded sales values. Eight missing Christmas entries remain marked as missing in the exported data. Where a missing value falls inside a model's history, the input preparation uses the previous same weekday. It does not borrow a later observation to fill the gap.</p>
+<p>The extra information includes daily store transaction counts, a calendar, and the number of promoted items in each group. Transaction counts are a rough indicator of store activity, rather than a direct count of visitors. The data contains no product prices.</p>
+<p>Promotion records need special care. The dataset says what was promoted, but it does not preserve dated versions of the promotion plans. The experiment therefore <strong>assumes future promotions were already planned and known</strong> when making the forecast. A real deployment would need to verify that assumption. Actual future transaction counts are never supplied.</p>
+<h3>The methods</h3>
+<p>The weekly-repeat method copies the latest seven observed days into the next two weeks. It never uses the actual first forecast week to construct the second.</p>
+<p>Gradient boosting is fitted separately for each product group at every forecast start. It uses earlier labeled examples from the preceding year. Its inputs describe recent sales, patterns over the last four weeks, historical transactions, calendar information, and the assumed-known promotions. Its settings are fixed throughout this experiment. [5]</p>
+<p>TimesFM receives the latest 256 days of sales and predicts the next 14 days. I tested four versions of its inputs. One forecasts each group separately. Another forecasts the four groups together. The third adds calendar information. The fourth also adds promotion counts and historical transactions. "Together" means the model can consider the other groups' histories while predicting each group. It still produces a separate forecast for each one.</p>
+<p>Gradient boosting receives promotions and transaction summaries absent from calendar-only TimesFM. These workflows also differ in history length and feature representation. Their overall comparison cannot isolate the forecasting architecture. The full-input TimesFM configuration receives the same raw input types as gradient boosting, with a different representation.</p>
+<p>TimesFM also returns a range of possible outcomes for each future day. In the charts, the shaded band runs from its estimated 10th percentile to its estimated 90th percentile. That is intended to contain the middle 80% of outcomes for that day. It is not a promise that every observation will fall inside it.</p>
+<h3>The test</h3>
+<p>The experiment follows time in order. On May 17, 2017, for example, sales and transaction inputs stop on May 16. The models predict May 17 through May 30. A week later, the next forecast can use the observations that have become available in the meantime.</p>
+<p>There are twelve weekly test starts, from May 17 to August 2. Their forecasts extend through August 15. Because each prediction covers two weeks and starts one week apart, some target dates are scored twice at different forecast distances. The 672 scored group/day/forecast-distance combinations per method are therefore not 672 independent experiments. A separate score checks only the first forecast week, giving 336 observations without overlapping target dates.</p>
+<p>Before testing, twelve earlier forecast starts were used to estimate the baselines' forecast ranges and the extra stock in the inventory policy. The last of those earlier target dates is May 16. This earlier calculation does not train or fine-tune TimesFM.</p>
+<p>The primary score is <strong>total absolute forecast error divided by total recorded sales</strong>, usually called WAPE. For example, total absolute mistakes of 1,000 against total recorded sales of 10,000 would give a 10% score. That example explains the calculation. It does not mean every individual prediction is within 10% of the answer.</p>
+<h2 id="result">Result: useful forecasts, with several limits</h2>
+<h3>Calendar information helped; the full set of inputs did not</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Method</th>
+<th style="text-align:right">Forecast error, lower is better</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Repeat the previous week</td>
+<td style="text-align:right">12.56%</td>
+</tr>
+<tr>
+<td>Gradient boosting, fitted to earlier retail data</td>
+<td style="text-align:right">9.69%</td>
+</tr>
+<tr>
+<td>TimesFM, each group separately</td>
+<td style="text-align:right">10.20%</td>
+</tr>
+<tr>
+<td>TimesFM, groups together</td>
+<td style="text-align:right">10.16%</td>
+</tr>
+<tr>
+<td>TimesFM, groups together with calendar</td>
+<td style="text-align:right">9.68%</td>
+</tr>
+<tr>
+<td>TimesFM, calendar, promotions, and past transactions</td>
+<td style="text-align:right">9.99%</td>
+</tr>
+</tbody>
+</table></div>
+<p>The calendar version of TimesFM reduced error by 22.9% relative to repeating the previous week. The gradient boosting result was almost the same as TimesFM's result. Their overall scores differ by about 0.01 percentage points. That small observed difference does not establish a reliable advantage, and no statistical equivalence test was conducted.</p>
+<p>TimesFM with calendar information had lower error than gradient boosting at seven of the twelve forecast starts. The difference changed direction across the test. It would be misleading to describe the two models as performing identically every week.</p>
+<p>Forecasting the groups together produced only a small improvement over forecasting them separately. Adding calendar information helped further. The final version, with promotions and past transactions, had higher error than the calendar version. That final comparison changes two sets of inputs at once. It cannot tell us which input caused the difference or why.</p>
+<h3>The strongest method depended on the product group</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Product group</th>
+<th style="text-align:right">TimesFM with calendar</th>
+<th style="text-align:right">Gradient boosting</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Beverages</td>
+<td style="text-align:right">8.53%</td>
+<td style="text-align:right">9.60%</td>
+</tr>
+<tr>
+<td>Bread/bakery</td>
+<td style="text-align:right">9.74%</td>
+<td style="text-align:right">12.66%</td>
+</tr>
+<tr>
+<td>Dairy</td>
+<td style="text-align:right">9.26%</td>
+<td style="text-align:right">7.94%</td>
+</tr>
+<tr>
+<td>Grocery I</td>
+<td style="text-align:right">10.74%</td>
+<td style="text-align:right">9.83%</td>
+</tr>
+</tbody>
+</table></div>
+<p>TimesFM did better on beverages and bread/bakery. Gradient boosting did better on dairy and grocery I. The overall score is also affected by volume: beverages and grocery I account for about 82% of the recorded quantity in the scored forecasts. A reader should check the group-level results before treating the overall ranking as an answer for every product.</p>
+<p>There were large individual misses. In the forecast made on August 2, calendar-aware TimesFM predicted about 2,120 beverage sales units for August 11. The recorded value was 1,006. Its estimated middle-80% range was about 1,595 to 2,601, so the observation fell below that range. This is a documented failure case. This analysis does not identify its cause.</p>
+<p>Across all test forecasts, that model's middle-80% band contained 87.8% of recorded observations, compared with 86.2% for gradient boosting. Both covered more outcomes than their stated 80%. Coverage alone cannot establish which uncertainty estimate is better. Calendar TimesFM's average range was narrower, 573.67 versus 615.68 source quantity units. Mean pinball loss across the nine predicted quantiles was 56.78 versus 56.67, with lower better. This score penalizes errors in the predicted quantiles. The results give no clear overall uncertainty winner, and pooled scores reflect the groups' different scales. Requesting prediction intervals does not itself improve the point forecast.</p>
+<h3>Inventory results answered a different question</h3>
+<p>I then simulated a store that orders once a week and receives deliveries seven days later. Each policy uses its next fourteen days of point forecasts plus extra stock estimated from earlier fourteen-day forecast mistakes. All policies start with the same inventory.</p>
+<p>The extra-stock calculation uses errors in the <strong>total sales over fourteen days</strong>. It does not add fourteen daily upper forecasts and call their sum a fourteen-day percentile. TimesFM's daily probability forecasts are evaluated separately. They are not the direct basis of the inventory buffer in this experiment.</p>
+<p>Under a holding charge of 0.01 illustrative cost units per unit of stock per day and an unmet-sales penalty of 1 unit, TimesFM with the groups together had the lowest simulated cost. It was 20.4% below the weekly-repeat policy. It fulfilled 99.73% of the recorded sales quantity, compared with 98.61% for that baseline.</p>
+<p>These are simulated outcomes. They are not measured savings for Favorita. The policy uses recorded sales as a substitute for demand and leaves out buying costs, delivery capacity, expiry, and the value of stock at the end. Product-group quantities are also not financially interchangeable. When the holding charge rises from 0.01 to 0.05, the calendar version becomes the lowest-cost policy among the tested methods. The cost assumption matters.</p>
+<p>The model with the lowest forecast error was therefore different from the model with the lowest cost in the default simulation. The size of earlier total-sales mistakes affects the safety stock, which changes the inventory result.</p>
+<h3>What I would claim from this experiment</h3>
+<p>On this store and test period, pretrained TimesFM 3.0 produced forecasts close to a fitted gradient boosting baseline, with useful improvement over the weekly-repeat rule. Calendar information helped. Supplying more inputs did not improve the best TimesFM result.</p>
+<p>That is evidence for testing the model as a forecasting candidate. It does not establish superiority across retail, a causal effect of calendar or promotions, or readiness for production. The public dataset could overlap the model's earlier training data, whose full history cannot be independently audited here. "Zero-shot" describes the absence of task-specific fitting in this project.</p>
+<p>I would first match the raw input sets and document the different history budgets, then add promotions and historical transactions separately. Repeating across stores and untouched periods would test whether the product-group differences persist. I would also add seasonal statistical models and use timestamped promotion plans. For inventory, the next study should compare extra-stock methods directly under the same ordering rule, use a longer calibration history and include realistic retailer constraints. That would test whether better uncertainty estimates improve decisions about shortages and stock held.</p>
+<h2 id="sources-and-reproducibility">Sources and reproducibility</h2>
+<p>The repository contains the experiment code, saved predictions and scores, a notebook, and tests for future-input handling and inventory balance. <code>docs/METHODS.md</code> records the exact setup. <code>results/academic_audit.json</code> confirms that the published scores were recomputed from the saved predictions and inventory replay.</p>
+<ol>
+<li>Das, Kong, Sen, and Zhou. <a href="https://proceedings.mlr.press/v235/das24c.html">A decoder-only foundation model for time-series forecasting</a>. ICML, 2024. This is the original TimesFM paper, not a peer-reviewed report of the specific 3.0 release.</li>
+<li>Google Research. <a href="https://research.google/blog/timesfm-3-a-zero-shot-foundation-model-for-multivariate-forecasting/">TimesFM 3 release explanation</a>, <a href="https://github.com/google-research/timesfm">official source</a>, and <a href="https://huggingface.co/google/timesfm-3.0-pytorch">3.0 checkpoint</a>. Release documentation supports the version-specific capabilities described here.</li>
+<li>Hyndman and Athanasopoulos. <a href="https://otexts.com/fpp3/">Forecasting: Principles and Practice</a>. Background on seasonal forecasts, exponential smoothing, ARIMA, and evaluation over time.</li>
+<li>Corporacion Favorita. <a href="https://www.kaggle.com/competitions/store-sales-time-series-forecasting/data">Store Sales competition data</a>, accessed through a <a href="https://huggingface.co/datasets/t4tiana/store-sales-time-series-forecasting">public mirror</a>. Immutable download revisions and checksums are recorded in the project.</li>
+<li>Scikit-learn. <a href="https://scikit-learn.org/1.8/modules/generated/sklearn.ensemble.HistGradientBoostingRegressor.html">Histogram-based gradient boosting</a>. The recorded run used version 1.8.0.</li>
+</ol>
+<p>The downloadable TimesFM 3.0 weights have a non-commercial, non-production license. The original data has separate terms. Raw data and weights are excluded from the GitHub repository. The code downloads them from their sources for reproduction.</p>
+
+<h2 id="review">Checks and further review</h2>
+<p>The latest review checked 8,064 saved forecast rows and 2,016 inventory rows using a separate arithmetic implementation. The six integrity tests and report-control checks also pass. These checks support the saved calculations. They do not resolve the study's data-availability and generalization limits.</p>
+<p>Read the <a href="https://github.com/suyashh77/retail-demand-timesfm/blob/codex/retail-demand-study/docs/REVIEW.md">evidence review</a> and <a href="https://github.com/suyashh77/retail-demand-timesfm/blob/codex/retail-demand-study/results/review_audit.json">saved arithmetic checks</a>.</p>
+</main><footer class="study-footer"><div class="wrap"><p><a href="../#timesfm-retail">Back to the portfolio</a> · <a href="forecasts.html">Explore forecasts</a></p><p>An exploratory research implementation developed with an AI coding assistant. The downloadable model weights are licensed for non-commercial, non-production use.</p></div></footer>
+</body></html>

@@ -514,6 +514,7 @@
                     <li><span class="n">05</span><a href="#gyms">Where America Works Out &mdash; Gyms by Card and Phone Data</a></li>
                     <li><span class="n">06</span><a href="#gas-station-run">The Gas-Station Run &mdash; Receipts, Clustered</a></li>
                     <li><span class="n">07</span><a href="#covid-groceries">Groceries Left the City &mdash; North Carolina, 2017&ndash;2026</a></li>
+                    <li><span class="n">08</span><a href="#timesfm-retail">Testing TimesFM 3.0 on grocery sales</a></li>
                 </ol>
 
                 <h2>Research &mdash; Rachunok Lab, NC State ISE</h2>
@@ -736,6 +737,25 @@
                 </div>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
+
+            <article id="timesfm-retail">
+                <div class="head"><span class="num">08</span><h3>Testing TimesFM 3.0 on grocery sales</h3></div>
+                <h4>Situation</h4>
+                <p class="note">I heard about Google's TimesFM 3.0 and wanted to examine the idea of a "ChatGPT moment" for time-series forecasting. Could an already trained model forecast grocery sales without being trained specifically for the store?</p>
+                <h4>Task</h4>
+                <p class="note">Compare its accuracy and uncertainty estimates with repeating last week's sales and gradient boosting fitted to earlier data, then examine what the forecasts imply for stock orders.</p>
+                <h4>Analysis</h4>
+                <p class="note">Four product groups at one Favorita store in Quito. Each TimesFM forecast used 256 days of history to predict fourteen days, tested at twelve weekly starts. I compared separate and joint forecasts, added calendar information, then promotions and past transactions. TimesFM's weights stayed unchanged.</p>
+                <h4>Result</h4>
+                <p class="note">Calendar-aware TimesFM scored <b>9.68% total forecast error</b>, compared with <b>9.69%</b> for gradient boosting and <b>12.56%</b> for the weekly rule. Error is total absolute mistakes divided by total recorded sales. TimesFM did better on beverages and bread/bakery, while gradient boosting did better on dairy and grocery I. Adding promotions and past transactions together raised TimesFM's error to 9.99%.</p>
+                <p class="note">There was no clear overall winner on uncertainty estimates. This remains a single-store study with overlapping test windows, unequal inputs and possible pretraining overlap. Future promotion availability was assumed. The next comparison should match inputs and repeat on new stores and periods.</p>
+                <div class="meta">
+                    <div class="row"><span class="k">Scale</span><span class="v">4 product groups · 12 weekly test starts · 14-day forecasts · 6 configurations</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v"><a href="timesfm-retail/">Full study</a> <a href="timesfm-retail/forecasts.html">Explore forecasts</a> <a href="https://github.com/suyashh77/retail-demand-timesfm">Code and results</a> <a href="https://github.com/suyashh77/retail-demand-timesfm/blob/codex/retail-demand-study/docs/METHODS.md">Methods</a> <a href="https://github.com/suyashh77/retail-demand-timesfm/blob/codex/retail-demand-study/docs/REVIEW.md">Evidence review</a></span></div>
+                </div>
+                <a class="totop" href="#top">↑ Index</a>
+            </article>
+
         </div>
     </section>
 

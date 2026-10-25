@@ -42,3 +42,7 @@ where the limits are worth stating up front.
 
 Push to `main`. GitHub Pages serves it at
 <https://suyashh77.github.io/suyashsapre_portfolio/>.
+
+## TimesFM study
+
+`timesfm-retail/index.html` contains the full Situation, Task, Analysis and Result account. `timesfm-retail/forecasts.html` explores the saved experiment outputs. The article links to exact methods, evidence review, code and saved results in [retail-demand-timesfm](https://github.com/suyashh77/retail-demand-timesfm). Both pages are static and need no server-side inference or model weights.

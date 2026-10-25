@@ -515,6 +515,7 @@
                     <li><span class="n">06</span><a href="#gas-station-run">The Gas-Station Run &mdash; Receipts, Clustered</a></li>
                     <li><span class="n">07</span><a href="#covid-groceries">Groceries Left the City &mdash; North Carolina, 2017&ndash;2026</a></li>
                     <li><span class="n">08</span><a href="#timesfm-retail">Testing TimesFM 3.0 on grocery sales</a></li>
+                    <li><span class="n">09</span><a href="#tabfm-spending">Testing TabFM on college spending</a></li>
                 </ol>
 
                 <h2>Research &mdash; Rachunok Lab, NC State ISE</h2>
@@ -754,6 +755,21 @@
                     <div class="row"><span class="k">Links</span><span class="v"><a href="timesfm-retail/">Full study</a> <a href="timesfm-retail/forecasts.html">Matched forecasts</a> <a href="https://github.com/suyashh77/retail-demand-timesfm">Code and results</a> <a href="https://github.com/suyashh77/retail-demand-timesfm/blob/codex/retail-demand-study/docs/MATCHED_COMPARISON.md">Methods</a> <a href="https://github.com/suyashh77/retail-demand-timesfm/blob/codex/retail-demand-study/docs/REVIEW.md">Evidence review</a></span></div>
                 </div>
                 <a class="totop" href="#top">↑ Index</a>
+            </article>
+
+
+            <article id="tabfm-spending">
+                <div class="head"><span class="num">09</span><h3>Testing TabFM on college spending</h3></div>
+                <h4>Why</h4>
+                <p class="note">Reading about TimesFM led me to TabFM and a related question: where can a frozen foundation model help with tables, and where does a fitted model do better? I used four years of college spending that I had categorized manually.</p>
+                <h4>How it works</h4>
+                <p class="note">The reconciled selection has 2,499 expenses across nine categories. Five random 80/20 splits each supplied 1,999 labeled examples and held out 500. I compared full and compressed character-text features, description-disjoint and future-year holdouts, context budgets, human edits, and validation-selected review thresholds. Seven further TabFM runs changed headers or removed description information.</p>
+                <h4>What it found</h4>
+                <p class="note">Mean random accuracy was <b>87.2% for TabFM</b>, 84.7% for a forest using the same compressed inputs, and 88.4% for a full-text forest. Removing or misleading headers preserved every prediction and class probability. With only amount and month, TabFM scored 54.4% versus the fixed forest's 40.2% on one split. The full-text forest remained stronger on new description groups and the 2026 holdout.</p>
+                <div class="meta">
+                    <div class="row"><span class="k">Scope</span><span class="v">One private, partly edited ledger. Exploratory comparisons, one CPU ensemble member, no untouched external confirmation.</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v"><a href="tabfm-spending/">Full study</a> <a href="tabfm-spending/methods.html">Methods and tables</a> <a href="https://github.com/suyashh77/tabfm-spending-categories">Code only</a></span></div>
+                </div>
             </article>
 
         </div>

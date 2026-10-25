@@ -46,3 +46,8 @@ Push to `main`. GitHub Pages serves it at
 ## TimesFM study
 
 `timesfm-retail/index.html` contains the full Situation, Task, Analysis and Result account. `timesfm-retail/forecasts.html` explores the saved experiment outputs. The article links to exact methods, evidence review, code and saved results in [retail-demand-timesfm](https://github.com/suyashh77/retail-demand-timesfm). Both pages are static and need no server-side inference or model weights.
+
+
+## TabFM spending study
+
+`tabfm-spending/index.html` gives the STAR research answer and controlled header/information tests. `tabfm-spending/methods.html` contains the full methods and aggregate tables. Its three local chart assets contain aggregate comparisons only. Private financial inputs and row-level predictions are not part of the site. The code-only research repository is [tabfm-spending-categories](https://github.com/suyashh77/tabfm-spending-categories).

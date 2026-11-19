@@ -6,3 +6,5 @@
 # Environment files
 *.env
 *.env.*
+
+legacy/

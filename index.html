@@ -516,9 +516,18 @@
                     <li><span class="n">07</span><a href="#covid-groceries">Groceries Left the City &mdash; North Carolina, 2017&ndash;2026</a></li>
                     <li><span class="n">08</span><a href="#timesfm-retail">Testing TimesFM 3.0 on grocery sales</a></li>
                     <li><span class="n">09</span><a href="#tabfm-spending">Testing TabFM on college spending</a></li>
+                    <li><span class="n">10</span><a href="#rdu-delay">Forecasting RDU flight delays the night before</a></li>
+                    <li><span class="n">11</span><a href="#job-market">Engineering graduates vs entry-level job postings</a></li>
                 </ol>
 
-                <h2>Research &mdash; Rachunok Lab, NC State ISE</h2>
+                                <h2>Industry experience &mdash; Sourcing &amp; operations</h2>
+                <ol>
+                    <li><span class="n">E1</span><a href="#lowes-rfp">Lowe’s &mdash; Retail Facilities Electrical &amp; Lighting RFP ($10&ndash;16M/yr)</a></li>
+                    <li><span class="n">E2</span><a href="#upl-network">UPL &mdash; Multi-Warehouse Network &amp; SKU Placement Analysis</a></li>
+                    <li><span class="n">E3</span><a href="#david-phillips">David Phillips &mdash; Master Catalog Data &amp; Governance Audit</a></li>
+                </ol>
+
+<h2>Research &mdash; Rachunok Lab, NC State ISE</h2>
                 <ol>
                     <li><span class="n">R1</span><a href="#scraper">Google Maps Review Scraper &mdash; NC food access data</a></li>
                     <li><span class="n">R2</span><a href="#geomatch">GeoMatch</a></li>
@@ -535,19 +544,21 @@
                     <li><span class="n">05</span><a href="#risk-intelligence">Supply Chain Risk Intelligence</a></li>
                     <li><span class="n">06</span><a href="#stockout-predictor">Commodity Stockout Risk Platform</a></li>
                     <li><span class="n">07</span><a href="#policypulse">PolicyPulse</a></li>
+                    <li><span class="n">08</span><a href="#time-study-app">Time-Study App &mdash; Lenovo senior design</a></li>
                 </ol>
 
                 <h2>Other fun projects</h2>
                 <ol>
-                    <li><span class="n">08</span><a href="#garmin-wrapped">Garmin Wrapped</a></li>
-                    <li><span class="n">09</span><a href="#wolfattend">WolfAttend</a></li>
+                    <li><span class="n">09</span><a href="#garmin-wrapped">Garmin Wrapped</a></li>
+                    <li><span class="n">10</span><a href="#wolfattend">WolfAttend</a></li>
+                    <li><span class="n">11</span><a href="#voice-memory">Voice &amp; Memory &mdash; a transcriber that learns my words</a></li>
                 </ol>
 
                 <h2>Tools</h2>
                 <ol>
-                    <li><span class="n">10</span><a href="#payment-tracker">Payment Tracker</a></li>
-                    <li><span class="n">11</span><a href="#youtube-notes">YouTube Notes Taker</a></li>
-                    <li><span class="n">12</span><a href="#spotify-comparator">Spotify Library Comparator</a></li>
+                    <li><span class="n">12</span><a href="#payment-tracker">Payment Tracker</a></li>
+                    <li><span class="n">13</span><a href="#youtube-notes">YouTube Notes Taker</a></li>
+                    <li><span class="n">14</span><a href="#spotify-comparator">Spotify Library Comparator</a></li>
                 </ol>
             </nav>
         </div>
@@ -772,11 +783,151 @@
                 </div>
             </article>
 
+            <article id="rdu-delay">
+                <div class="head"><span class="num">10</span><h3>Forecasting RDU flight delays the night before</h3></div>
+                <h4>Why</h4>
+                <p class="note">I wanted to learn modern forecasting by shipping a real forecast, not a notebook. Airline apps tell you about a delay a few hours before departure. At 11 PM the night before, you know nothing. So the question was simple: is there real signal the night before, or do published studies that claim 85&ndash;90% accuracy quietly use information from the future?</p>
+                <h4>How it works</h4>
+                <p class="note">A delay at Raleigh is often born somewhere else. The plane for your 4:30 PM flight may start its day in Minneapolis and fly through Chicago and Atlanta first. So I rebuilt each aircraft's day from 1.48 million national flights. The model sees which leg of the day your flight is, how much slack the schedule has between legs, where the plane spent last night, and weather <em>forecasts</em> for the airports along its route, frozen at 10:30 PM.</p>
+                <p class="note">Most of the work was not cheating. Models only train on flights that finished before 11 PM the day before. Weather comes from forecasts issued before the cutoff, not from what actually happened. My first model scored suspiciously well. It had learned that a blank tail number means a cancellation, but airlines blank the tail number <em>after</em> they cancel. I removed every after-the-fact field and rebuilt the pipeline, with automated leakage tests.</p>
+                <p class="note">I started with four simple baselines (history, flight number, season, and a chain that follows delays down a plane's day), then added one idea at a time and kept it only if it helped.</p>
+                <h4>What it found</h4>
+                <p class="note">On a 2.5-year walk-forward backtest of 37,087 RDU flights, the full model improved delay-probability accuracy by <b>10.7%</b> (Brier score) and expected-minutes error by <b>14.7%</b> (CRPS) over the best simple baseline. Its 80% ranges held about 80% of outcomes. Weather mattered most for evening flights. Where the plane slept mattered most for early-morning flights: a plane that arrived 30+ minutes late overnight about doubled morning delay risk.</p>
+                <p class="note">Then I audited my own live site and found it was not running the model the results described, and some missing outcomes were being shown as &ldquo;on time.&rdquo; I fixed it. Today the public page honestly runs the simple flight-number baseline, publishes every night before 11 PM under a capped monthly data budget, and scores itself against real gate-out times. The full model goes live only after its weather and aircraft-position inputs work in real time.</p>
+                <div class="meta">
+                    <div class="row"><span class="k">Runs</span><span class="v">Nightly, before 11 PM Eastern</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &middot; LightGBM &middot; BTS flight data &middot; TAF / NBM / SPC weather forecasts &middot; FlightAware API &middot; GitHub Actions</span></div>
+                    <div class="row"><span class="k">Not for</span><span class="v">Live accuracy claims yet. The backtest numbers are research results, not live scores.</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v"><a href="https://suyashh77.github.io/rdu-delay/" target="_blank" rel="noopener">Live forecasts</a> <a href="https://github.com/suyashh77/rdu-delay" target="_blank" rel="noopener">Code and methods</a></span></div>
+                </div>
+                <a class="totop" href="#top">&uarr; Index</a>
+            </article>
+
+            <article id="job-market">
+                <div class="head"><span class="num">11</span><h3>Engineering graduates vs entry-level job postings</h3></div>
+                <h4>Why</h4>
+                <p class="note">I'm job hunting, and everyone has an opinion on whether engineering jobs are drying up. I wanted the numbers instead: for each engineering major and computer science, how many graduates come out each year, and how many entry-level postings are there for them?</p>
+                <h4>How it works</h4>
+                <p class="note">A reproducible pipeline joins four sources from 2015 to today: federal graduation counts (IPEDS), engineering enrollment (ASEE), which jobs young graduates of each major actually hold (Census ACS), and about 400 million job postings (LinkUp). The hard part is fairness. A software-developer posting is not only for CS grads, so postings are shared out by how often each major really fills that job. Every chart saves its data next to it, and I hand-label samples to measure how well the &ldquo;entry-level&rdquo; flag works.</p>
+                <h4>Status</h4>
+                <p class="note">Exploration only for now: descriptive charts, no conclusions yet. The data story comes next.</p>
+                <div class="meta">
+                    <div class="row"><span class="k">Scale</span><span class="v">~400M postings &middot; 9 engineering groups + CS &middot; 2015&ndash;present</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &middot; DuckDB &middot; Parquet &middot; Streamlit</span></div>
+                </div>
+                <a class="totop" href="#top">&uarr; Index</a>
+            </article>
+
         </div>
     </section>
 
     <!-- ==================== RESEARCH ==================== -->
-    <section class="group" id="research">
+        <section class="group" id="experience">
+        <div class="wrap">
+            <div class="group-title">Industry Experience</div>
+            <p class="group-note">
+                Strategic sourcing, enterprise spend modeling, and supply chain network analytics across retail and manufacturing.
+            </p>
+
+            <article id="lowes-rfp">
+                <div class="head">
+                    <span class="num">E1</span>
+                    <h3>Lowe’s &mdash; Retail Facilities Electrical &amp; Lighting RFP</h3>
+                </div>
+
+                <h4>Scope</h4>
+                <p class="note">
+                    Owned the end-to-end Electrical &amp; Lighting services RFP within Retail Facilities (~$10&ndash;16M annual spend, 3-year fixed pricing for 2026&ndash;2029) across all Lowe’s retail stores and owned supply-chain sites.
+                </p>
+
+                <h4>What I built</h4>
+                <p class="note">
+                    Built the projected-spend model forecasting work-order volume from historical dispatch patterns, and developed a Python scenario analysis tool that simulated award combinations across store allocations, pricing tiers, and vendor capacity. This cut award discussions with business unit leaders from an expected two weeks down to a single decision meeting.
+                </p>
+                <p class="note">
+                    Analyzed vendor operational performance across six KPIs. Discovered that van-stocking discipline was the single biggest predictor of performance: top vendors with stocked vans achieved a 114 first-time fix index and 78 cost-per-work-order index, whereas low-performing vendors suffered from excessive parts-on-order delays. Recommended bundling guaranteed maintenance with reactive repairs to secure technician capacity amidst regional data-center construction demand.
+                </p>
+
+                <h4>Results</h4>
+                <p class="note">
+                    Award landed on budget with contract terms secured. Expanded active supplier base from 6 to 9 vendors, reallocated store footprint to reduce underperforming vendor store coverage by 45%, and increased high-performing vendor coverage by 50%.
+                </p>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Role</span><span class="v">Enterprise Strategic Sourcing Intern &middot; Summer 2026</span></div>
+                    <div class="row"><span class="k">Scale</span><span class="v">~$10&ndash;16M/yr spend &middot; All US retail stores &amp; DCs &middot; 3-year term</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Coupa &middot; Python (scenario engine) &middot; Advanced Excel spend models &middot; KPI benchmarking</span></div>
+                </div>
+                <a class="totop" href="#top">&uarr; Index</a>
+            </article>
+
+            <article id="upl-network">
+                <div class="head">
+                    <span class="num">E2</span>
+                    <h3>UPL &mdash; Multi-Warehouse Network &amp; SKU Placement Analysis</h3>
+                </div>
+
+                <h4>Scope</h4>
+                <p class="note">
+                    Three co-op rotations supporting manufacturing operations and supply chain planning across 4 formulation plants and 9 finished-goods distribution centers.
+                </p>
+
+                <h4>What I built</h4>
+                <p class="note">
+                    Built a refreshable Python network analysis tool processing 63,512 historical orders to evaluate warehouse-to-customer freight assignments and SKU placement. Modeled outbound freight costs and lead times under alternative regional distribution hub configurations.
+                </p>
+                <p class="note">
+                    Led comprehensive data governance audits: corrected Bill of Materials (BOM) configurations for 892 active agricultural SKUs, created and updated 246 packaging and finishing specifications, and standardized nomenclature across 15,215 SKU-plant combinations in SAP.
+                </p>
+
+                <h4>Results</h4>
+                <p class="note">
+                    Eliminated master data discrepancies causing plant scheduling delays and shipping errors, delivered an automated visibility model for monthly SKU rebalancing, and established standard finishing documentation adopted across North American operations.
+                </p>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Role</span><span class="v">Supply Chain Analyst Co-op &middot; 3 Rotations (2024&ndash;2025)</span></div>
+                    <div class="row"><span class="k">Scale</span><span class="v">63,512 orders &middot; 9 FG warehouses &middot; 4 plants &middot; 15,215 SKU-plant records</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &middot; SAP (MB52, BOMs) &middot; Network modeling &middot; Freight optimization</span></div>
+                </div>
+                <a class="totop" href="#top">&uarr; Index</a>
+            </article>
+
+            <article id="david-phillips">
+                <div class="head">
+                    <span class="num">E3</span>
+                    <h3>David Phillips &mdash; Master Catalog Data &amp; Governance Audit</h3>
+                </div>
+
+                <h4>Scope</h4>
+                <p class="note">
+                    Audited live inventory catalog (1,145 active SKUs) across UK furnishing operations to resolve master data fragmentation resulting from years of unstandardized supplier entries.
+                </p>
+
+                <h4>What I built</h4>
+                <p class="note">
+                    Audited master data across 50+ ad-hoc naming systems and 300+ shorthand abbreviation rules. Conducted vendor outreach across 56 key suppliers to recover ~200 missing critical product attributes (gross weight, dimensions, component origin) into Microsoft Dynamics NAV.
+                </p>
+                <p class="note">
+                    Authored formal data governance and naming convention policies, established automated validation checks for incoming supplier catalogs, and modeled product logistics footprints for ESG compliance reporting.
+                </p>
+
+                <h4>Results</h4>
+                <p class="note">
+                    Eliminated catalog duplication, restored data completeness in ERP, and established a repeatable vendor onboarding specification that cut new product listing setup time.
+                </p>
+
+                <div class="meta">
+                    <div class="row"><span class="k">Role</span><span class="v">Operations &amp; Sourcing Intern &middot; London, UK &middot; Summer 2023</span></div>
+                    <div class="row"><span class="k">Scale</span><span class="v">1,145 items &middot; 56 suppliers &middot; 300+ naming rules audited</span></div>
+                    <div class="row"><span class="k">Stack</span><span class="v">Microsoft Dynamics NAV &middot; Excel &middot; Data governance &middot; Vendor management</span></div>
+                </div>
+                <a class="totop" href="#top">&uarr; Index</a>
+            </article>
+        </div>
+    </section>
+
+<section class="group" id="research">
         <div class="wrap">
             <div class="group-title">Research</div>
             <p class="group-note">
@@ -1449,6 +1600,14 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                     exposure map, so an index number traces back to a named supply node rather than to a vibe, and the
                     whole thing can be scored against disruptions that actually happened.
                 </p>
+                <h4>What's next &mdash; Foreshock</h4>
+                <p class="note">
+                    The rebuild has a name: Foreshock. I first scoped it to US eggs and bird-flu shocks, then moved it
+                    to ports and shipping lanes, where I can grade it against real port traffic from IMF PortWatch. It
+                    joins a news-event graph to a supply-network graph and answers one question for a sourcing manager:
+                    which node should I look at, why, and how urgently? It runs on free, local language models used
+                    only to pull events out of articles, never to make the prediction. In progress.
+                </p>
 
                 <div class="meta">
                     <div class="row"><span class="k">Runs</span><span class="v">Continuously. News arrives whether or not you are ready for it.</span></div>
@@ -1628,6 +1787,18 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                 </div>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
+
+            <article id="time-study-app">
+                <div class="head"><span class="num">08</span><h3>Time-Study App &mdash; Lenovo senior design</h3></div>
+                <h4>Why</h4>
+                <p class="note">For senior design, four of us run time studies at Lenovo's distribution site to speed up picking, packing and shipping. Four people timing the same work with stopwatches and their own notes would give four kinds of data that can't be compared.</p>
+                <h4>How it works</h4>
+                <p class="note">As a team we agreed on one standard set of actions for each process. I built a web app, with Claude, that puts those actions on screen, so everyone records the same steps the same way and the data lands in one consistent format.</p>
+                <div class="meta">
+                    <div class="row"><span class="k">Good for</span><span class="v">Standardized time-study data across several observers</span></div>
+                </div>
+                <a class="totop" href="#top">&uarr; Index</a>
+            </article>
         </div>
     </section>
 
@@ -1638,7 +1809,7 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
 
             <article id="garmin-wrapped">
                 <div class="head">
-                    <span class="num">08</span>
+                    <span class="num">09</span>
                     <h3>Garmin Wrapped</h3>
                 </div>
 
@@ -1664,6 +1835,14 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
                     <li>gpt-4o for climax slides, gpt-4o-mini for context slides, template fallback when there's no API
                         key.</li>
                 </ul>
+
+                <h4>2026 rebuild</h4>
+                <p class="note">
+                    The first version needed a full data export and a Python run. The new version is a web app: connect
+                    a Garmin key and get a dashboard, a year-in-review Wrapped story with a friend-compare link, a
+                    14-day forecast for each metric, a sleep-to-next-day lab, and lifetime stats. Missing readings
+                    stay missing instead of being filled in, and every correlation is labeled as an association, not a cause.
+                </p>
 
                 <div class="meta">
                     <div class="row"><span class="k">Stack</span><span class="v">Python &middot; SQLite &middot; Prophet
@@ -1700,7 +1879,7 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
 
             <article id="wolfattend">
                 <div class="head">
-                    <span class="num">09</span>
+                    <span class="num">10</span>
                     <h3>WolfAttend</h3>
                 </div>
 
@@ -1765,6 +1944,22 @@ Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
                 </div>
                 <a class="totop" href="#top">↑ Index</a>
             </article>
+
+            <article id="voice-memory">
+                <div class="head"><span class="num">11</span><h3>Voice &amp; Memory &mdash; a transcriber that learns my words</h3></div>
+                <h4>Why</h4>
+                <p class="note">I talk to AI more than I type to it. Speaking gets more of my thinking out before I filter it. But dictation kept getting my names and terms wrong, and every fix I made disappeared. Nothing learned from it. I know exactly what I meant to say, so every correction is a free training example. Could a free, open model plus my corrections become the best transcriber for one voice, mine?</p>
+                <h4>How it works</h4>
+                <p class="note">A Windows app that records and transcribes entirely on my laptop with open-source Whisper. No API key, no per-minute fee, and recordings never leave the machine. Before building, I checked what was already known about each idea. Retraining on every correction is documented to make the model forget general English, so corrections work in two separate layers. Right away, corrected names become vocabulary hints, and repeated fixes become replacement rules I approve. Later, once enough corrected audio exists, a small LoRA adapter is trained in batches and tested before it's used. A neural pause detector stops it cutting sentences mid-word.</p>
+                <p class="note">It also keeps a local memory library of transcripts and project notes that my AI tools can search, so I don't re-explain context in every chat.</p>
+                <h4>Status</h4>
+                <p class="note">The app works end to end and passes its tests. The real experiment is next: an hour of my own hand-checked speech, with a locked test set, to measure word error rate as each improvement is added. No personal accuracy gain is claimed until that is done.</p>
+                <div class="meta">
+                    <div class="row"><span class="k">Stack</span><span class="v">Python &middot; faster-whisper &middot; SQLite &middot; LoRA &middot; MCP</span></div>
+                    <div class="row"><span class="k">Links</span><span class="v"><a href="https://github.com/suyashh77/suyash-voice-memory" target="_blank" rel="noopener">Repository</a></span></div>
+                </div>
+                <a class="totop" href="#top">&uarr; Index</a>
+            </article>
         </div>
     </section>
 
@@ -1775,7 +1970,7 @@ Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
 
             <article id="payment-tracker">
                 <div class="head">
-                    <span class="num">10</span>
+                    <span class="num">12</span>
                     <h3>Payment Tracker</h3>
                 </div>
 
@@ -1805,7 +2000,7 @@ Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
 
             <article id="youtube-notes">
                 <div class="head">
-                    <span class="num">11</span>
+                    <span class="num">13</span>
                     <h3>YouTube Notes Taker</h3>
                 </div>
 
@@ -1835,7 +2030,7 @@ Network (Cisco ISE)    →  access-point-to-room map, device presence</pre>
 
             <article id="spotify-comparator">
                 <div class="head">
-                    <span class="num">12</span>
+                    <span class="num">14</span>
                     <h3>Spotify Library Comparator</h3>
                 </div>
 

@@ -1031,7 +1031,13 @@
                         <em>"accepted by rule: house number + street + ZIP/city all match."</em></li>
                 </ul>
 
+                <h4>What it found</h4>
+                <p class="note">
+                    On a held-out gold test set of 495 North Carolina store pairs (Google Maps vs. Overture Maps and SafeGraph), GeoMatch reached <b>0.94 recall at precision &ge; 0.95</b> (precision 0.96, recall 0.91 at the default threshold) &mdash; nearly doubling standard fuzzy token-set matching (0.50) and TF-IDF n-grams (0.47). Blocking captured 100% of true matches, and on different businesses sharing the exact same street address, precision was 1.00.
+                </p>
+
                 <div class="meta">
+                    <div class="row"><span class="k">Benchmark</span><span class="v">0.94 recall @ P &ge; 0.95 &middot; 1.00 precision on shared addresses &middot; 70% rule-settled</span></div>
                     <div class="row"><span class="k">Stack</span><span class="v">Python &ge;3.10 &middot; pandas &middot;
                             RapidFuzz &middot; scikit-learn &middot; pgeocode &middot; ONNX Runtime &middot; pytest
                             &middot; Apache-2.0</span></div>
@@ -1791,11 +1797,14 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
             <article id="time-study-app">
                 <div class="head"><span class="num">08</span><h3>Time-Study App &mdash; Lenovo senior design</h3></div>
                 <h4>Why</h4>
-                <p class="note">For senior design, four of us run time studies at Lenovo's distribution site to speed up picking, packing and shipping. Four people timing the same work with stopwatches and their own notes would give four kinds of data that can't be compared.</p>
+                <p class="note">For senior design, four of us run time studies at Lenovo's enterprise fulfillment center to improve picking, kitting, packing and shipping. Four people timing operations with stopwatches and disparate notes produced uncalibrated data that couldn't be reconciled.</p>
                 <h4>How it works</h4>
-                <p class="note">As a team we agreed on one standard set of actions for each process. I built a web app, with Claude, that puts those actions on screen, so everyone records the same steps the same way and the data lands in one consistent format.</p>
+                <p class="note">Our team established standard element breakdowns for pulling, staging, and kitting. I developed a responsive web application that puts standardized action buttons on tablet screens with automatic timestamps, exporting uniform event logs to a shared data pipeline.</p>
+                <h4>What it found</h4>
+                <p class="note">Analyzed 363,823 historical shipments (identifying an 84.96% same-day ship baseline against a 98% target) and audited 514,128 unique SAP cartons. Multi-observer data collected with the app revealed that pulling deviations were dominated by wrong and missing items rather than transit speed, directing our recommendations toward standard work, overpull controls, and scan-to-verify trials.</p>
                 <div class="meta">
-                    <div class="row"><span class="k">Good for</span><span class="v">Standardized time-study data across several observers</span></div>
+                    <div class="row"><span class="k">Scope</span><span class="v">Enterprise server manufacturing &middot; Pulling, kitting, and fulfillment</span></div>
+                    <div class="row"><span class="k">Good for</span><span class="v">Standardized multi-observer time studies &middot; SAP Carton audit</span></div>
                 </div>
                 <a class="totop" href="#top">&uarr; Index</a>
             </article>

@@ -1,0 +1,55 @@
+name: Validate Portfolio
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          pip install beautifulsoup4
+      - name: Validate Index Integrity
+        run: |
+          python -c "
+          from bs4 import BeautifulSoup
+          import sys
+
+          with open('index.html', 'r', encoding='utf-8') as f:
+              soup = BeautifulSoup(f.read(), 'html.parser')
+
+          articles = soup.find_all('article')
+          article_ids = {a.get('id') for a in articles if a.get('id')}
+          nav = soup.find('nav', class_='index')
+          
+          if not nav:
+              print('Error: nav.index missing!')
+              sys.exit(1)
+
+          nav_links = nav.find_all('a')
+          print(f'Checking {len(nav_links)} navigation links against {len(articles)} articles...')
+
+          errors = 0
+          for a in nav_links:
+              href = a.get('href', '')
+              if href.startswith('#'):
+                  target = href[1:]
+                  if target not in article_ids:
+                      print(f'ERROR: #{target} not found for link \"{a.get_text()}\"')
+                      errors += 1
+
+          if errors > 0:
+              print(f'Validation failed with {errors} broken links!')
+              sys.exit(1)
+
+          print('Validation passed: all navigation links and article targets are perfectly aligned.')
+          "

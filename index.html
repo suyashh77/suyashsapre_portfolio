@@ -499,7 +499,7 @@
             </p>
 <p class="lede">Raleigh, NC · available full-time from January 2027.</p>
 <ul class="pts">
-<li><b>Ran an eight-figure sourcing event at Lowe’s</b> end to end, and replaced a two-week award debate with one meeting using a Python scenario tool I built.</li>
+<li><b>Ran a ~$10–16M/yr sourcing event at Lowe’s</b> end to end, and replaced a two-week award debate with one meeting using a Python scenario tool I built.</li>
 <li><b>Built a 1.9-million-review statewide dataset</b> for NC State food-access research — after catching a sampling bias that would have invented rural food deserts.</li>
 <li><b>Wrote GeoMatch</b>, an open-source matcher that nearly doubles standard fuzzy matching (0.94 vs 0.50 recall at 95% precision).</li>
 <li><b>Refereed 1,000+ soccer games</b> on three continents; 2025 Assistant Referee of the Year for Triangle Soccer Referees.</li>
@@ -513,7 +513,7 @@
 <nav class="index">
 <h2>Work &amp; industry projects</h2>
 <ol>
-<li><span class="n">E1</span><a href="#lowes-rfp">Lowe’s — Electrical &amp; Lighting services RFP</a></li>
+<li><span class="n">E1</span><a href="#lowes-rfp">Lowe’s — Electrical &amp; Lighting services RFP (~$10–16M/yr)</a></li>
 <li><span class="n">E2</span><a href="#upl-network">UPL — Warehouse network &amp; SKU placement</a></li>
 <li><span class="n">E3</span><a href="#time-study-app">Lenovo — Small-pack fulfillment study (senior design)</a></li>
 <li><span class="n">E4</span><a href="#david-phillips">David Phillips — Product data audit</a></li>
@@ -565,36 +565,37 @@
 <h4>Scope</h4>
 <p class="note">
                     Owned the Electrical &amp; Lighting services RFP for Lowe’s Retail Facilities: every store and owned
-                    supply-chain site — an eight-figure annual category on three-year fixed pricing. I sourced new
+                    supply-chain site, about $10–16M a year, three-year fixed pricing for 2026–2029. I sourced new
                     suppliers, ran the event end to end in Coupa, led the project meetings with the business unit, and
                     built the models behind the award recommendation.
                 </p>
 <h4>What I built</h4>
 <ul class="pts">
-<li><b>Projected-spend model.</b> Forecast work orders from a weighted three-year history instead of
-                        reusing last year’s count, then priced labor, lifts, material and trip fees per
+<li><b>Projected-spend model.</b> Forecast work orders from a weighted three-year history (0.5 / 0.3 /
+                        0.2) instead of reusing last year’s count, then priced labor, lifts, material and trip fees per
                         supplier and state. The business unit approved it as the basis for the award.</li>
 <li><b>Scenario tool.</b> Replaced four linked spreadsheets — where one scenario took 10–15 minutes
                         and one broken formula broke the rest — with a single Python model and map dashboard. Scenario
                         comparisons ran in under a minute, and award discussions expected to take about two weeks closed
-                        in one meeting. It was used live in the meeting when the business unit challenged a
-                        coverage split.</li>
-<li><b>Supplier performance.</b> Indexed six service KPIs per supplier against the category average. The
-                        standout was one of the smallest suppliers by spend, and the pattern across suppliers pointed to
-                        one driver: technicians who arrive with the right parts on the van fix it on the first visit.</li>
+                        in one meeting. It was used live when the business unit pushed back on North Carolina
+                        coverage.</li>
+<li><b>Supplier performance.</b> Indexed six service KPIs per supplier (category average = 100). The
+                        standout was a small, self-performing supplier: first-time fix 114, cost per work order 78.
+                        Parts-on-order tracked closely with work-order age, which pointed to van-stocking discipline as
+                        the driver.</li>
 </ul>
 <h4>The decision</h4>
 <p class="note">
-                    I framed four award scenarios weighing cost, service and risk. I argued against the cheapest
-                    because it handed an unproven supplier a third of the country. The business unit picked a slightly
-                    costlier option than the one I recommended, favouring a supplier with a proven storm-response
-                    record — reliability my cost view didn’t capture.
+                    I framed four award scenarios indexed to plan = 100. I rejected the cheapest (88) because it handed
+                    an unproven supplier a third of the country, and recommended 96. The business unit chose 100, which
+                    favoured a supplier with a proven storm-response record — reliability my cost index didn’t
+                    capture.
                 </p>
 <h4>Results</h4>
 <p class="note">
-                    Award landed on plan, contracts signed on schedule. Supplier base went from 6 to 9, cutting
-                    concentration risk, and store coverage moved toward measured performance: the weakest supplier’s
-                    footprint fell 45% and the strongest’s grew 50%.
+                    Award landed on plan, contracts signed by mid-August. Supplier base went from 6 to 9, cutting
+                    concentration risk. The worst performer’s store coverage fell 45% and the best performer’s grew
+                    50%.
                 </p>
 <h4>What didn’t work</h4>
 <p class="note">
@@ -606,7 +607,7 @@
                 </p>
 <div class="meta">
 <div class="row"><span class="k">Role</span><span class="v">Enterprise Strategic Sourcing Intern · Charlotte, NC · May–Jul 2026</span></div>
-<div class="row"><span class="k">Scale</span><span class="v">Eight-figure annual spend · all US stores &amp; owned sites · 3-year term · 6 → 9 suppliers</span></div>
+<div class="row"><span class="k">Scale</span><span class="v">~$10–16M/yr · all US stores &amp; owned sites · 3-year term · 6 → 9 suppliers</span></div>
 <div class="row"><span class="k">Stack</span><span class="v">Coupa · Python (spend model &amp; scenario tool) · Excel · KPI benchmarking</span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
@@ -618,33 +619,32 @@
 </div>
 <h4>Scope</h4>
 <p class="note">
-                    Three co-op rotations in supply chain and manufacturing operations, during a consolidation of the
-                    finished-goods warehouse network. The question: can a much smaller network still put the right
+                    Three co-op rotations in supply chain and manufacturing operations, during a plan to cut active
+                    finished-goods warehouses from 30 to 9. The question: can nine warehouses still put the right
                     product near the customer?
                 </p>
 <h4>What I built</h4>
 <ul class="pts">
-<li><b>Network analysis tool.</b> A refreshable Python program over 60,000+ historical orders. For each order it
+<li><b>Network analysis tool.</b> A refreshable Python program over 63,512 orders. For each order it
                         finds the SKU’s planned warehouses and ships from the nearest eligible one, then checks reach,
                         compares SAP inventory against the plan, and recommends import locations. Refresh three input
                         files and rerun — so it works on forecasts as well as history.</li>
-<li><b>SKU segmentation.</b> Split 500+ SKUs by how many states buy them. A long tail of regional SKUs
-                        carries little volume but outsized revenue; a handful of broad SKUs carry most of the volume.
-                        Premium regional products and mass-market products need different placement rules.</li>
+<li><b>SKU segmentation.</b> Split 513 SKUs by how many states buy them. 379 regional SKUs are about
+                        17% of volume but 30% of revenue; 26 broad SKUs are 55% of volume but 24% of revenue. Premium
+                        regional products and mass-market products need different placement rules.</li>
 <li><b>Master data.</b> Corrected BOMs for 892 SKUs with standard component-loss rates, created or
                         updated 246 finishing specs, and standardized brand naming across 15,215 SKU-plant records in
                         SAP.</li>
 </ul>
 <h4>Results</h4>
 <p class="note">
-                    Showed that, under real SKU-to-warehouse constraints, the consolidated network <b>still kept nearly
-                    all revenue within 600 miles</b> — and traced the long-distance remainder to specific causes
-                    (remote states, specially stored products, rare one-off sales) rather than a missing warehouse.
-                    The tool was handed off for reuse on forecasts.
+                    With real SKU-to-warehouse constraints, the nine-warehouse network reached <b>93.3% of orders and
+                    about 98% of revenue within 600 miles</b>. The long-distance remainder traced to specific causes
+                    — Hawaii, specially stored products, rare one-off sales — not to a missing warehouse.
                 </p>
 <div class="meta">
 <div class="row"><span class="k">Role</span><span class="v">Supply Chain Co-op · Cary &amp; Raleigh, NC · 3 rotations, 2024–2025</span></div>
-<div class="row"><span class="k">Scale</span><span class="v">60,000+ orders · 500+ SKUs · 892 BOMs corrected · 15,215 SKU-plant records</span></div>
+<div class="row"><span class="k">Scale</span><span class="v">63,512 orders · 9 warehouses · 513 SKUs · 15,215 SKU-plant records</span></div>
 <div class="row"><span class="k">Stack</span><span class="v">Python · Jupyter · SAP (MB52, BOMs) · dashboards</span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
@@ -697,13 +697,13 @@
                 </p>
 <h4>What I found</h4>
 <p class="note">
-                    Audited 1,145 live items and found hundreds missing basic attributes like weight and volume. Names
-                    followed 50+ naming systems and 300+ abbreviation rules. Interviews with the people entering data showed why:
+                    Audited 1,145 live items: <b>49% had no gross weight</b> and 21% no unit volume. Names followed 50+
+                    naming systems and 300+ abbreviation rules. Interviews with the people entering data showed why:
                     manual typing, inconsistent vendor formats, and no review before an item went live.
                 </p>
 <h4>What I did</h4>
 <p class="note">
-                    Contacted 56 vendors for 800+ missing data points and entered about 200 recovered values into
+                    Contacted 56 vendors for 800+ missing data points (54% responded) and entered about 200 into
                     Microsoft Dynamics NAV. Proposed one naming structure (range → item type → descriptors → colour), a
                     vendor data submission form, and vendor-data and validation policies. Also estimated delivery
                     emissions for the company’s ESG report.

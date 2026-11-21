@@ -466,6 +466,58 @@
             margin-left: auto;
         }
 
+        /* ---------- figures ---------- */
+        figure.fig {
+            margin: 20px 0;
+        }
+
+        figure.fig img,
+        figure.fig video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid var(--rule);
+            border-radius: 4px;
+            background: var(--bg-2);
+        }
+
+        figure.fig figcaption {
+            font-size: 0.84rem;
+            color: var(--text-3);
+            margin-top: 6px;
+        }
+
+        .fig-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            align-items: start;
+        }
+
+        a.demo {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 8px 14px;
+            border: 1px solid var(--text);
+            border-radius: 4px;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+        a.demo:hover {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        @media (min-width: 960px) {
+            figure.fig.wide {
+                margin-left: -100px;
+                margin-right: -100px;
+            }
+        }
+
         @media (max-width: 600px) {
             header.page {
                 padding-top: 36px;
@@ -501,6 +553,7 @@
 <ul class="pts">
 <li><b>Ran a ~$10–16M/yr sourcing event at Lowe’s</b> end to end, and replaced a two-week award debate with one meeting using a Python scenario tool I built.</li>
 <li><b>Built a 1.9-million-review statewide dataset</b> for NC State food-access research — after catching a sampling bias that would have invented rural food deserts.</li>
+<li><b>Built SmartPull</b>, a live task-queue prototype for Lenovo’s same-day fulfillment floor, from 94 timed rack stops and eight site visits — <a href="smartpull/">try the demo</a>.</li>
 <li><b>Wrote GeoMatch</b>, an open-source matcher that nearly doubles standard fuzzy matching (0.94 vs 0.50 recall at 95% precision).</li>
 <li><b>Refereed 1,000+ soccer games</b> on three continents; 2025 Assistant Referee of the Year for Triangle Soccer Referees.</li>
 </ul>
@@ -515,7 +568,7 @@
 <ol>
 <li><span class="n">E1</span><a href="#lowes-rfp">Lowe’s — Electrical &amp; Lighting services RFP (~$10–16M/yr)</a></li>
 <li><span class="n">E2</span><a href="#upl-network">UPL — Warehouse network &amp; SKU placement</a></li>
-<li><span class="n">E3</span><a href="#time-study-app">Lenovo — Small-pack fulfillment study (senior design)</a></li>
+<li><span class="n">E3</span><a href="#time-study-app">Lenovo — SmartPack fulfillment &amp; the SmartPull prototype (senior design)</a></li>
 <li><span class="n">E4</span><a href="#david-phillips">David Phillips — Product data audit</a></li>
 </ol>
 <h2>Research — Rachunok Lab, NC State ISE</h2>
@@ -652,36 +705,78 @@
 <article id="time-study-app">
 <div class="head">
 <span class="num">E3</span>
-<h3>Lenovo — Small-pack fulfillment study (senior design)</h3>
+<h3>Lenovo — SmartPack fulfillment &amp; the SmartPull prototype</h3>
 </div>
 <h4>Why</h4>
 <p class="note">
-                    Lenovo’s Whitsett site has to get same-day orders onto a 7:30 PM truck, and small-pack pulling and
-                    kitting run on veterans’ mental maps rather than standard work. Our team of five is standardizing
-                    that work.
+                    Lenovo’s Whitsett, NC distribution center ships same-day orders on one 7:30 PM truck. Our team of five
+                    was asked to cut order-to-shipment time in SmartPack — the area that pulls, kits and packs those
+                    orders — by at least 10%, with no added headcount. I was the team’s data analyst: I owned pulling,
+                    built our timing app and the prototypes, and led most of the meetings with Lenovo.
                 </p>
-<h4>What I did</h4>
+<h4>How we measured</h4>
 <p class="note">
-                    Four site visits and operator interviews. I designed the time study — seven kitting, four inbound
-                    and three outbound elements, 15+ timed samples each — and built a tablet web app so every observer
-                    records the same elements with automatic timestamps, instead of four people with stopwatches and
-                    notes that can’t be reconciled.
+                    Eight site visits and about 20 hours on the floor. Stopwatches and four people’s notes don’t reconcile,
+                    so I built a tablet timer app: every observer taps the same standard elements, with automatic
+                    timestamps and one-tap exception codes. With it we timed <b>94 rack stops across six operators, 25
+                    kitted pallets (393 boxes), 52 packing observations and 15 kickouts</b>, and tested differences
+                    between equipment and drivers statistically rather than by eye.
                 </p>
-<h4>What I proposed</h4>
+<figure class="fig"><div class="fig-2"><img alt="Timer app, pulling screen" loading="lazy" src="assets/img/lenovo-timer-pull.webp"/><img alt="Timer app, kitting screen" loading="lazy" src="assets/img/lenovo-timer-kit.webp"/></div><figcaption>The timer app I built for the floor — one button per standard element, exceptions logged with a tap. Sample data.</figcaption></figure>
+<h4>What we found</h4>
+<p class="note">
+                    The physical work was good. The information it ran on wasn’t. Fishbone, 5 Whys and FMEA came down
+                    to four root causes:
+                </p>
 <ul class="pts">
-<li>Standard pull routes modeled on the fastest puller’s path.</li>
-<li>Scan-to-verify in kitting: part IDs are small and look alike, and nothing checks them.</li>
-<li>Cause-coded logging of wasted trips, to build a baseline before changing anything.</li>
-<li>5S for the overpull area, so new operators can actually use overpulled stock.</li>
+<li><b>Old.</b> The pull sheet is a printed snapshot of SAP, up to two hours stale by the time it’s worked.</li>
+<li><b>Private.</b> Routes and bin corrections live in people’s heads or on one paper sheet.</li>
+<li><b>Not shared.</b> Extra stock from earlier picks has no list and no owner, and nobody sees an order’s
+                        progress against the truck until packing.</li>
+<li><b>Not built in.</b> Pulling methods depend on habit, and drivers differed significantly from each other.</li>
 </ul>
+<p class="note">The worst pulling delays came from wrong and empty locations, not from walking speed.</p>
+<figure class="fig"><img alt="Fishbone diagram" loading="lazy" src="assets/img/lenovo-fishbone.webp"/><figcaption>Fishbone of the causes behind missed same-day shipments.</figcaption></figure>
+<figure class="fig"><img alt="Forklift spaghetti diagram" loading="lazy" src="assets/img/lenovo-spaghetti.webp"/><figcaption>Forklift traffic on observed runs, drawn as a schematic (not to scale). Red is the longest run.</figcaption></figure>
+<h4>What we recommended</h4>
+<p class="note">
+                    21 candidate fixes across pulling, kitting and packing, scored in a weighted decision matrix (cycle
+                    time, feasibility, investment, operating cost, labor, data readiness). The best pulling fixes are
+                    cheap: a 5S’d overflow area with an owner, one pulling standard, a pre-trip bin check against SAP, and
+                    a shared discrepancy log. They’re sequenced as a phased roadmap — <b>Standardize → Digitize → Execute
+                    → Extend</b> — with a pilot gate between phases, so Lenovo funds the next step only after the last one
+                    is measured. Every design was checked against OSHA 1910.178 and 1910.176, the NIOSH lifting equation,
+                    GS1 barcode standards and ISO 9001. Payback is left as a formula for Lenovo to fill with its own labor
+                    rate; we make no savings claims.
+                </p>
+<h4>SmartPull — the prototype I built</h4>
+<p class="note">
+                    The Execute phase replaces the paper sheet with a live task queue. Each puller gets one task at a time:
+                    scan the bin, scan the part, next task. Stock is reserved when a task is issued, a wrong or empty bin
+                    is one tap that sends a count task and re-routes, and each load is sequenced by an exact route solver.
+                    A Control Tower shows every order’s ETA against the 7:30 PM truck, so a lead sees a late order
+                    mid-afternoon instead of at 7:31.
+                </p>
+<figure class="fig wide"><a href="smartpull/" rel="noopener" target="_blank"><img alt="SmartPull Control Tower" loading="lazy" src="assets/img/lenovo-control-tower.webp"/></a><figcaption>The Control Tower in the public demo: every order’s ETA against the 7:30 PM truck. Floor, orders and stage times are illustrative.</figcaption></figure>
+<figure class="fig"><div class="fig-2"><img alt="Puller next task" loading="lazy" src="assets/img/lenovo-puller-task.webp"/><img alt="Puller wrong bin caught" loading="lazy" src="assets/img/lenovo-puller-wrong.webp"/></div><figcaption>Puller screen: one task, scan the bin then the part. A wrong bin is caught before anything leaves the rack.</figcaption></figure>
+<figure class="fig"><img alt="Route for one cart load" loading="lazy" src="assets/img/lenovo-routing.webp"/><figcaption>One cart load, sequenced by the route solver.</figcaption></figure>
+<a class="demo" href="smartpull/">Try the SmartPull demo →</a>
+<p class="note" style="margin-top:18px">
+                    For kitting, a two-button scan check: scan the pick sheet, scan the part, green means go. It catches
+                    what eyes miss on small labels — swapped digits, a letter O for a zero.
+                </p>
+<figure class="fig"><video controls="" playsinline="" poster="assets/img/lenovo-scan.webp" preload="none" src="assets/video/lenovo-scan-check.mp4"></video><figcaption>Scan-to-verify explainer I made (66 s). All part numbers are made up.</figcaption></figure>
 <h4>Status</h4>
 <p class="note">
-                    Solutions are being trialled now. Performance figures stay with Lenovo under NDA, and no impact is
-                    claimed here.
+                    Measure and Analyze are complete; the course ends in December with the recommendations and a pilot
+                    plan. Nothing has been implemented, so no results are claimed. Lenovo’s performance data, volumes and
+                    cycle times stay with Lenovo under NDA, and the demo runs on example data.
                 </p>
 <div class="meta">
-<div class="row"><span class="k">Role</span><span class="v">ISE Senior Design · team of five · Fall 2026</span></div>
-<div class="row"><span class="k">Stack</span><span class="v">Time study · DMAIC · FMEA · web app</span></div>
+<div class="row"><span class="k">Role</span><span class="v">Data analyst; pulling &amp; SmartPull lead · team of five · ISE 498, Fall 2026</span></div>
+<div class="row"><span class="k">Scale</span><span class="v">8 site visits · ~20 floor hours · 94 timed rack stops · 25 pallets · 52 packing observations</span></div>
+<div class="row"><span class="k">Stack</span><span class="v">Time study · DMAIC · FMEA · weighted decision matrix · JavaScript (SmartPull) · Python</span></div>
+<div class="row"><span class="k">Links</span><span class="v"><a href="smartpull/">SmartPull demo</a></span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
 </article>
@@ -730,6 +825,7 @@
 <span class="num">R1</span>
 <h3>Statewide food-access dataset — 1.9M grocery reviews</h3>
 </div>
+<figure class="fig wide"><a href="assets/img/research-poster.webp" rel="noopener" target="_blank"><img alt="Research poster" loading="lazy" src="assets/img/research-poster-sm.webp"/></a><figcaption>Research poster, Fall 2026 — Sapre, Groton &amp; Rachunok, NC State ISE. Click for full size.</figcaption></figure>
 <h4>Why</h4>
 <p class="note">
                     Most food-access research measures distance to a store. Teresa’s Raleigh pilot measured access
@@ -757,11 +853,9 @@
                         provenance on each review, and resumes after crashes. 25 student volunteers ran an early version;
                         their complaints became version 2.</li>
 </ul>
-<pre>Source records (SNAP, Overture, OSM, project)   91,461
- └─ Frame: matched, ruled stores                36,820
-    └─ Probed on Google Maps                    16,751
-       └─ Final dataset                          4,442 stores · all 100 NC counties
-          └─ Reviews                         1,941,538  (977,398 with text)</pre>
+<figure class="fig"><div class="fig-2"><img alt="Store funnel" loading="lazy" src="assets/img/research-funnel.webp"/><img alt="Store list completeness checks" loading="lazy" src="assets/img/research-completeness.webp"/></div><figcaption>From 91,461 source records to 4,442 stores, and the checks run before any scraping.</figcaption></figure>
+<figure class="fig"><img alt="Map of stores" loading="lazy" src="assets/img/research-map.webp"/><figcaption>4,442 stores in all 100 NC counties, shaded by reviews per store.</figcaption></figure>
+
 <h4>What it produced</h4>
 <p class="note">
                     <b>99.1% of stores are complete</b> under the completion rule, with 91× the stores and 39× the text
@@ -773,12 +867,20 @@
                     1,500 reviews hold their newest reviews, not a random sample. This phase builds the data; scoring
                     the five dimensions is the next one.
                 </p>
+<h4>Now — Phase 2</h4>
+<p class="note">
+                    An embedding pipeline that takes the pilot’s review-text scoring statewide, measuring the five access
+                    dimensions for every store from what people wrote. Labels are provisional until a human topic check
+                    is in, so no results yet.
+                </p>
 <div class="meta">
 <div class="row"><span class="k">Evidence</span><span class="v">Measured — frozen dataset, every count recomputed from it</span></div>
 <div class="row"><span class="k">Stack</span><span class="v">Python · Playwright · SQLite (WAL) · DuckDB · RapidFuzz · Linux lab machines</span></div>
 <div class="row"><span class="k">Links</span><span class="v">
 <a href="https://github.com/suyashh77/gmaps-scraper" rel="noopener" target="_blank">Code &amp; docs</a>
 <a href="https://github.com/suyashh77/gmaps-scraper/blob/main/Data/Data%20Quality%20Report.md" rel="noopener" target="_blank">Quality report</a>
+<a href="https://github.com/suyashh77/nc-aspatial-food-access" rel="noopener" target="_blank">Phase 2 pipeline</a>
+<a href="assets/img/research-poster.webp" rel="noopener" target="_blank">Poster</a>
 </span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
@@ -819,9 +921,11 @@
 <li><b>Say why.</b> Every pair comes back as match / uncertain / non-match, a relation (same, part of,
                         different) and a plain-English reason built from its biggest weights.</li>
 </ul>
+<figure class="fig"><img alt="GeoMatch worked example" loading="lazy" src="assets/img/geomatch-example.webp"/><figcaption>Three pairs at one address, three different answers — each with its reason.</figcaption></figure>
+
 <h4>What it found</h4>
 <p class="note">
-                    On a held-out set of 495 hand-labeled NC store pairs, GeoMatch reached <b>0.94 recall at precision ≥
+                    On a held-out set of 495 labeled NC store pairs, GeoMatch reached <b>0.94 recall at precision ≥
                     0.95</b> (precision 0.96, recall 0.91 at the default threshold), against 0.50 for standard fuzzy
                     token-set matching and 0.47 for TF-IDF n-grams. On different businesses sharing one address —
                     the case that motivated version 2 — precision was 1.00. On a public New York restaurant benchmark
@@ -832,8 +936,10 @@
                     real labels, they were throwing away about 4% of true matches, so version 2 removed them. I also
                     tested a neural model; plain fuzzy features beat it (F1 0.85 vs 0.78), so it isn’t in the core.
                 </p>
+<figure class="fig"><div class="fig-2"><img alt="GeoMatch NC benchmark" loading="lazy" src="assets/img/geomatch-bench.webp"/><img alt="GeoMatch external benchmarks" loading="lazy" src="assets/img/geomatch-external.webp"/></div><figcaption>Left: the NC held-out test. Right: public datasets it was never tuned on.</figcaption></figure>
+
 <div class="meta">
-<div class="row"><span class="k">Evidence</span><span class="v">Measured — held-out hand-labeled pairs plus public benchmarks</span></div>
+<div class="row"><span class="k">Evidence</span><span class="v">Measured — 495 held-out NC pairs (labels model-annotated) plus public benchmarks</span></div>
 <div class="row"><span class="k">Stack</span><span class="v">Python ≥3.10 · pandas · RapidFuzz · scikit-learn · pgeocode · pytest · Apache-2.0</span></div>
 <div class="row"><span class="k">Links</span><span class="v">
 <a href="https://github.com/suyashh77/geomatch" rel="noopener" target="_blank">Repository</a>
@@ -1062,12 +1168,16 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
                     barely resembles routing. So: solve a TSP exactly. Past about fifteen customers, use the exact VRP
                     model to calibrate the heuristics on small cases, then trust them on large ones.
                 </p>
+<figure class="fig"><img alt="Exact solver scaling" loading="lazy" src="assets/img/routing-scaling.webp"/><figcaption>Same cutting-plane idea, two problems: filled = proven optimal, hollow = hit the 45 s limit.</figcaption></figure>
+
 <p class="note">
                     The result I didn’t expect: <b>the better starting route produces the worse final route.</b> Nearest
                     insertion beats nearest neighbour on its own (19.9% vs 24.2% above optimal at 100 stops), but after
                     identical local search it reverses, 4.47% vs 3.22%. Nearest neighbour’s flaw is a few long crossing
                     edges — exactly what 2-opt removes. Judge a heuristic by what it leaves for the search.
                 </p>
+<figure class="fig"><img alt="TSP tours compared" loading="lazy" src="assets/img/routing-tsp.webp"/><figcaption>One 40-stop instance: nearest neighbour, nearest insertion, after local search, and the exact optimum.</figcaption></figure>
+
 <div class="meta">
 <div class="row"><span class="k">Evidence</span><span class="v">Modeled — 150 synthetic instances</span></div>
 <div class="row"><span class="k">Runs</span><span class="v">Nightly. Routes are cut once a day, so the solver gets hours, which is why exact solving is worth trying.</span></div>
@@ -1103,24 +1213,7 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
                         each site’s capacity.</li>
 </ul>
 <h4>What it found</h4>
-<div class="scroll">
-<table>
-<thead>
-<tr>
-<th>Policy</th>
-<th>Net recovery / return</th>
-<th>Cost / return</th>
-<th>A-items at full price</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>PNEAR — nearest DC (baseline)</td><td>$40.46</td><td>$13.63</td><td>0%</td></tr>
-<tr><td>P1 — EV routing, mail only</td><td>$41.57</td><td>$11.70</td><td>0%</td></tr>
-<tr class="hl"><td>P2 — EV routing + free in-store</td><td>$45.66</td><td>$9.70</td><td>29.4%</td></tr>
-<tr class="oracle"><td>Oracle — perfect condition info</td><td>$46.75</td><td>$8.10</td><td>30.7%</td></tr>
-</tbody>
-</table>
-</div>
+<figure class="fig"><img alt="Return routing results" loading="lazy" src="assets/img/returns-headline.webp"/><figcaption>Value recovered per return, scored on each item’s true condition.</figcaption></figure>
 <p class="note">
                     <b>+$5.20 recovered per return</b> over the nearest-DC baseline (paired 95% CI [+$4.92, +$5.48]),
                     about $520,000 a year at 100,000 returns, capturing 83% of what a perfect-information router would.
@@ -1132,6 +1225,8 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
                     values also say what one more unit of daily capacity at each site is worth, which turns the router
                     into a where-to-invest list.
                 </p>
+<figure class="fig"><img alt="Capacity shadow prices" loading="lazy" src="assets/img/returns-duals.webp"/><figcaption>Where to buy capacity next: what one more unit of daily capacity is worth at each site.</figcaption></figure>
+
 <p class="fine">
                     The network, capacities, recovery rates, costs and returns are synthetic, with ranges anchored to
                     published industry figures. Every number is scored against each item’s true condition, which no
@@ -1226,6 +1321,7 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
                     processing, 138 tests. Privacy rules are built in — aggregates only, minimum cohort sizes. Each
                     story is written as a short article with every chain shown against the whole field.
                 </p>
+<figure class="fig"><video controls="" playsinline="" poster="assets/img/stories-gas.webp" preload="none" src="assets/video/stories-trailer.mp4"></video><figcaption>A short trailer for the series.</figcaption></figure>
 <h4>What they found</h4>
 <ul class="pts">
 <li><a href="https://suyashh77.github.io/data-stories/walmart-vs-target/" rel="noopener" target="_blank"><b>Walmart vs Target</b></a>
@@ -1270,6 +1366,8 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
                     I’ve worked in sourcing, and as a student I watch grocery prices move without knowing what’s
                     happening upstream. Avocados are the first case: if supply breaks, what can a buyer actually do?
                 </p>
+<figure class="fig"><a href="https://suyashh77.github.io/us-avocado-sourcing-case-study/" rel="noopener" target="_blank"><img alt="Avocado case study" loading="lazy" src="assets/img/avocado-case.webp"/></a><figcaption>The interactive case study. Click to open it.</figcaption></figure>
+
 <h4>How it works</h4>
 <p class="note">
                     USDA import and price data combined with FAOSTAT production and trade. An interactive Sankey shows
@@ -1306,6 +1404,8 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
                     national flights: which leg of the day your flight is, the slack between legs, where the plane spent
                     last night, and weather <em>forecasts</em> for the airports on its route, frozen at 10:30 PM.
                 </p>
+<figure class="fig"><img alt="Delay cascade across an aircraft rotation" loading="lazy" src="assets/img/rdu-cascade.webp"/><figcaption>How a delay cascades down one aircraft’s day into an RDU departure.</figcaption></figure>
+
 <p class="note">
                     Most of the work was not cheating. My first model scored suspiciously well: it had learned that a
                     blank tail number means a cancellation, but airlines blank it <em>after</em> they cancel. I removed
@@ -1318,6 +1418,8 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
                     baseline, and its 80% ranges held about 80% of outcomes. A plane that arrived 30+ minutes late
                     overnight about doubled morning delay risk.
                 </p>
+<figure class="fig"><img alt="RDU benchmark results" loading="lazy" src="assets/img/rdu-benchmark.webp"/><figcaption>Walk-forward backtest: model progression against the baseline, calibration, and what drives morning vs evening delays.</figcaption></figure>
+
 <p class="note">
                     Then I audited my own live site and found it wasn’t running the model the results described, and
                     some missing outcomes were shown as “on time.” I fixed it. The public page now honestly runs the
@@ -1352,6 +1454,9 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
                     of four product groups. An earlier version compared models with different inputs; I corrected
                     it to matched inputs and republished.
                 </p>
+<figure class="fig"><img alt="TimesFM results overview" loading="lazy" src="assets/img/timesfm-overview.webp"/><figcaption>Forecast error and simulated inventory cost by method.</figcaption></figure>
+<figure class="fig"><img alt="TimesFM held-out forecast" loading="lazy" src="assets/img/timesfm-forecast.webp"/><figcaption>Held-out forecasts with 10th–90th percentile bands against actual sales.</figcaption></figure>
+
 <div class="meta">
 <div class="row"><span class="k">Evidence</span><span class="v">Measured — one store, overlapping test windows; pretraining overlap possible</span></div>
 <div class="row"><span class="k">Links</span><span class="v"><a href="timesfm-retail/">Full study</a> <a href="timesfm-retail/forecasts.html">Matched forecasts</a> <a href="https://github.com/suyashh77/retail-demand-timesfm">Code and results</a></span></div>
@@ -1377,6 +1482,8 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
                     full-text forest. Removing or misleading the headers changed nothing. The full-text forest stayed
                     stronger on new descriptions and on the future year — the cases that matter in use.
                 </p>
+<figure class="fig"><img alt="TabFM repeated splits" loading="lazy" src="tabfm-spending/assets/final_repeated_splits.png"/><figcaption>Accuracy across five random splits.</figcaption></figure>
+
 <div class="meta">
 <div class="row"><span class="k">Evidence</span><span class="v">Measured — one private ledger; exploratory, no external confirmation</span></div>
 <div class="row"><span class="k">Links</span><span class="v"><a href="tabfm-spending/">Full study</a> <a href="tabfm-spending/methods.html">Methods and tables</a> <a href="https://github.com/suyashh77/tabfm-spending-categories">Code only</a></span></div>

@@ -1,0 +1,1585 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SmartPull Control Tower v2</title>
+<style>
+:root {
+  --bg: #FAFAF7; --ink: #1F2328; --quiet: #6B7280; --grey: #B8BCC2; --edge: #D5D8DC; --card: #FFFFFF;
+  --accent: #2563EB; --light-blue: #DCE8FD; --red: #D93025; --light-red: #FCE4E1; --green: #1E8E3E; --light-green: #DDF1E3;
+  --rack: #EAEAE9; --device: #2B2F36; --device-edge: #4A505A; --screen: #10151A; --on-dark: #E8E6E3;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.4 Inter, "Segoe UI", system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden; }
+h2 { font-size: 14px; margin: 0 0 8px; font-weight: 700; }
+h3 { font-size: 13px; margin: 12px 0 6px; color: var(--quiet); font-weight: 700; }
+button, select, input { font: inherit; color: inherit; }
+button { background: var(--card); border: 1px solid var(--grey); border-radius: 8px; padding: 6px 12px; cursor: pointer; }
+button:hover { border-color: var(--quiet); }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+button.primary:hover { background: #1D4FC4; }
+button.warn { border-color: var(--red); color: var(--red); }
+button:disabled { opacity: .45; cursor: default; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.top { display: flex; align-items: center; gap: 20px; padding: 8px 16px; border-bottom: 1px solid var(--edge); background: var(--card); flex-wrap: wrap; }
+.brand strong { font-size: 19px; color: var(--accent); letter-spacing: -.01em; }
+.brand span { margin-left: 8px; color: var(--quiet); font-weight: 600; }
+.tabs { display: flex; gap: 4px; }
+.tabs button { border: 0; background: none; padding: 7px 14px; border-radius: 8px; font-weight: 600; color: var(--quiet); }
+.tabs button.on { background: var(--light-blue); color: var(--ink); }
+.clockbox { margin-left: auto; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.now { text-align: right; line-height: 1.15; min-width: 118px; }
+.now span { font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.now small { display: block; color: var(--quiet); font-size: 12px; font-variant-numeric: tabular-nums; }
+.speed { color: var(--quiet); font-size: 13px; }
+.speed select { margin-left: 4px; padding: 4px; border-radius: 6px; border: 1px solid var(--grey); background: var(--card); }
+.banner { margin: 0; padding: 4px 16px; font-size: 12.5px; color: var(--quiet); background: #F2F2EE; border-bottom: 1px solid var(--edge); }
+
+main { flex: 1; min-height: 0; }
+.view { display: none; height: 100%; padding: 10px 16px 12px; overflow: auto; }
+.view.on { display: block; }
+#tab-tower.on { display: flex; flex-direction: column; gap: 8px; overflow: auto; }
+.panel { background: var(--card); border: 1px solid var(--edge); border-radius: 10px; padding: 10px 12px; min-width: 0; }
+.tag { display: inline-block; font-size: 12px; font-weight: 500; color: var(--quiet); border: 1px solid var(--grey); border-radius: 6px; padding: 0 6px; margin-left: 4px; white-space: nowrap; }
+.tag.dark { color: var(--on-dark); border-color: var(--device-edge); }
+.note { color: var(--quiet); font-size: 13px; margin: 6px 0 0; }
+.col { display: flex; flex-direction: column; gap: 8px; min-width: 0; min-height: 0; }
+
+.kpis { display: grid; grid-template-columns: 1.3fr repeat(3, 1fr) 1.5fr; gap: 8px; flex: none; }
+.kpi { background: var(--card); border: 1px solid var(--edge); border-radius: 10px; padding: 8px 12px; min-width: 0; }
+.kpi b { display: block; font-size: 25px; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.kpi span { color: var(--quiet); font-size: 13px; }
+.kpi.bad { border-color: var(--red); background: var(--light-red); }
+.kpi.bad b { color: var(--red); }
+.kpi.past b { font-size: 20px; }
+
+.strip { flex: none; padding-bottom: 4px; }
+.strip h2 { margin-bottom: 2px; }
+.strip svg { display: block; }
+.tower-grid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 8px; flex: 1; min-height: 420px; }
+.tower-grid > .col:first-child { min-height: 0; }
+.boardwrap { flex: 1; min-height: 200px; display: flex; flex-direction: column; }
+.board-scroll { overflow: auto; flex: 1; min-height: 0; }
+.board { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.board th { position: sticky; top: 0; background: var(--card); text-align: left; font-size: 12px; color: var(--quiet); font-weight: 600; padding: 3px 8px; border-bottom: 1px solid var(--edge); z-index: 1; }
+.board td { padding: 4px 8px; border-bottom: 1px solid #EFEFEC; white-space: nowrap; }
+.board tr[data-order] { cursor: pointer; }
+.board tr[data-order]:hover td { background: #F5F7FB; }
+.board tr.sel td { background: var(--light-blue); }
+.board tr.isrisk td:first-child { box-shadow: inset 3px 0 0 var(--red); }
+.status { font-weight: 600; }
+.status.bad { color: var(--red); }
+.status.good { color: var(--green); }
+.status.quiet { color: var(--quiet); font-weight: 500; }
+
+.mini { display: inline-flex; gap: 2px; vertical-align: middle; }
+.mini i { width: 22px; height: 7px; border-radius: 2px; background: #E7E8EA; display: block; }
+.mini i.done { background: var(--accent); }
+.mini i.cur { background: var(--accent); box-shadow: 0 0 0 2px var(--light-blue); }
+.mini i.cur.bad { background: var(--red); box-shadow: 0 0 0 2px var(--light-red); }
+.mini i.skip { background: repeating-linear-gradient(135deg, #E7E8EA 0 2px, transparent 2px 4px); }
+
+.bighead { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.bighead h2 { font-size: 15px; margin: 0; }
+.bigeta { margin-left: auto; font-size: 25px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.bigeta small { font-size: 13px; color: var(--quiet); font-weight: 500; margin-right: 6px; }
+.bigeta.bad { color: var(--red); }
+.bigrange { color: var(--quiet); font-size: 13px; }
+.tracker { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3px; margin-top: 8px; }
+.stepb { position: relative; padding: 7px 8px; background: #EFF0F1; color: var(--quiet); min-width: 0; clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 50%, calc(100% - 9px) 100%, 0 100%, 9px 50%); padding-left: 16px; }
+.stepb:first-child { clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 50%, calc(100% - 9px) 100%, 0 100%); padding-left: 10px; }
+.stepb b { display: block; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stepb span { display: block; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stepb.done { background: var(--light-blue); color: var(--ink); }
+.stepb.cur { background: var(--accent); color: #fff; }
+.stepb.cur.bad { background: var(--red); }
+.stepb.skip { background: repeating-linear-gradient(135deg, #F2F2F2 0 4px, #E9EAEB 4px 8px); }
+
+.queuewrap { flex: 1 1 200px; min-height: 180px; overflow: auto; }
+.q { display: grid; grid-template-columns: 26px 1fr; gap: 2px 6px; padding: 5px 0; border-bottom: 1px solid #EFEFEC; }
+.q .n { color: var(--quiet); font-weight: 700; font-variant-numeric: tabular-nums; }
+.q .t { font-weight: 600; }
+.q .y { grid-column: 2; color: var(--quiet); font-size: 12.5px; }
+.q.jump { background: var(--light-red); box-shadow: -4px 0 0 var(--light-red), 4px 0 0 var(--light-red); }
+.q.jump .y { color: var(--red); font-weight: 600; }
+.qhead { color: var(--quiet); font-size: 12px; font-weight: 700; margin: 8px 0 2px; }
+.qhead:first-child { margin-top: 0; }
+.rbar { display: grid; grid-template-columns: 78px 1fr 22px; align-items: center; gap: 6px; padding: 2px 0; font-size: 13px; }
+.rbar div { height: 8px; background: #F0F0EE; border-radius: 4px; }
+.rbar i { display: block; height: 8px; background: var(--accent); border-radius: 0 4px 4px 0; }
+.rbar b { text-align: right; font-variant-numeric: tabular-nums; }
+.feedwrap { flex: 1 1 130px; min-height: 120px; display: flex; flex-direction: column; }
+.pov .feedwrap { flex-basis: auto; min-height: 240px; max-height: 420px; }
+.feed { overflow: auto; flex: 1; min-height: 0; font-size: 13px; }
+.feed div { padding: 3px 0; border-bottom: 1px solid #F2F2EF; }
+.feed time { color: var(--quiet); font-variant-numeric: tabular-nums; margin-right: 6px; }
+.feed .risk { color: var(--red); font-weight: 600; }
+
+.pov { display: grid; grid-template-columns: 380px minmax(0, 1fr) 320px; gap: 10px; align-items: start; }
+.device { background: var(--device); color: var(--on-dark); border-radius: 22px; padding: 14px; display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--device-edge); }
+.devhead { display: flex; justify-content: space-between; align-items: center; font-weight: 700; }
+.taskcard { background: var(--card); color: var(--ink); border-radius: 12px; padding: 8px 14px; }
+.taskcard h3 { margin: 0 0 2px; text-align: center; letter-spacing: .02em; }
+.taskrow { display: flex; justify-content: space-between; align-items: center; padding: 5px 8px; border-radius: 8px; border: 2px solid transparent; }
+.taskrow span { color: var(--quiet); }
+.taskrow b { font-size: 26px; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.taskrow.active { border-color: var(--accent); background: var(--light-blue); }
+.taskrow.ok { border-color: var(--green); background: var(--light-green); }
+.steps { display: flex; gap: 6px; }
+.steps span { flex: 1; text-align: center; padding: 3px; border-radius: 6px; background: #3A4049; font-size: 13px; }
+.steps span.active { background: var(--accent); color: #fff; }
+.steps span.ok { background: var(--green); color: #fff; }
+.flash { min-height: 40px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 4px 8px; border-radius: 8px; background: var(--screen); font-weight: 600; font-size: 13.5px; }
+.flash.good { background: var(--green); color: #fff; }
+.flash.bad { background: var(--red); color: #fff; }
+.light { min-height: 110px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 10px; border-radius: 12px; background: var(--screen); font-weight: 700; font-size: 17px; }
+.light.good { background: var(--green); color: #fff; }
+.light.bad { background: var(--red); color: #fff; }
+.scanform { margin: 0; }
+.scanform label { font-size: 12.5px; display: block; margin-bottom: 3px; }
+.scanform div { display: flex; gap: 6px; }
+.scanform input { flex: 1; min-width: 0; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--device-edge); background: var(--screen); color: var(--on-dark); font-variant-numeric: tabular-nums; text-transform: uppercase; }
+.quick { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.device button:not(.primary):not(.warn) { background: #3A4049; border-color: #6A717C; color: var(--on-dark); }
+.device button.warn { background: transparent; color: #FFB4AC; border-color: #FFB4AC; }
+.devlabel { margin: 0; font-size: 12.5px; }
+.reasons-tap { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.mapwrap { display: flex; flex-direction: column; min-height: 0; }
+.mapwrap svg { width: 100%; height: auto; display: block; }
+#logicMap svg { width: 100%; height: auto; max-height: 440px; display: block; }
+.sheetwrap { overflow: auto; }
+.sheethead { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+.sheethead h2 { font-size: 16px; margin: 0; }
+.boxes { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; }
+.box { border: 1px solid var(--edge); border-radius: 8px; padding: 6px 8px; }
+.box.cur { border: 2px solid var(--accent); }
+.box.done { background: var(--light-green); border-color: var(--green); }
+.box h4 { margin: 0 0 3px; font-size: 13px; display: flex; justify-content: space-between; }
+.box h4 small { color: var(--quiet); font-weight: 500; }
+.box li { list-style: none; font-size: 13px; font-variant-numeric: tabular-nums; }
+.box li.ok { color: var(--green); font-weight: 600; }
+.box li.ok::before { content: "\2713 "; }
+.box ul { margin: 0; padding: 0; }
+
+.logic-grid { display: grid; grid-template-columns: 300px minmax(0, 1fr) 330px; gap: 10px; }
+.wide { grid-column: 1 / -1; }
+.presets { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.presets button.on { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+.dials label { display: block; margin-bottom: 8px; font-size: 13.5px; }
+.dials input, .conf input { width: 100%; accent-color: var(--accent); display: block; }
+.locks { list-style: none; padding: 0; margin: 0; font-size: 13.5px; }
+.locks li { padding: 3px 0 3px 18px; position: relative; }
+.locks li::before { content: ""; position: absolute; left: 2px; top: 9px; width: 9px; height: 7px; background: var(--accent); border-radius: 1px; }
+.locks li::after { content: ""; position: absolute; left: 3.5px; top: 4px; width: 6px; height: 6px; border: 1.5px solid var(--accent); border-bottom: 0; border-radius: 4px 4px 0 0; }
+.loadchips { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
+.loadchips button { padding: 2px 8px; font-size: 13px; }
+.loadchips button.on { background: var(--light-blue); border-color: var(--accent); font-weight: 600; }
+.conf { display: block; font-size: 13.5px; }
+.conf output { font-weight: 700; }
+.decision { margin-top: 8px; padding: 8px 10px; border-radius: 8px; background: var(--light-blue); }
+.decision b { display: block; font-size: 16px; }
+.decision.go { background: #F0F0EE; }
+.trips { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; font-size: 13px; }
+.trips div { border: 1px solid var(--edge); border-radius: 8px; padding: 5px 8px; }
+.trips b { display: block; font-size: 16px; font-variant-numeric: tabular-nums; }
+.table-scroll { overflow-x: auto; }
+.data { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+.data th, .data td { padding: 4px 10px; text-align: right; border-bottom: 1px solid #EFEFEC; white-space: nowrap; }
+.data th:first-child, .data td:first-child { text-align: left; }
+.data th { color: var(--quiet); font-size: 12.5px; font-weight: 600; }
+.data td.src { text-align: left; color: var(--quiet); }
+.hist { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; }
+.histnote ol { margin: 0; padding-left: 18px; }
+.histnote li { margin-bottom: 4px; }
+.facts { margin: 0; padding-left: 18px; }
+.etarow { display: flex; justify-content: space-between; padding: 2px 0; border-bottom: 1px solid #F2F2EF; font-variant-numeric: tabular-nums; }
+.etarow.tot { font-weight: 700; border-bottom: 0; }
+.tip { position: fixed; z-index: 10; pointer-events: none; background: var(--ink); color: #fff; padding: 4px 8px; border-radius: 6px; font-size: 13px; max-width: 280px; }
+
+@media (max-width: 1150px) {
+  .pov { grid-template-columns: 340px minmax(0, 1fr); height: auto; }
+  .pov > .side { grid-column: 1 / -1; }
+  .logic-grid { grid-template-columns: 1fr 1fr; }
+  .tower-grid { grid-template-columns: 1fr; }
+  .kpis { grid-template-columns: repeat(2, 1fr); }
+  .hist { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><strong>SmartPull</strong><span>Control Tower v2</span></div>
+  <nav class="tabs" role="tablist" aria-label="Views">
+    <button role="tab" data-tab="tower" class="on">Control Tower</button>
+    <button role="tab" data-tab="puller">Puller</button>
+    <button role="tab" data-tab="kitter">Kitter</button>
+    <button role="tab" data-tab="logic">Logic</button>
+  </nav>
+  <div class="clockbox">
+    <div class="now"><span id="clock">6:20 PM</span><small id="truck">Truck in 1:10</small></div>
+    <button id="play" class="primary" data-act="play">Start the shift</button>
+    <label class="speed">Speed
+      <select id="speed">
+        <option value="15">15x</option>
+        <option value="30" selected>30x</option>
+        <option value="60">60x</option>
+        <option value="120">120x</option>
+      </select>
+    </label>
+    <button data-act="reset">Reset</button>
+  </div>
+</header>
+<p class="banner">Demo. Floor, parts, orders and crew are examples. Stage times are illustrative; real time-study values are withheld. SAP is simulated. No results measured yet.</p>
+
+<main>
+  <section id="tab-tower" class="view on">
+    <div class="kpis" id="kpis"></div>
+    <div class="panel strip">
+      <h2>When each order reaches the truck</h2>
+      <div id="strip"></div>
+    </div>
+    <div class="tower-grid">
+      <div class="col">
+        <div class="panel" id="bigtrack"></div>
+        <div class="panel boardwrap">
+          <h2>ETA board <span class="tag">from example stage times</span></h2>
+          <div class="board-scroll"><table class="board"><thead><tr><th>Order</th><th>Path</th><th>Progress</th><th>ETA</th><th>Range</th><th>Status</th></tr></thead><tbody id="board"></tbody></table></div>
+        </div>
+      </div>
+      <div class="col side">
+        <div class="panel queuewrap"><h2>Live queue</h2><div id="queue"></div></div>
+        <div class="panel"><h2>Why stops failed <span class="tag">example</span></h2><div id="reasons"></div></div>
+        <div class="panel feedwrap"><h2>Floor feed <span class="tag">SAP simulated</span></h2><div id="feed" class="feed"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-puller" class="view">
+    <div class="pov">
+      <div class="device" id="pullerDevice">
+        <div class="devhead"><span id="pullerName">Cart 1</span><span class="tag dark">Automation, DTIT</span></div>
+        <div id="pullerCard"></div>
+        <div id="pullerSteps" class="steps"></div>
+        <div id="pullerMsg" class="flash" role="status" aria-live="polite"></div>
+        <form class="scanform" data-form="puller">
+          <label for="pullerInput">Scan or type a code</label>
+          <div><input id="pullerInput" autocomplete="off" spellcheck="false"><button class="primary">Enter</button></div>
+        </form>
+        <div class="quick">
+          <button data-act="pullRight">Scan the right code</button>
+          <button data-act="pullWrong">Scan a wrong code</button>
+        </div>
+        <p class="devlabel">Can't complete this stop? One tap says why.</p>
+        <div class="reasons-tap" id="pullerReasons"></div>
+      </div>
+      <div class="panel mapwrap"><h2>Your route <span class="tag">AI routing, example floor</span></h2><div id="pullerMap"></div></div>
+      <div class="col side">
+        <div class="panel" id="pullerWhy"></div>
+        <div class="panel feedwrap"><h2>What the system did <span class="tag">SAP simulated</span></h2><div id="pullerFeed" class="feed"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-kitter" class="view">
+    <div class="pov kit">
+      <div class="device" id="kitDevice">
+        <div class="devhead"><span>Table 1</span><span class="tag dark">Automation, DTIT</span></div>
+        <div id="kitLight" class="light" role="status" aria-live="polite"></div>
+        <form class="scanform" data-form="kitter">
+          <label for="kitInput">Scan or type a code</label>
+          <div><input id="kitInput" autocomplete="off" spellcheck="false"><button class="primary">Enter</button></div>
+        </form>
+        <div class="quick">
+          <button data-act="kitSheet">Scan the pick sheet</button>
+          <button data-act="kitRight">Scan the next part</button>
+          <button data-act="kitWrong">Scan a wrong part</button>
+          <button data-act="kitShort" class="warn">Part is missing</button>
+        </div>
+      </div>
+      <div class="panel sheetwrap"><div id="kitSheet"></div></div>
+      <div class="col side">
+        <div class="panel" id="kitSide"></div>
+        <div class="panel feedwrap"><h2>What the system did <span class="tag">SAP simulated</span></h2><div id="kitFeed" class="feed"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-logic" class="view">
+    <div class="logic-grid">
+      <div class="panel">
+        <h2>The goal: dials we can change</h2>
+        <div class="presets" id="presets"></div>
+        <div class="dials">
+          <label>Pick and travel time <input type="range" min="0" max="100" data-dial="travel"></label>
+          <label>Kitting wait <input type="range" min="0" max="100" data-dial="kitting"></label>
+          <label>Lateness against the truck <input type="range" min="0" max="100" data-dial="lateness"></label>
+          <label>Batching wait <input type="range" min="0" max="100" data-dial="batching"></label>
+        </div>
+        <h3>Limits that never move</h3>
+        <ul class="locks">
+          <li>Complete orders on a pallet</li>
+          <li>Cart and forklift capacity <span class="tag">example</span></li>
+          <li>Stock reserved when a task goes out</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h2>The queue this goal builds <span class="tag">AI routing is a classical solver</span></h2>
+        <div class="loadchips" id="loadChips"></div>
+        <div id="logicMap"></div>
+        <p id="loadWhy" class="note"></p>
+      </div>
+      <div class="col">
+        <div class="panel">
+          <h2>Smart batching <span class="tag">proposed</span></h2>
+          <label class="conf">Chance a matching order is close behind
+            <input type="range" min="0" max="100" value="80" id="conf"><output id="confOut">80%</output>
+          </label>
+          <p class="note">Placeholder slider. No model is trained. A forecast from order history needs plant data.</p>
+          <div id="batch"></div>
+        </div>
+        <div class="panel" id="etaWhy"></div>
+      </div>
+      <div class="panel wide">
+        <h2>Same orders, different goals <span class="tag">simulated on the example floor</span></h2>
+        <div class="table-scroll"><table class="data" id="compare"></table></div>
+        <p class="note">This shows the method, not a result. The example floor and crew are made up. Today's column leaves out wrong or missing stops, and it's the one we would replay first on real SAP data.</p>
+      </div>
+      <div class="panel wide">
+        <h2>Stage times behind the ETAs <span class="tag">example values</span></h2>
+        <div class="hist">
+          <div class="table-scroll"><table class="data" id="hist"></table></div>
+          <div class="histnote">
+            <h3>Where we want this to go</h3>
+            <ol>
+              <li><strong>Now:</strong> one number per stage (in the real version, medians from our time studies).</li>
+              <li><strong>Next:</strong> SAP pick confirmations by part, bin, hour and order type, so an ETA reads like "orders like this one usually take this long".</li>
+              <li><strong>Later, proposed:</strong> machine learning sharpens ETA, late-order and bin-failure risk, once there's data to train on. Not built here.</li>
+            </ol>
+            <p class="note">These samples are small and the stages use different units, so this ETA is a demo of the idea, not a validated lead time.</p>
+            <h3>What the floor history says</h3>
+            <ul class="facts" id="facts"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="tip" class="tip" hidden></div>
+<script id="engine">
+globalThis.SP = (() => {
+"use strict";
+
+// ---- Example stage times (illustrative; real time-study medians are withheld under NDA), seconds -----
+const HIST = {
+  cartStop: 45, forkStop: 120, forkStopLow: 100, forkStopHigh: 200,
+  cartTravel: 40, forkTravel: 60,
+  cartRouting: 20, forkRouting: 20, cartSheet: 30, forkSheet: 30,
+  cartToDrop: 90, forkToDrop: 90, cartDrop: 120, forkDrop: 60,
+  handlerIn: 30, handlerOut: 30, splitMatch: 300,
+  kitPerBox: 90, kitLowFactor: 0.8, kitHighFactor: 1.6,
+  packSingle: 30, packMulti: 60,
+};
+const T0 = (18 + 20 / 60) * 3600, TRUCK = 19.5 * 3600, END = 21 * 3600;
+const BAYS = 20, AISLES = 7, ROW_GAP = 2;
+const START = { x: 0, r: AISLES }, DROP = { x: 14, r: AISLES };
+const CAP = { cart: 10, forklift: 8 };                 // example capacities, lines per load
+const COUNT_DELAY = 45 * 60;                           // example: a count task takes 45 min
+const RISK_HOLD = 10 * 60;                             // a flagged order stays red this long, so a lead sees it
+const COUNT_RUSH = 15 * 60;                            // example: a count for an at-risk order is done in 15 min
+const CREW = { cart: 3, forklift: 1, tables: 2, single: 1, multi: 1 };   // example crew
+const PRESETS = {
+  "Pick-time first": { travel: 0.9, kitting: 0.2, lateness: 0.2, batching: 0.5 },
+  "Kitting-first": { travel: 0.3, kitting: 0.9, lateness: 0.3, batching: 0.3 },
+  "Urgency-first": { travel: 0.2, kitting: 0.2, lateness: 0.95, batching: 0.2 },
+};
+const REASONS = ["Empty", "Wrong part", "Short", "Can't reach"];
+
+// ---- small helpers ----------------------------------------------------------------------------------
+function rng(seed) {
+  let a = seed >>> 0;
+  return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+function clock(t) {
+  const m = Math.round(t / 60), h24 = Math.floor(m / 60) % 24, mm = m % 60, h = h24 % 12 || 12;
+  return `${h}:${String(mm).padStart(2, "0")} ${h24 >= 12 ? "PM" : "AM"}`;
+}
+
+// ---- floor: aisle distance. Crossing to another row means going round an end of the racks ------------
+function parseBin(code) {
+  const [a, b, l] = code.split("-");
+  return { r: a.charCodeAt(0) - 65, x: Number(b), level: Number(l) };
+}
+function dist(p, q) {
+  if (p.r === q.r) return Math.abs(p.x - q.x);
+  const end = BAYS + 1;
+  return Math.abs(p.r - q.r) * ROW_GAP + Math.min(p.x + q.x, (end - p.x) + (end - q.x));
+}
+function waypoints(p, q) {
+  if (p.r === q.r) return [p, q];
+  const end = BAYS + 1, side = p.x + q.x <= (end - p.x) + (end - q.x) ? 0 : end;
+  return [p, { x: side, r: p.r }, { x: side, r: q.r }, q];
+}
+
+// ---- exact route per load (Held-Karp); nearest neighbour plus 2-opt only above 10 stops --------------
+function routeLength(stops, order, a, b) {
+  let d = 0, cur = a;
+  for (const i of order) { d += dist(cur, stops[i]); cur = stops[i]; }
+  return d + dist(cur, b);
+}
+function solveRoute(stops, a = START, b = DROP) {
+  const n = stops.length;
+  if (!n) return { order: [], length: dist(a, b) };
+  if (n > 10) {
+    const left = new Set(stops.map((_, i) => i)), order = [];
+    let cur = a;
+    while (left.size) {
+      let best = -1, bd = Infinity;
+      for (const i of left) { const d = dist(cur, stops[i]); if (d < bd) { bd = d; best = i; } }
+      order.push(best); left.delete(best); cur = stops[best];
+    }
+    for (let improved = true; improved;) {
+      improved = false;
+      for (let i = 0; i < n - 1; i++) for (let j = i + 1; j < n; j++) {
+        const cand = [...order.slice(0, i), ...order.slice(i, j + 1).reverse(), ...order.slice(j + 1)];
+        if (routeLength(stops, cand, a, b) + 1e-9 < routeLength(stops, order, a, b)) { order.splice(0, n, ...cand); improved = true; }
+      }
+    }
+    return { order, length: routeLength(stops, order, a, b) };
+  }
+  const size = 1 << n, dp = new Float64Array(size * n).fill(Infinity), from = new Int8Array(size * n).fill(-1);
+  for (let i = 0; i < n; i++) dp[(1 << i) * n + i] = dist(a, stops[i]);
+  for (let mask = 1; mask < size; mask++) for (let i = 0; i < n; i++) {
+    const cost = dp[mask * n + i];
+    if (!(mask & (1 << i)) || cost === Infinity) continue;
+    for (let j = 0; j < n; j++) {
+      if (mask & (1 << j)) continue;
+      const nm = mask | (1 << j), nc = cost + dist(stops[i], stops[j]);
+      if (nc < dp[nm * n + j]) { dp[nm * n + j] = nc; from[nm * n + j] = i; }
+    }
+  }
+  let bestI = 0, best = Infinity, full = size - 1;
+  for (let i = 0; i < n; i++) { const c = dp[full * n + i] + dist(stops[i], b); if (c < best) { best = c; bestI = i; } }
+  const order = [];
+  for (let m = full, i = bestI; i !== -1;) { order.push(i); const p = from[m * n + i]; m ^= 1 << i; i = p; }
+  return { order: order.reverse(), length: best };
+}
+
+// ---- example data: same every time ------------------------------------------------------------------
+function buildData() {
+  const R = rng(498), parts = [], stock = {}, used = new Set(["A-12-1", "A-12-2"]);
+  const prefixes = ["KB", "DK", "CB", "PS", "AD", "HS", "LX", "MS"];
+  const addBin = (part, code, qty) => { stock[code] = { part, qty, reserved: 0, hold: false }; part.bins.push(code); };
+  const newBin = (fast) => {
+    for (;;) {
+      const r = String.fromCharCode(65 + Math.floor(R() * AISLES)), x = 1 + Math.floor(R() * (fast ? 9 : BAYS));
+      const lvl = fast || R() < 0.72 ? Math.floor(R() * 2) : 2 + Math.floor(R() * 8), code = `${r}-${x}-${lvl}`;
+      if (!used.has(code)) { used.add(code); return code; }
+    }
+  };
+  const first = [["LX-4471", "A-12-1"], ["MS-4471", "A-12-2"]];
+  for (const [id, code] of first) { const p = { id, bins: [] }; parts.push(p); addBin(p, code, 60); }
+  for (let i = 0; i < 34; i++) {
+    const p = { id: `${prefixes[i % 8]}-${1000 + Math.floor(R() * 8999)}`, bins: [] };
+    parts.push(p);
+    addBin(p, newBin(i < 10), 40 + Math.floor(R() * 40));
+    if (R() < 0.3) addBin(p, newBin(false), 15 + Math.floor(R() * 20));
+  }
+  const orders = [], pick = () => parts[Math.floor(R() * R() * parts.length)];
+  const line = () => { const p = pick(); return { part: p.id, bin: p.bins[0], qty: 1 + Math.floor(R() * 2), done: false, kitted: false }; };
+  const make = (id, type, family) => {
+    const n = type === "single" ? 1 : 2 + Math.floor(R() * 3), lines = [];
+    while (lines.length < n) { const l = line(); if (!lines.some((x) => x.part === l.part)) lines.push(l); }
+    if (type === "single") lines[0].qty = 1;
+    const eq = lines.some((l) => parseBin(l.bin).level >= 2) ? "forklift" : "cart";
+    return { id, type, family, lines, eq, boxes: type === "single" ? 1 : 1 + Math.floor(n / 2), age: Math.floor(R() * 121),
+      stage: 0, load: [], split: false, jumped: false, risk: false, riskLogged: false, eta: 0, low: 0, high: 0, shippedAt: null,
+      shortUntil: null, shelf: false, moved: T0 };
+  };
+  // example share of single-box orders
+  let id = 4101;
+  for (let i = 0; i < 40; i++) orders.push(make(id++, "single", 0));
+  for (let i = 0; i < 24; i++) orders.push(make(id++, "multi", 1 + (i % 4)));
+  return { parts, stock, orders };
+}
+const DATA0 = JSON.stringify(buildData());
+const allBins = Object.keys(JSON.parse(DATA0).stock).map(parseBin);
+let pairSum = 0, pairN = 0;
+for (let i = 0; i < allBins.length; i++) for (let j = i + 1; j < allBins.length; j++) { pairSum += dist(allBins[i], allBins[j]); pairN++; }
+const MEAN_PAIR = pairSum / pairN;          // calibrates distance so a typical move takes the example travel time
+const moveSec = (eq, d) => d * (eq === "cart" ? HIST.cartTravel : HIST.forkTravel) / MEAN_PAIR;
+const stopSec = (eq, bin) => (eq === "forklift" && parseBin(bin).level >= 2 ? HIST.forkStop : HIST.cartStop);
+
+// ---- the planner: complete orders on capacity-limited loads, scored by the dials ----------------------
+function urgency(o) {
+  return (o.jumped ? 10 : 0) + (o.age / 120) * 0.5 + (o.eq === "forklift" ? 0.25 : 0) + (o.type === "multi" ? 0.25 : 0);
+}
+function closeness(o, chosen) {
+  let d = 0, c = 0;
+  for (const l of o.lines) for (const q of chosen) for (const m of q.lines) { d += dist(parseBin(l.bin), parseBin(m.bin)); c++; }
+  return c ? 1 - clamp(d / c / 40, 0, 1) : 0;
+}
+function makeLoad(st, eq, type, orders) {
+  const raw = [];
+  for (const o of orders) for (const l of o.lines) if (!l.done) raw.push({ orderId: o.id, part: l.part, bin: l.bin, qty: l.qty });
+  const pts = raw.map((t) => parseBin(t.bin)), r = solveRoute(pts);
+  let cur = START;
+  const tasks = r.order.map((i) => {
+    const t = raw[i], p = pts[i], d = dist(cur, p);
+    cur = p;
+    return { ...t, move: moveSec(eq, d), stop: stopSec(eq, t.bin), status: "open" };
+  });
+  const load = { id: `L-${++st.nextLoad}`, eq, type, orderIds: orders.map((o) => o.id), tasks, length: r.length, why: "", extra: 0 };
+  for (const o of orders) o.load.push(load.id);
+  return load;
+}
+function buildLoads(st, orders, w) {
+  const loads = [], groups = {};
+  for (const o of orders) (groups[`${o.eq}|${o.type}`] = groups[`${o.eq}|${o.type}`] || []).push(o);
+  for (const key of Object.keys(groups).sort()) {
+    const [eq, type] = key.split("|"), left = [...groups[key]];
+    while (left.length) {
+      left.sort((a, b) => (w.lateness * urgency(b) + w.kitting * b.family * 0.05) - (w.lateness * urgency(a) + w.kitting * a.family * 0.05) || a.id - b.id);
+      const chosen = [left.shift()];
+      let lines = chosen[0].lines.filter((l) => !l.done).length;
+      for (;;) {
+        let best = -1, bestScore = -Infinity;
+        left.forEach((o, i) => {
+          if (lines + o.lines.length > CAP[eq]) return;
+          const s = w.travel * closeness(o, chosen) + w.kitting * (o.family === chosen[0].family ? 1 : 0) + w.lateness * urgency(o) * 0.5;
+          if (s > bestScore) { bestScore = s; best = i; }
+        });
+        if (best < 0) break;
+        lines += left[best].lines.length;
+        chosen.push(left.splice(best, 1)[0]);
+      }
+      loads.push(makeLoad(st, eq, type, chosen));
+    }
+  }
+  const score = (l) => {
+    const os = l.orderIds.map((id) => st.byId[id]);
+    const u = os.reduce((s, o) => s + urgency(o), 0) / os.length;
+    return w.lateness * u + w.kitting * (l.type === "multi" ? 0.4 : 0) + w.travel * (1 - clamp(l.length / l.tasks.length / 40, 0, 1));
+  };
+  return loads.map((l) => [score(l), l]).sort((a, b) => b[0] - a[0] || a[1].id.localeCompare(b[1].id)).map((x) => {
+    x[1].why = whyLine(st, x[1], w);
+    return x[1];
+  });
+}
+function whyLine(st, l, w) {
+  if (l.orderIds.some((id) => st.byId[id].jumped)) return "At risk, moved to the front";
+  const top = Object.entries({ travel: w.travel, kitting: w.kitting, lateness: w.lateness }).sort((a, b) => b[1] - a[1])[0][0];
+  if (top === "kitting" && l.type === "multi") return "Keeps pallet orders together";
+  if (top === "lateness") return "Oldest and slowest orders first";
+  return `Stops close together, ${Math.round(l.length / l.tasks.length)} units a stop`;
+}
+// Today's rules, for comparison: release order, sheet order, cart then forklift, so orders split
+function todayLoads(st, orders) {
+  const loads = [];
+  for (let i = 0; i < orders.length; i += 5) {
+    const chunk = orders.slice(i, i + 5);
+    for (const eq of ["cart", "forklift"]) {
+      const raw = [], ids = new Set();
+      for (const o of chunk) for (const l of o.lines) {
+        const high = parseBin(l.bin).level >= 2;
+        if (high === (eq === "forklift")) { raw.push({ orderId: o.id, part: l.part, bin: l.bin, qty: l.qty }); ids.add(o.id); }
+      }
+      if (!raw.length) continue;
+      let cur = START, length = 0;
+      const tasks = raw.map((t) => {
+        const p = parseBin(t.bin), d = dist(cur, p);
+        cur = p; length += d;
+        const routing = eq === "cart" ? HIST.cartRouting : HIST.forkRouting;
+        return { ...t, move: moveSec(eq, d) + routing, stop: stopSec(eq, t.bin), status: "open" };
+      });
+      length += dist(cur, DROP);
+      const load = { id: `L-${++st.nextLoad}`, eq, type: "mixed", orderIds: [...ids], tasks, length, why: "Release order",
+        extra: eq === "cart" ? HIST.cartSheet : HIST.forkSheet };
+      for (const id of ids) st.byId[id].load.push(load.id);
+      loads.push(load);
+    }
+  }
+  for (const o of orders) if (o.load.length > 1) o.split = true;
+  return loads;
+}
+
+// ---- state ------------------------------------------------------------------------------------------
+function init(opts = {}) {
+  const data = JSON.parse(DATA0);
+  const mode = opts.mode || "smart", weights = { ...(opts.weights || PRESETS["Pick-time first"]) };
+  const st = { mode, t: T0, weights, preset: opts.preset || "Pick-time first", parts: data.parts, stock: data.stock, orders: data.orders, byId: {},
+    queue: { cart: [], forklift: [] }, pullers: [], tables: [], dropLane: [], kitQueue: [], packQueue: { single: [], multi: [] }, pack: { single: [], multi: [] },
+    log: [], reasons: { Empty: 3, "Wrong part": 2, Short: 1, "Can't reach": 1 }, firedEvents: {}, pending: [], nextLoad: 0, nextSheet: 1, travelUnits: 0, travelSec: 0, loadsDone: 0, ordersOnLoads: 0, done: false,
+    batchConf: 0.8, selected: null };
+  for (const o of st.orders) st.byId[o.id] = o;
+  for (let i = 0; i < CREW.cart; i++) st.pullers.push(newPuller(`Cart ${i + 1}`, "cart"));
+  for (let i = 0; i < CREW.forklift; i++) st.pullers.push(newPuller(`Forklift ${i + 1}`, "forklift"));
+  for (let i = 0; i < CREW.tables; i++) st.tables.push({ id: `Table ${i + 1}`, sheet: null, left: 0, manual: false, scanned: false, matcher: { reference: null }, flash: null });
+  for (let i = 0; i < CREW.single; i++) st.pack.single.push({ order: null, left: 0 });
+  for (let i = 0; i < CREW.multi; i++) st.pack.multi.push({ order: null, left: 0 });
+
+  // A live floor, not a blank one: some orders are already further along at 5:30 PM
+  const singles = st.orders.filter((o) => o.type === "single"), multis = st.orders.filter((o) => o.type === "multi");
+  const pulled = (o) => { for (const l of o.lines) l.done = true; };
+  singles.slice(0, 6).forEach((o, i) => { pulled(o); o.stage = 5; o.shippedAt = T0 - 600 + i * 60; });
+  singles.slice(6, 10).forEach((o) => { pulled(o); o.stage = 4; st.packQueue.single.push(o.id); });
+  const sheetOrders = multis.slice(0, 10);
+  sheetOrders.forEach((o) => { pulled(o); o.stage = 3; });
+  st.tables[0].sheet = { id: `PS-${st.nextSheet++}`, orderIds: sheetOrders.map((o) => o.id) };
+  st.tables[0].left = kitSec(st.byId[sheetOrders[0].id]);
+  const rest = st.orders.filter((o) => o.stage === 0);
+  const loads = mode === "today" ? todayLoads(st, rest) : buildLoads(st, rest, weights);
+  for (const l of loads) st.queue[l.eq].push(l);
+  addLog(st, "plan", mode === "today" ? "Sheets released in order" : `AI routing built ${loads.length} loads`);
+  if (mode === "smart") refreshEtas(st);
+  return st;
+}
+function newPuller(id, eq) {
+  return { id, eq, manual: false, load: null, i: 0, left: 0, phase: "idle", step: 0, matcher: { reference: null }, msg: null };
+}
+function addLog(st, kind, text) {
+  st.log.unshift({ t: st.t, kind, text });
+  if (st.log.length > 60) st.log.length = 60;
+}
+const kitSec = (o) => o.boxes * HIST.kitPerBox;
+const allPulled = (o) => o.lines.every((l) => l.done);
+
+// ---- scan check, ported from barcode-matcher/matcher.py ----------------------------------------------
+const IDLE = "IDLE", REF_STORED = "REF_STORED", MATCH = "MATCH", MISMATCH = "MISMATCH", NO_REFERENCE = "NO_REFERENCE";
+function normalize(code) {
+  if (typeof code !== "string") throw new TypeError(`barcode must be a string, got ${typeof code}`);
+  const c = code.trim().toUpperCase();
+  if (!c) throw new Error("empty barcode");
+  return c;
+}
+class Matcher {
+  constructor() { this.reference = null; }
+  get state() { return this.reference === null ? IDLE : REF_STORED; }
+  scanSheet(code) { this.reference = normalize(code); return this.state; }
+  scanPart(code) {
+    if (this.reference === null) return NO_REFERENCE;
+    if (normalize(code) === this.reference) { this.reference = null; return MATCH; }
+    return MISMATCH;
+  }
+}
+
+// ---- stock reservation: taken when the task goes out, so two pullers can't chase one bin --------------
+function reserve(stock, bin, qty) {
+  const s = stock[bin];
+  if (!s || s.hold || s.qty - s.reserved < qty) return false;
+  s.reserved += qty;
+  return true;
+}
+function release(stock, bin, qty) { stock[bin].reserved = Math.max(0, stock[bin].reserved - qty); }
+function findAlternate(st, partId, qty, notBin) {
+  const part = st.parts.find((p) => p.id === partId);
+  return part.bins.find((b) => b !== notBin && !st.stock[b].hold && st.stock[b].qty - st.stock[b].reserved >= qty) || null;
+}
+function dispatch(st, p, load) {
+  p.load = load; p.i = 0; p.step = 0; p.msg = null; p.matcher = { reference: null };
+  for (const id of load.orderIds) if (st.byId[id].stage < 1) { st.byId[id].stage = 1; st.byId[id].moved = st.t; }
+  for (const task of [...load.tasks]) {
+    if (reserve(st.stock, task.bin, task.qty)) { task.reserved = true; continue; }
+    const alt = findAlternate(st, task.part, task.qty, task.bin);
+    if (alt && reserve(st.stock, alt, task.qty)) { noteBin(st, task, alt); task.bin = alt; task.stop = stopSec(load.eq, alt); task.reserved = true; continue; }
+    task.status = "failed";
+    shortOrder(st, st.byId[task.orderId], task, "Short", p.eq);
+  }
+  st.ordersOnLoads += load.orderIds.length; st.loadsDone += 1; st.travelUnits += load.length;
+  p.left = load.extra || 0;
+  skipClosed(p);
+  if (currentTask(p)) { p.left += currentTask(p).move + currentTask(p).stop; p.phase = "task"; } else toDrop(st, p);
+}
+function noteBin(st, task, alt) {
+  const line = st.byId[task.orderId].lines.find((l) => l.part === task.part && l.bin === task.bin);
+  if (line) line.bin = alt;
+}
+const currentTask = (p) => (p.load ? p.load.tasks[p.i] : null);
+function skipClosed(p) { while (p.load && p.i < p.load.tasks.length && p.load.tasks[p.i].status !== "open") p.i++; }
+function toDrop(st, p) {
+  p.phase = "drop";
+  p.left = p.eq === "cart" ? HIST.cartToDrop + HIST.cartDrop : HIST.forkToDrop + HIST.forkDrop;
+  if (p.manual) finishLoad(st, p);
+}
+function finishTask(st, p) {
+  const task = currentTask(p), o = st.byId[task.orderId], s = st.stock[task.bin];
+  task.status = "done";
+  s.qty -= task.qty; release(st.stock, task.bin, task.qty);
+  st.travelSec += task.move;
+  const line = o.lines.find((l) => l.part === task.part && !l.done);
+  if (line) line.done = true;
+  nextTask(st, p);
+}
+function nextTask(st, p) {
+  p.i++; p.step = 0; p.matcher = { reference: null };
+  skipClosed(p);
+  const t = currentTask(p);
+  if (t) { p.left = t.move + t.stop; p.phase = "task"; } else toDrop(st, p);
+}
+function finishLoad(st, p) {
+  const load = p.load, ready = [];
+  p.load = null; p.phase = "idle"; p.left = 0; p.step = 0;
+  for (const id of load.orderIds) {
+    const o = st.byId[id];
+    if (!allPulled(o) || o.stage >= 2) continue;
+    if (o.type === "single") { o.stage = 4; o.moved = st.t; st.packQueue.single.push(o.id); } else ready.push(o);
+  }
+  if (ready.length) sendToKitting(st, ready);
+}
+function sendToKitting(st, orders) {
+  const split = orders.some((o) => o.split);
+  for (const o of orders) { o.stage = 2; o.moved = st.t; }
+  st.dropLane.push({ sheet: { id: `PS-${st.nextSheet++}`, orderIds: orders.map((o) => o.id) }, ready: st.t + HIST.handlerIn + (split ? HIST.splitMatch : 0) });
+}
+
+// ---- a failed stop: one tap says why ------------------------------------------------------------------
+function failStop(st, p, reason, opts = {}) {
+  const task = currentTask(p);
+  if (!task || !REASONS.includes(reason)) return null;
+  const o = st.byId[task.orderId];
+  st.reasons[reason] = (st.reasons[reason] || 0) + 1;
+  release(st.stock, task.bin, task.qty);
+  if (reason === "Empty" || reason === "Wrong part") st.stock[task.bin].hold = true;
+  addLog(st, "sap", `Correction request to SAP: ${task.bin}, ${task.part}, ${reason}`);
+  addLog(st, "count", `Count task created for bin ${task.bin}`);
+  const alt = opts.noAlternate ? null : findAlternate(st, task.part, task.qty, task.bin);
+  task.status = "failed";
+  // a bin that just failed is off limits for the rest of this load too
+  if (st.stock[task.bin].hold) for (const other of p.load.tasks) {
+    if (other === task || other.status !== "open" || other.bin !== task.bin) continue;
+    release(st.stock, other.bin, other.qty);
+    const altOther = opts.noAlternate ? null : findAlternate(st, other.part, other.qty, other.bin);
+    if (altOther && reserve(st.stock, altOther, other.qty)) {
+      noteBin(st, other, altOther);
+      other.bin = altOther; other.stop = stopSec(p.eq, altOther);
+      addLog(st, "route", `Order ${other.orderId} re-routed to bin ${altOther}`);
+    } else {
+      other.status = "failed";
+      shortOrder(st, st.byId[other.orderId], other, reason, p.eq);
+    }
+  }
+  let result;
+  if (alt && reserve(st.stock, alt, task.qty)) {
+    noteBin(st, task, alt);
+    const fresh = { ...task, bin: alt, stop: stopSec(p.eq, alt), move: moveSec(p.eq, dist(parseBin(task.bin), parseBin(alt))), status: "open", reserved: true };
+    p.load.tasks.splice(p.i + 1, 0, fresh);
+    addLog(st, "route", `Order ${o.id} re-routed to bin ${alt}`);
+    result = { rerouted: alt };
+  } else {
+    shortOrder(st, o, task, reason, p.eq);
+    result = { short: true };
+  }
+  nextTask(st, p);
+  return result;
+}
+function shortOrder(st, o, task, reason, eq) {
+  o.shortUntil = st.t + COUNT_DELAY;
+  st.pending.push({ at: o.shortUntil, orderId: o.id, part: task.part, bin: task.bin, qty: task.qty, eq });
+  addLog(st, "short", `Order ${o.id} waits on a count task (${reason}). Its load keeps moving`);
+}
+function resolvePending(st) {
+  for (const job of [...st.pending]) {
+    if (job.at > st.t) continue;
+    st.pending.splice(st.pending.indexOf(job), 1);
+    const o = st.byId[job.orderId];
+    o.shortUntil = null;
+    st.stock[job.bin].hold = false;
+    const pts = [parseBin(job.bin)], r = solveRoute(pts), eq = job.eq;
+    const load = { id: `L-${++st.nextLoad}`, eq, type: o.type, orderIds: [o.id], length: r.length, why: "Pull after count task", extra: 0,
+      tasks: [{ orderId: o.id, part: job.part, bin: job.bin, qty: job.qty, move: moveSec(eq, dist(START, pts[0])), stop: stopSec(eq, job.bin), status: "open" }] };
+    o.load.push(load.id);
+    if (o.jumped) st.queue[eq].unshift(load); else st.queue[eq].push(load);
+    addLog(st, "count", `Count done, new pull task for order ${o.id}`);
+  }
+}
+
+// ---- kitting ------------------------------------------------------------------------------------------
+function kitScanSheet(st, table, code) {
+  if (!table.sheet) return NO_REFERENCE;
+  const m = new Matcher();
+  m.scanSheet(table.sheet.id);
+  const r = m.scanPart(code);
+  table.scanned = r === MATCH;
+  return r;
+}
+function kitOpenOrders(st, table) {
+  return table.sheet ? table.sheet.orderIds.map((id) => st.byId[id]).filter((o) => o.stage === 3) : [];
+}
+// Returns the order the part belongs to, or MISMATCH. Green if it belongs, red if not.
+function kitScanPart(st, table, code) {
+  if (!table.sheet || !table.scanned) { table.flash = { ok: false, text: "Scan the pick sheet first" }; return { result: NO_REFERENCE }; }
+  const c = normalize(code);
+  for (const o of kitOpenOrders(st, table)) {
+    const line = o.lines.find((l) => l.part === c && !l.kitted);
+    if (line) {
+      line.kitted = true;
+      table.flash = { ok: true, text: `Order ${o.id}: ${c} goes in this box` };
+      if (o.lines.every((l) => l.kitted)) finishKitOrder(st, table, o);
+      return { result: MATCH, orderId: o.id };
+    }
+  }
+  table.flash = { ok: false, text: `${c} is not on this sheet` };
+  return { result: MISMATCH };
+}
+function finishKitOrder(st, table, o) {
+  o.stage = 4; o.moved = st.t;
+  st.packQueue.multi.push(o.id);
+  if (!kitOpenOrders(st, table).length) { table.sheet = null; table.scanned = false; }
+}
+function kitShort(st, table, orderId, partId) {
+  const o = st.byId[orderId];
+  if (!table.sheet || !table.sheet.orderIds.includes(orderId) || o.stage !== 3) return false;
+  const line = o.lines.find((l) => (partId ? l.part === partId : !l.kitted)) || o.lines[0];
+  table.sheet.orderIds = table.sheet.orderIds.filter((id) => id !== orderId);
+  o.shelf = true; o.stage = 1; line.done = false; line.kitted = false;
+  st.reasons.Short += 1;
+  addLog(st, "short", `Order ${o.id} moved to the short shelf. The rest of the sheet keeps moving`);
+  addLog(st, "route", `Pull task created: ${line.part} for order ${o.id}`);
+  const eq = parseBin(line.bin).level >= 2 ? "forklift" : "cart", pts = [parseBin(line.bin)];
+  const load = { id: `L-${++st.nextLoad}`, eq, type: "multi", orderIds: [o.id], length: dist(START, pts[0]) + dist(pts[0], DROP), why: "Short shelf pull", extra: 0,
+    tasks: [{ orderId: o.id, part: line.part, bin: line.bin, qty: line.qty, move: moveSec(eq, dist(START, pts[0])), stop: stopSec(eq, line.bin), status: "open" }] };
+  o.load.push(load.id);
+  st.queue[eq].unshift(load);
+  if (!kitOpenOrders(st, table).length) { table.sheet = null; table.scanned = false; table.left = 0; }
+  else if (!table.manual) table.left = kitSec(kitOpenOrders(st, table)[0]);
+  return true;
+}
+
+// ---- smart batching: wait only if a match is likely and the truck allows ------------------------------
+function smartBatch({ confidence, threshold, waitMin, slackMin }) {
+  if (confidence < threshold) return { wait: false, reason: `Match chance ${Math.round(confidence * 100)}% is under the ${Math.round(threshold * 100)}% bar. Go now` };
+  if (slackMin < waitMin) return { wait: false, reason: `Only ${Math.round(slackMin)} min of slack before the truck. Go now` };
+  return { wait: true, reason: `Match chance ${Math.round(confidence * 100)}% clears the ${Math.round(threshold * 100)}% bar, and ${Math.round(slackMin)} min of slack covers the ${waitMin} min wait. One trip pulls both` };
+}
+const batchBar = (w) => clamp(0.9 - w.batching * 0.5, 0.3, 0.9);
+
+// ---- the clock ----------------------------------------------------------------------------------------
+const EVENTS = [
+  { at: T0 + 8 * 60, kind: "fail", eq: "cart", reason: "Wrong part" },
+  { at: T0 + 20 * 60, kind: "fail", eq: "forklift", reason: "Empty", noAlternate: true, multi: true },
+  { at: T0 + 30 * 60, kind: "kit" },
+  { at: T0 + 14 * 60, kind: "fail", eq: "cart", reason: "Can't reach" },
+];
+function fireEvents(st) {
+  EVENTS.forEach((e, i) => {
+    if (st.firedEvents[i] || st.t < e.at) return;
+    if (e.kind === "fail") {
+      const p = st.pullers.find((x) => x.eq === e.eq && !x.manual && x.phase === "task" && currentTask(x) && st.byId[currentTask(x).orderId].shortUntil === null && (!e.multi || st.byId[currentTask(x).orderId].type === "multi"));
+      if (!p) return;
+      st.firedEvents[i] = true;
+      failStop(st, p, e.reason, { noAlternate: e.noAlternate });
+    } else {
+      const table = st.tables.find((x) => !x.manual && x.sheet && kitOpenOrders(st, x).length > 1);
+      if (!table) return;
+      st.firedEvents[i] = true;
+      kitShort(st, table, kitOpenOrders(st, table).slice(-1)[0].id);
+    }
+  });
+}
+function sortJumpedFirst(st, ids) {
+  return ids.sort((a, b) => (st.byId[b].jumped ? 1 : 0) - (st.byId[a].jumped ? 1 : 0));
+}
+function step(st, dt = 5) {
+  st.t += dt;
+  fireEvents(st);
+  resolvePending(st);
+  for (const p of st.pullers) {
+    if (!p.load) {
+      const load = st.queue[p.eq].shift();
+      if (load) dispatch(st, p, load);
+      continue;
+    }
+    if (p.manual) continue;
+    p.left -= dt;
+    if (p.left > 0) continue;
+    if (p.phase === "task") finishTask(st, p); else if (p.phase === "drop") finishLoad(st, p);
+  }
+  // shelved orders that finished their pull rejoin kitting on their own sheet
+  for (const o of st.orders) {
+    if (o.shelf && allPulled(o) && o.stage === 1 && !st.pullers.some((p) => p.load && p.load.orderIds.includes(o.id))) {
+      o.shelf = false; sendToKitting(st, [o]);
+    }
+    if (!o.shelf && o.type === "multi" && o.stage === 1 && allPulled(o) && !st.pullers.some((p) => p.load && p.load.orderIds.includes(o.id))) sendToKitting(st, [o]);
+    if (o.type === "single" && o.stage === 1 && allPulled(o) && !st.pullers.some((p) => p.load && p.load.orderIds.includes(o.id))) { o.stage = 4; o.moved = st.t; st.packQueue.single.push(o.id); }
+  }
+  for (const entry of [...st.dropLane]) {
+    if (entry.ready > st.t) continue;
+    st.dropLane.splice(st.dropLane.indexOf(entry), 1);
+    st.kitQueue.push(entry.sheet);
+  }
+  st.kitQueue.sort((a, b) => (b.orderIds.some((id) => st.byId[id].jumped) ? 1 : 0) - (a.orderIds.some((id) => st.byId[id].jumped) ? 1 : 0));
+  for (const table of st.tables) {
+    if (!table.sheet) {
+      const sheet = st.kitQueue.shift();
+      if (sheet) {
+        table.sheet = sheet; table.scanned = false; table.flash = null;
+        sheet.orderIds.forEach((id) => { st.byId[id].stage = 3; st.byId[id].moved = st.t; });
+        table.left = kitSec(st.byId[sheet.orderIds[0]]);
+      }
+      continue;
+    }
+    if (table.manual) continue;
+    table.left -= dt;
+    if (table.left <= 0) {
+      const open = kitOpenOrders(st, table);
+      if (open[0]) { open[0].lines.forEach((l) => { l.kitted = true; }); finishKitOrder(st, table, open[0]); }
+      const next = kitOpenOrders(st, table)[0];
+      table.left = next ? kitSec(next) : 0;
+    }
+  }
+  for (const kind of ["single", "multi"]) {
+    sortJumpedFirst(st, st.packQueue[kind]);
+    for (const line of st.pack[kind]) {
+      if (line.order === null) {
+        if (st.packQueue[kind].length) {
+          line.order = st.packQueue[kind].shift();
+          line.left = kind === "single" ? HIST.packSingle * st.byId[line.order].boxes : HIST.packMulti;
+        }
+        continue;
+      }
+      line.left -= dt;
+      if (line.left <= 0) {
+        const o = st.byId[line.order];
+        o.stage = 5; o.shippedAt = st.t; o.moved = st.t;
+        line.order = null;
+      }
+    }
+  }
+  if (st.mode === "smart" && Math.floor(st.t / 60) !== Math.floor((st.t - dt) / 60)) refreshEtas(st);
+  if (st.orders.every((o) => o.stage === 5) || st.t >= END) st.done = true;
+}
+
+// ---- ETA board: now + time left here + stages ahead + queues, using the example times ---------------
+function forecast(st, f = { fork: 1, kit: 1 }) {
+  const pullEnd = {}, eta = {};
+  const scaleTask = (eq, t) => t.move + t.stop * (eq === "forklift" && t.stop === HIST.forkStop ? f.fork : 1);
+  const dropSec = (eq) => (eq === "cart" ? HIST.cartToDrop + HIST.cartDrop : HIST.forkToDrop + HIST.forkDrop);
+  const free = { cart: [], forklift: [] };
+  const remaining = (l, from) => { let s = 0; for (let i = from; i < l.tasks.length; i++) if (l.tasks[i].status === "open") s += scaleTask(l.eq, l.tasks[i]); return s; };
+  for (const o of st.orders) if (o.shortUntil !== null) pullEnd[o.id] = Infinity;
+  for (const p of st.pullers) {
+    if (!p.load) { free[p.eq].push(st.t); continue; }
+    const tail = p.phase === "drop" ? p.left : Math.max(p.left, 0) + remaining(p.load, p.i + 1) + dropSec(p.eq);
+    const end = st.t + tail;
+    free[p.eq].push(end);
+    for (const id of p.load.orderIds) if (pullEnd[id] !== Infinity) pullEnd[id] = Math.max(pullEnd[id] || 0, end);
+  }
+  const curFree = { cart: Math.min(...free.cart, Infinity), forklift: Math.min(...free.forklift, Infinity) };
+  const sheets = [];
+  for (const p of st.pullers) {
+    if (!p.load) continue;
+    const ms = p.load.orderIds.filter((id) => st.byId[id].type === "multi" && st.byId[id].stage < 2 && st.byId[id].shortUntil === null && !st.pending.some((j) => j.orderId === id));
+    if (ms.length) sheets.push({ ready: pullEnd[ms[0]] + HIST.handlerIn, orderIds: ms });
+  }
+  const takeNext = (eq) => { const a = free[eq]; let k = 0; for (let i = 1; i < a.length; i++) if (a[i] < a[k]) k = i; return k; };
+  const place = (eq, load) => {
+    const k = takeNext(eq), start = free[eq][k], end = start + (load.extra || 0) + remaining(load, 0) + dropSec(eq);
+    free[eq][k] = end;
+    return end;
+  };
+  for (const eq of ["cart", "forklift"]) for (const load of st.queue[eq]) {
+    const end = place(eq, load);
+    for (const id of load.orderIds) if (pullEnd[id] !== Infinity) pullEnd[id] = Math.max(pullEnd[id] || 0, end);
+    const ms = load.orderIds.filter((id) => st.byId[id].type === "multi" && st.byId[id].stage < 2 && st.byId[id].shortUntil === null && !st.pending.some((j) => j.orderId === id));
+    if (ms.length) sheets.push({ ready: end + HIST.handlerIn, orderIds: ms });
+  }
+  // orders waiting on a count task: count finishes, then their pull joins the back of the line
+  const pendingEnd = {};
+  for (const job of st.pending) {
+    const o = st.byId[job.orderId], k = takeNext(job.eq);
+    const start = Math.max(job.at, o.jumped ? curFree[job.eq] : free[job.eq][k]);
+    const end = start + moveSec(job.eq, dist(START, parseBin(job.bin))) + stopSec(job.eq, job.bin) * (job.eq === "forklift" ? f.fork : 1) + dropSec(job.eq);
+    if (!o.jumped) free[job.eq][k] = end;
+    pendingEnd[o.id] = Math.max(pendingEnd[o.id] || 0, end);
+  }
+  for (const id of Object.keys(pendingEnd)) {
+    pullEnd[id] = pendingEnd[id];
+    if (st.byId[id].type === "multi") sheets.push({ ready: pendingEnd[id] + HIST.handlerIn, orderIds: [Number(id)] });
+  }
+  for (const entry of st.dropLane) sheets.push({ ready: entry.ready, orderIds: entry.sheet.orderIds });
+  for (const sheet of st.kitQueue) sheets.push({ ready: st.t, orderIds: sheet.orderIds });
+  const tableFree = [], kitEnd = {};
+  const boxSec = (o) => kitSec(o) * f.kit;
+  for (const table of st.tables) {
+    let end = st.t;
+    if (table.sheet) {
+      const open = kitOpenOrders(st, table);
+      open.forEach((o, i) => { end += i === 0 && !table.manual ? Math.max(table.left, 0) * f.kit : boxSec(o); kitEnd[o.id] = end; });
+    }
+    tableFree.push(end);
+  }
+  sheets.sort((a, b) => a.ready - b.ready);
+  for (const s of sheets) {
+    let k = 0;
+    for (let i = 1; i < tableFree.length; i++) if (tableFree[i] < tableFree[k]) k = i;
+    let end = Math.max(tableFree[k], s.ready);
+    for (const id of s.orderIds) { end += boxSec(st.byId[id]); kitEnd[id] = end; }
+    tableFree[k] = end;
+  }
+  const packs = { single: [], multi: [] };
+  for (const o of st.orders) {
+    if (o.stage === 5) continue;
+    const isIn = (line) => line.order === o.id;
+    const onLine = st.pack[o.type].find(isIn);
+    const ready = onLine ? st.t + Math.max(onLine.left, 0) - (o.type === "single" ? HIST.packSingle * o.boxes : HIST.packMulti)
+      : o.stage === 4 ? st.t : o.type === "single" ? (pullEnd[o.id] || st.t) : (kitEnd[o.id] || st.t);
+    packs[o.type].push({ o, ready });
+  }
+  for (const kind of ["single", "multi"]) {
+    let free2 = st.t;
+    const rows = packs[kind].sort((a, b) => a.ready - b.ready);
+    while (rows.length) {
+      // of the orders ready by now, a jumped one goes first; a jumped order that isn't ready yet can't block the line
+      const here = rows.filter((r) => r.ready <= free2);
+      const pickRow = here.find((r) => r.o.jumped) || here[0] || rows[0];
+      rows.splice(rows.indexOf(pickRow), 1);
+      const sec = kind === "single" ? HIST.packSingle * pickRow.o.boxes : HIST.packMulti;
+      free2 = Math.max(free2, pickRow.ready) + sec + (kind === "multi" ? HIST.handlerOut : 0);
+      eta[pickRow.o.id] = free2;
+    }
+  }
+  return eta;
+}
+function refreshEtas(st) {
+  const mid = forecast(st), low = forecast(st, { fork: HIST.forkStopLow / HIST.forkStop, kit: HIST.kitLowFactor });
+  const high = forecast(st, { fork: HIST.forkStopHigh / HIST.forkStop, kit: HIST.kitHighFactor });
+  let moved = false;
+  for (const o of st.orders) {
+    if (o.stage === 5) { o.eta = o.shippedAt; o.low = o.high = o.shippedAt; o.risk = false; continue; }
+    o.eta = mid[o.id]; o.low = low[o.id]; o.high = high[o.id];
+    o.risk = o.eta > TRUCK || st.t < (o.riskUntil || 0);
+    if (o.eta > TRUCK && !o.riskLogged) {
+      o.riskLogged = true; o.jumped = true; moved = true; o.riskUntil = st.t + RISK_HOLD; o.risk = true; o.riskEta = o.eta;
+      addLog(st, "risk", `Order ${o.id} at risk: ETA ${clock(o.eta)}. Moved to the front of the queue`);
+      for (const job of st.pending) if (job.orderId === o.id && job.at > st.t + COUNT_RUSH) {
+        job.at = st.t + COUNT_RUSH; o.shortUntil = job.at;
+        addLog(st, "count", `Count task for bin ${job.bin} moved up for order ${o.id}`);
+      }
+    }
+  }
+  if (moved) {
+    for (const eq of ["cart", "forklift"]) {
+      st.queue[eq].sort((a, b) => (b.orderIds.some((id) => st.byId[id].jumped) ? 1 : 0) - (a.orderIds.some((id) => st.byId[id].jumped) ? 1 : 0));
+      st.queue[eq].forEach((l) => { if (l.orderIds.some((id) => st.byId[id].jumped)) l.why = "At risk, moved to the front"; });
+    }
+    const again = forecast(st), lo = forecast(st, { fork: HIST.forkStopLow / HIST.forkStop, kit: HIST.kitLowFactor }), hi = forecast(st, { fork: HIST.forkStopHigh / HIST.forkStop, kit: HIST.kitHighFactor });
+    for (const o of st.orders) if (o.stage !== 5) { o.eta = again[o.id]; o.low = lo[o.id]; o.high = hi[o.id]; o.risk = o.eta > TRUCK || st.t < (o.riskUntil || 0); }
+  }
+}
+
+// ---- a dial moved: re-plan only what hasn't gone out --------------------------------------------------
+function replan(st, weights, preset) {
+  st.weights = { ...weights }; st.preset = preset || "Custom";
+  const waiting = [...st.queue.cart, ...st.queue.forklift];
+  const ids = new Set(waiting.flatMap((l) => l.orderIds));
+  const orders = st.orders.filter((o) => ids.has(o.id) && o.stage === 0 && o.shortUntil === null);
+  const keep = waiting.filter((l) => !l.orderIds.every((id) => st.byId[id].stage === 0));
+  st.queue = { cart: [], forklift: [] };
+  for (const l of keep) st.queue[l.eq].push(l);
+  for (const o of orders) o.load = [];
+  for (const l of buildLoads(st, orders, st.weights)) st.queue[l.eq].push(l);
+  addLog(st, "plan", `Goal changed to ${st.preset}. AI routing rebuilt the queue`);
+  refreshEtas(st);
+}
+
+// ---- headless run for the comparison table ------------------------------------------------------------
+function simulate(opts) {
+  const st = init(opts);
+  while (!st.done) step(st, 5);
+  const orders = st.orders.filter((o) => o.shippedAt !== null || o.stage < 5);
+  const late = st.orders.filter((o) => o.shippedAt === null || o.shippedAt > TRUCK).length;
+  return { travelMin: st.travelSec / 60, late, split: st.orders.filter((o) => o.split).length,
+    perLoad: st.ordersOnLoads / Math.max(st.loadsDone, 1), loads: st.loadsDone, lastShip: Math.max(...st.orders.map((o) => o.shippedAt || 0)), st, n: orders.length };
+}
+
+return { HIST, T0, TRUCK, END, BAYS, AISLES, ROW_GAP, START, DROP, CAP, CREW, PRESETS, REASONS, MEAN_PAIR, EVENTS, COUNT_DELAY,
+  rng, clock, parseBin, dist, waypoints, solveRoute, routeLength, buildLoads, makeLoad, todayLoads, init, step, forecast, refreshEtas, replan, simulate,
+  Matcher, normalize, IDLE, REF_STORED, MATCH, MISMATCH, NO_REFERENCE, reserve, release, dispatch, currentTask, finishTask, finishLoad, failStop, kitScanSheet, kitScanPart, kitOpenOrders, kitShort,
+  smartBatch, batchBar, moveSec, stopSec, kitSec, addLog, nextTask };
+})();
+
+</script>
+<script id="ui">
+(() => {
+"use strict";
+const S = SP, $ = (q) => document.querySelector(q), $$ = (q) => [...document.querySelectorAll(q)];
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const KEY = "smartpull-demo", ME = Math.random().toString(36).slice(2);
+const STAGES = ["Released", "Pulling", "Drop lane", "Kitting", "Packing", "To truck"];
+const H = S.HIST;
+
+const joined = loadShared();                       // a second window joins the first; a lone window starts fresh
+let st = joined ? hydrate(joined) : S.init();
+let followerRunning = joined ? Boolean(joined.running) : false;
+let tab = "tower", running = false, speed = joined ? joined.speed : 30, acc = 0, lastMinute = -1, pinned = false, loadPick = 0;
+let compareRows = null, customRow = null, customTimer = null;
+const firstPick = () => (st.orders.find((o) => o.stage === 0 && o.type === "multi" && o.eq === "forklift") || st.orders.find((o) => o.stage < 5)).id;
+st.selected = st.selected || firstPick();
+
+// ---- saved only so a second window can stay in step ---------------------------------------------------
+function pack() { const { byId, ...rest } = st; return JSON.stringify({ by: ME, running: running || followerRunning, speed, st: rest }); }
+function hydrate(raw) {
+  const v = raw.st;
+  v.byId = {};
+  for (const o of v.orders) v.byId[o.id] = o;
+  return v;
+}
+function loadShared() {
+  try {
+    const alive = Number(localStorage.getItem(KEY + "-alive"));
+    if (Date.now() - alive < 2500) return JSON.parse(localStorage.getItem(KEY));
+  } catch (e) { /* no storage in this browser: one window only */ }
+  return null;
+}
+function save() { try { localStorage.setItem(KEY, pack()); } catch (e) { /* one window only */ } }
+window.addEventListener("storage", (e) => {
+  if (e.key !== KEY || !e.newValue) return;
+  try {
+    const raw = JSON.parse(e.newValue);
+    if (raw.by === ME) return;
+    st = hydrate(raw); running = false; followerRunning = Boolean(raw.running);
+    speed = raw.speed; $("#speed").value = String(speed);
+    renderAll();
+  } catch (err) { /* bad snapshot: keep what we have */ }
+});
+function heartbeat() { try { localStorage.setItem(KEY + "-alive", String(Date.now())); } catch (e) { /* one window only */ } }
+setInterval(heartbeat, 1000);
+window.addEventListener("pagehide", () => { try { localStorage.removeItem(KEY + "-alive"); } catch (e) { /* nothing to clear */ } });
+
+// ---- shared bits --------------------------------------------------------------------------------------
+function status(o) {
+  if (o.stage === 5) return o.shippedAt > S.TRUCK ? ["After truck", "bad"] : ["At truck", "good"];
+  if (o.risk) return [o.riskEta && o.eta <= S.TRUCK ? `At risk, was ${S.clock(o.riskEta)}` : "At risk", "bad"];
+  if (o.shortUntil !== null) return ["Waiting on count", "quiet"];
+  if (o.shelf) return ["Short shelf", "quiet"];
+  if (o.jumped) return [`Back on track, was ${S.clock(o.riskEta)}`, "good"];
+  return ["On track", "quiet"];
+}
+const skip = (o, i) => o.type === "single" && (i === 2 || i === 3);
+const stepClass = (o, i) => {
+  if (skip(o, i)) return "skip";
+  if (o.stage === 5 || i < o.stage) return "done";
+  if (i === o.stage) return "cur" + (o.risk ? " bad" : "");
+  return "";
+};
+const pathText = (o) => `${o.type === "single" ? "Single" : "Multi"}, ${o.eq}`;
+const usual = (o, i) => {
+  if (skip(o, i)) return "Skips this stage";
+  const lines = o.lines.length;
+  return [
+    "In the queue",
+    o.eq === "cart" ? `${lines} × ${H.cartStop} s stop, ${H.cartTravel} s move` : `${lines} stops, up to ${H.forkStop} s each`,
+    `Handler ${H.handlerIn} s`,
+    `${o.boxes} ${o.boxes === 1 ? "box" : "boxes"} × 1.5 min`,
+    o.type === "single" ? `${H.packSingle} s a box` : `${H.packMulti} s an order`,
+    "7:30 PM",
+  ][i];
+};
+function feedHtml(filter) {
+  const rows = st.log.filter(filter || (() => true)).slice(0, 25);
+  if (!rows.length) return `<div class="note">Nothing yet.</div>`;
+  return rows.map((l) => `<div><time>${S.clock(l.t)}</time><span class="${l.kind === "risk" ? "risk" : ""}">${esc(l.text)}</span></div>`).join("");
+}
+function fmtLeft(sec) { const m = Math.max(0, Math.round(sec / 60)); return `${Math.floor(m / 60)}:${String(m % 60).padStart(2, "0")}`; }
+
+// ---- floor map ----------------------------------------------------------------------------------------
+const mx = (b) => 46 + b * 30, my = (r) => 26 + r * 48;
+function legPoints(points) {
+  const out = [];
+  points.forEach((p, i) => {
+    if (i === 0) { out.push(p); return; }
+    out.push(...S.waypoints(points[i - 1], p).slice(1));
+  });
+  return out;
+}
+const polyline = (pts) => pts.map((p) => `${mx(p.x)},${my(p.r)}`).join(" ");
+function floorSvg({ route = [], others = [], stops = [], you = null, activeIdx = -1 }) {
+  let g = "";
+  for (let r = 0; r < S.AISLES; r++) {
+    g += `<rect x="${mx(1) - 12}" y="${my(r) - 22}" width="${mx(20) - mx(1) + 24}" height="14" fill="#EAEAE9" stroke="#B8BCC2"/>`;
+    g += `<text x="${mx(1) - 22}" y="${my(r) - 11}" font-size="13" fill="#6B7280" text-anchor="middle">${String.fromCharCode(65 + r)}</text>`;
+  }
+  g += `<circle cx="${mx(0)}" cy="${my(S.AISLES)}" r="6" fill="#1F2328"/><text x="${mx(0)}" y="${my(S.AISLES) + 21}" font-size="13" fill="#6B7280" text-anchor="middle">start</text>`;
+  g += `<rect x="${mx(S.DROP.x) - 50}" y="${my(S.AISLES)}" width="100" height="26" fill="#EAEAE9" stroke="#B8BCC2"/><text x="${mx(S.DROP.x)}" y="${my(S.AISLES) + 18}" font-size="13" fill="#6B7280" text-anchor="middle">drop zone</text>`;
+  for (const o of others) g += `<polyline points="${polyline(legPoints(o))}" fill="none" stroke="#D5D8DC" stroke-width="2"/>`;
+  if (route.length) g += `<polyline points="${polyline(legPoints(route))}" fill="none" stroke="#2563EB" stroke-width="3.5" stroke-linejoin="round"/>`;
+  // stops sharing a bin sit on one spot: the earlier number and the active stop stay on top
+  const drawOrder = stops.map((_, i) => i).sort((a, b) => (a === activeIdx ? 1 : b === activeIdx ? -1 : b - a));
+  drawOrder.forEach((i) => {
+    const p = stops[i], on = i === activeIdx;
+    g += `<circle cx="${mx(p.x)}" cy="${my(p.r)}" r="${on ? 12 : 10}" fill="${p.failed ? "#D93025" : p.done ? "#B8BCC2" : "#2563EB"}" stroke="#fff" stroke-width="2"/>`;
+    g += `<text x="${mx(p.x)}" y="${my(p.r) + 4.5}" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">${p.n ?? i + 1}</text>`;
+  });
+  if (you) g += `<circle cx="${mx(you.x)}" cy="${my(you.r)}" r="6" fill="#1F2328" stroke="#fff" stroke-width="2"/>`;
+  return `<svg viewBox="0 0 700 ${my(S.AISLES) + 30}" role="img" aria-label="Floor plan with the route for this load">${g}</svg>`;
+}
+function loadRoute(load) {
+  // n keeps each stop's number from the load, so the map still matches "Stop 5 of 9" after a failed stop
+  const stops = load.tasks.flatMap((t, i) => (t.status === "failed" ? [] : [{ ...S.parseBin(t.bin), done: t.status === "done", n: i + 1 }]));
+  return { stops, route: [S.START, ...stops, S.DROP] };
+}
+
+// ---- Control Tower ------------------------------------------------------------------------------------
+function renderKpis() {
+  const open = st.orders.filter((o) => o.stage < 5), risk = open.filter((o) => o.risk).length;
+  const after = st.orders.filter((o) => o.shippedAt !== null && o.shippedAt > S.TRUCK).length;
+  const atTruck = st.orders.length - open.length - after;
+  const tile = (b, s, cls = "") => `<div class="kpi ${cls}"><b>${b}</b><span>${s}</span></div>`;
+  $("#kpis").innerHTML =
+    tile(st.t < S.TRUCK ? fmtLeft(S.TRUCK - st.t) : "Left", st.t < S.TRUCK ? "until the 7:30 PM truck" : "the 7:30 PM truck has gone") +
+    tile(open.length - risk, "orders on track") +
+    tile(risk ? `▲ ${risk}` : "0", "orders at risk", risk ? "bad" : "") +
+    tile(`✓ ${atTruck}`, `of ${st.orders.length} at the truck` + (after ? `, ${after} after it` : "")) +
+    tile("Example data", "floor, orders and times are illustrative", "past");
+}
+function renderStrip() {
+  const w = Math.max($("#strip").clientWidth, 400), h = 96, x0 = S.T0 - 60, x1 = S.TRUCK + 20 * 60, sx = (t) => 12 + (t - x0) / (x1 - x0) * (w - 24), base = 74;
+  let g = `<line x1="12" x2="${w - 12}" y1="${base}" y2="${base}" stroke="#B8BCC2"/>`;
+  for (let t = Math.ceil(x0 / 900) * 900; t <= x1; t += 900) {
+    g += `<line x1="${sx(t)}" x2="${sx(t)}" y1="${base}" y2="${base + 4}" stroke="#B8BCC2"/><text x="${sx(t)}" y="${base + 18}" font-size="13" fill="#6B7280" text-anchor="middle">${S.clock(t)}</text>`;
+  }
+  g += `<line x1="${sx(S.TRUCK)}" x2="${sx(S.TRUCK)}" y1="2" y2="${base + 4}" stroke="#1F2328" stroke-width="2"/><text x="${sx(S.TRUCK) + 5}" y="13" font-size="13" font-weight="700" fill="#1F2328">Truck</text>`;
+  if (st.t <= x1) g += `<line x1="${sx(st.t)}" x2="${sx(st.t)}" y1="2" y2="${base}" stroke="#6B7280" stroke-dasharray="3 3"/><text x="${sx(st.t) + 5}" y="13" font-size="13" fill="#6B7280">Now</text>`;
+  const bucket = {};
+  const open = st.orders.filter((o) => o.stage < 5 && o.eta).sort((a, b) => a.eta - b.eta);
+  for (const o of open) {
+    const k = Math.round(sx(Math.min(o.eta, x1)) / 12), n = bucket[k] = (bucket[k] || 0) + 1;      // stack dots that would touch
+    const cx = k * 12, cy = base - 7 - Math.min(n - 1, 5) * 11;
+    g += `<g class="dot" data-order="${o.id}" style="cursor:pointer" data-tip="Order ${o.id}: ETA ${S.clock(o.eta)}, ${esc(status(o)[0])}">
+      <circle cx="${cx}" cy="${cy}" r="9" fill="transparent"/><circle cx="${cx}" cy="${cy}" r="${o.id === st.selected ? 6 : 4.5}" fill="${o.risk ? "#D93025" : "#2563EB"}" stroke="#fff" stroke-width="1.5"/></g>`;
+  }
+  $("#strip").innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="Dot for each open order at its expected truck time">${g}</svg>`;
+}
+function renderBigTrack() {
+  const o = st.byId[st.selected] || st.orders[0], [txt, cls] = status(o);
+  const steps = STAGES.map((n, i) => `<div class="stepb ${stepClass(o, i)}"><b>${n}</b><span>${esc(usual(o, i))}</span></div>`).join("");
+  const label = o.stage === 5 ? "At truck" : "ETA";
+  const rangeText = o.stage < 5 && S.clock(o.low) !== S.clock(o.high) ? `${S.clock(o.low)} to ${S.clock(o.high)}` : "";
+  const range = rangeText ? `<span class="bigrange">History range ${rangeText}</span>` : "";
+  $("#bigtrack").innerHTML = `<div class="bighead"><h2>Order ${o.id}</h2><span class="note" style="margin:0">${esc(pathText(o))}, ${o.lines.length} ${o.lines.length === 1 ? "line" : "lines"}</span>
+    <span class="status ${cls}">${cls === "bad" ? "▲ " : cls === "good" ? "✓ " : ""}${esc(txt)}</span>${range}
+    <span class="bigeta ${o.risk ? "bad" : ""}"><small>${label}</small>${S.clock(o.stage === 5 ? o.shippedAt : o.eta)}</span></div>
+    <div class="tracker">${steps}</div>`;
+}
+function renderBoard() {
+  const rank = (o) => (o.stage === 5 ? 3 : o.risk ? 0 : o.shortUntil !== null || o.shelf ? 1 : 2);
+  const rows = [...st.orders].sort((a, b) => rank(a) - rank(b) || (rank(a) === 3 ? b.shippedAt - a.shippedAt : a.eta - b.eta) || a.id - b.id);
+  $("#board").innerHTML = rows.map((o) => {
+    const [txt, cls] = status(o);
+    const mini = STAGES.map((_, i) => `<i class="${stepClass(o, i)}"></i>`).join("");
+    return `<tr data-order="${o.id}" tabindex="0" class="${o.id === st.selected ? "sel" : ""} ${o.risk ? "isrisk" : ""}"><td><b>${o.id}</b></td><td>${esc(pathText(o))}</td><td><span class="mini" role="img" aria-label="${STAGES[o.stage]}">${mini}</span></td>
+      <td><b>${S.clock(o.stage === 5 ? o.shippedAt : o.eta)}</b></td><td class="note" style="margin:0">${o.stage < 5 && S.clock(o.low) !== S.clock(o.high) ? `${S.clock(o.low)} to ${S.clock(o.high)}` : ""}</td>
+      <td class="status ${cls}">${cls === "bad" ? "▲ " : cls === "good" ? "✓ " : ""}${esc(txt)}</td></tr>`;
+  }).join("");
+}
+function renderQueue() {
+  const now = st.pullers.filter((p) => p.load).map((p) => {
+    const t = S.currentTask(p);
+    return `<div class="q"><span class="n"></span><span class="t">${esc(p.id)}: ${t ? `${esc(t.part)} at ${esc(t.bin)}` : "dropping the load"}</span><span class="y">${p.load.orderIds.length} ${p.load.orderIds.length === 1 ? "order" : "orders"}, ${esc(p.load.id)}</span></div>`;
+  }).join("") || `<div class="note">Nobody out right now.</div>`;
+  const next = [...st.queue.forklift.map((l) => ["Forklift", l]), ...st.queue.cart.map((l) => ["Cart", l])];
+  const jumped = (l) => l.orderIds.some((id) => st.byId[id].jumped);
+  next.sort((a, b) => (jumped(b[1]) ? 1 : 0) - (jumped(a[1]) ? 1 : 0));
+  const rows = next.slice(0, 8).map(([eq, l], i) => `<div class="q ${jumped(l) ? "jump" : ""}"><span class="n">${i + 1}</span><span class="t">${esc(l.id)}, ${eq.toLowerCase()}, ${l.tasks.length} ${l.tasks.length === 1 ? "stop" : "stops"}</span><span class="y">${esc(l.why)}</span></div>`).join("")
+    || `<div class="note">The pull queue is empty.</div>`;
+  const waiting = st.kitQueue.length + st.dropLane.length;
+  $("#queue").innerHTML = `<div class="qhead">ON THE FLOOR</div>${now}<div class="qhead">NEXT, ${next.length} ${next.length === 1 ? "LOAD" : "LOADS"} WAITING</div>${rows}
+    <div class="qhead">DOWNSTREAM</div><div class="note" style="margin:0">Kitting: ${waiting} ${waiting === 1 ? "pallet" : "pallets"} waiting. Packing: ${st.packQueue.single.length + st.packQueue.multi.length} waiting.</div>`;
+}
+function renderReasons() {
+  const e = Object.entries(st.reasons).sort((a, b) => b[1] - a[1]), max = Math.max(...e.map((x) => x[1]), 1);
+  const total = e.reduce((s, x) => s + x[1], 0);
+  $("#reasons").innerHTML = e.map(([k, v]) => `<div class="rbar" data-tip="${esc(k)}: ${v} of ${total} logged stops"><span>${esc(k)}</span><div><i style="width:${v / max * 100}%"></i></div><b>${v}</b></div>`).join("");
+}
+function renderTower() { renderKpis(); renderStrip(); renderBigTrack(); renderBoard(); renderQueue(); renderReasons(); $("#feed").innerHTML = feedHtml(); }
+
+// ---- Puller -------------------------------------------------------------------------------------------
+const me = () => st.pullers[0];
+function renderPuller() {
+  const p = me(), t = S.currentTask(p);
+  $("#pullerName").textContent = p.id;
+  const rowCls = (i) => (!t ? "" : p.step > i ? "ok" : p.step === i ? "active" : "");
+  // the puller scans the bin first (row order on the card is part, bin, quantity)
+  $("#pullerCard").innerHTML = `<div class="taskcard"><h3>NEXT TASK</h3>
+    <div class="taskrow ${rowCls(1)}"><span>Part</span><b>${t ? esc(t.part) : "None"}</b></div>
+    <div class="taskrow ${rowCls(0)}"><span>Bin</span><b>${t ? esc(t.bin) : "None"}</b></div>
+    <div class="taskrow"><span>Qty</span><b>${t ? t.qty : "0"}</b></div></div>`;
+  $("#pullerSteps").innerHTML = ["1 Scan bin", "2 Scan part"].map((s, i) => `<span class="${!t ? "" : p.step > i ? "ok" : p.step === i ? "active" : ""}">${s}</span>`).join("");
+  const box = $("#pullerMsg");
+  box.className = "flash " + (p.msg ? (p.msg.ok ? "good" : "bad") : "");
+  box.textContent = p.msg ? p.msg.text : t ? "Scan the bin to start." : "No tasks right now. The queue is empty.";
+  $("#pullerReasons").innerHTML = S.REASONS.map((r) => `<button data-act="pullFail" data-reason="${esc(r)}" ${t ? "" : "disabled"}>${esc(r)}</button>`).join("");
+  if (p.load) {
+    const { stops, route } = loadRoute(p.load);
+    const liveIdx = t ? p.load.tasks.filter((x) => x.status !== "failed").indexOf(t) : -1;
+    const you = t && liveIdx > 0 ? stops[liveIdx - 1] : S.START;
+    $("#pullerMap").innerHTML = floorSvg({ route, stops, activeIdx: liveIdx, you });
+  } else $("#pullerMap").innerHTML = floorSvg({});
+  const os = p.load ? p.load.orderIds.map((id) => st.byId[id]) : [];
+  const stock = t ? st.stock[t.bin] : null;
+  $("#pullerWhy").innerHTML = t ? `<h2>Why this task</h2><p style="margin:0 0 6px">${esc(p.load.why || "Next stop on the shortest route for this load.")}</p>
+    <div class="etarow"><span>Stop</span><b>${p.load.tasks.indexOf(t) + 1} of ${p.load.tasks.length}</b></div>
+    <div class="etarow"><span>Orders on this load</span><b>${os.length}, all complete</b></div>
+    <div class="etarow"><span>Stock in this bin</span><b>${stock.qty}, ${stock.reserved} reserved</b></div>
+    <p class="note">The stock is reserved for you, so no other puller gets sent here for it.</p>` : `<h2>Why this task</h2><p class="note">Waiting for the next load.</p>`;
+  $("#pullerFeed").innerHTML = feedHtml((l) => ["sap", "count", "route", "short"].includes(l.kind));
+}
+function pullScan(code) {
+  const p = me(), t = S.currentTask(p);
+  if (!t) return;
+  const expected = p.step === 0 ? t.bin : t.part, what = p.step === 0 ? "bin" : "part";
+  const m = new S.Matcher();
+  m.scanSheet(expected);
+  let r;
+  try { r = m.scanPart(code); } catch (e) { p.msg = { ok: false, text: "Nothing scanned. Try again." }; touch(); return; }
+  if (r !== S.MATCH) { p.msg = { ok: false, text: `Not this ${what}. Looking for ${expected}.` }; touch(); return; }
+  if (p.step === 0) { p.step = 1; p.msg = { ok: true, text: `Bin ${t.bin} confirmed. Scan the part.` }; touch(); return; }
+  S.finishTask(st, p);
+  p.msg = { ok: true, text: `${t.part} loaded. Next task.` };
+  if (!p.load || p.phase === "idle") p.msg = { ok: true, text: "Load finished and dropped." };
+  S.step(st, 0);
+  touch();
+}
+
+// ---- Kitter -------------------------------------------------------------------------------------------
+const table = () => st.tables[0];
+function renderKitter() {
+  const tb = table(), light = $("#kitLight"), open = S.kitOpenOrders(st, tb);
+  light.className = "light " + (tb.flash ? (tb.flash.ok ? "good" : "bad") : "");
+  light.textContent = tb.flash ? tb.flash.text : !tb.sheet ? "Waiting for a pallet." : tb.scanned ? "Scan a part." : "Scan the pick sheet to start.";
+  if (!tb.sheet) {
+    $("#kitSheet").innerHTML = `<div class="sheethead"><h2>No pallet on this table</h2></div><p class="note">The next pick sheet prints when a pallet arrives. ${st.kitQueue.length + st.dropLane.length} waiting.</p>`;
+  } else {
+    const boxes = tb.sheet.orderIds.map((id) => st.byId[id]);
+    const mins = open.reduce((s, o) => s + o.boxes, 0) * 1.5;
+    $("#kitSheet").innerHTML = `<div class="sheethead"><h2>Pick sheet ${esc(tb.sheet.id)}</h2><span class="tag">auto-printed</span><span class="tag">example</span>
+      <span class="note" style="margin:0">${boxes.length} complete orders. Expected ${Math.round(mins)} min left, from 1.5 min a box.</span></div>
+      <div class="boxes">${boxes.map((o) => {
+        const first = open[0] && open[0].id === o.id;
+        return `<div class="box ${o.stage > 3 ? "done" : first ? "cur" : ""}"><h4>Order ${o.id}<small>${o.boxes} ${o.boxes === 1 ? "box" : "boxes"}</small></h4><ul>${o.lines.map((l) => `<li class="${l.kitted || o.stage > 3 ? "ok" : ""}">${esc(l.part)} × ${l.qty}</li>`).join("")}</ul></div>`;
+      }).join("")}</div>`;
+  }
+  const shelf = st.orders.filter((o) => o.shelf);
+  $("#kitSide").innerHTML = `<h2>Short shelf</h2>${shelf.length ? shelf.map((o) => `<div class="etarow"><span>Order ${o.id}</span><b>pull task sent</b></div>`).join("") : `<p class="note">Empty.</p>`}
+    <p class="note">A short order waits here. The rest of the sheet keeps moving.</p>`;
+  $("#kitFeed").innerHTML = feedHtml((l) => ["short", "route", "risk"].includes(l.kind));
+}
+function kitInput(code) {
+  const tb = table();
+  try {
+    if (tb.sheet && !tb.scanned) {
+      const r = S.kitScanSheet(st, tb, code);
+      tb.flash = r === S.MATCH ? { ok: true, text: `Sheet ${tb.sheet.id} open. Scan a part.` } : { ok: false, text: `Not this sheet. Looking for ${tb.sheet.id}.` };
+    } else S.kitScanPart(st, tb, code);
+  } catch (e) { tb.flash = { ok: false, text: "Nothing scanned. Try again." }; }
+  S.step(st, 0);
+  touch();
+}
+
+// ---- Logic --------------------------------------------------------------------------------------------
+function renderLogic() {
+  $("#presets").innerHTML = Object.keys(S.PRESETS).map((n) => `<button data-act="preset" data-name="${esc(n)}" class="${st.preset === n ? "on" : ""}">${esc(n)}</button>`).join("");
+  for (const input of $$("[data-dial]")) if (document.activeElement !== input) input.value = Math.round(st.weights[input.dataset.dial] * 100);
+  const loads = [...st.queue.forklift, ...st.queue.cart];
+  if (loadPick >= loads.length) loadPick = 0;
+  $("#loadChips").innerHTML = loads.slice(0, 12).map((l, i) => `<button data-act="pickLoad" data-i="${i}" class="${i === loadPick ? "on" : ""}">${esc(l.id)}</button>`).join("") || `<span class="note">Every load has gone out.</span>`;
+  const sel = loads[loadPick];
+  if (sel) {
+    const { stops, route } = loadRoute(sel);
+    const others = loads.slice(0, 8).filter((l) => l !== sel).map((l) => loadRoute(l).route);
+    $("#logicMap").innerHTML = floorSvg({ route, stops, others });
+    const mins = sel.tasks.reduce((s, t) => s + t.move, 0) / 60;
+    $("#loadWhy").textContent = `${sel.id}: ${sel.eq}, ${sel.orderIds.length} complete ${sel.orderIds.length === 1 ? "order" : "orders"}, ${sel.tasks.length} ${sel.tasks.length === 1 ? "stop" : "stops"}, about ${mins.toFixed(1)} min of travel. ${sel.why}.`;
+  } else { $("#logicMap").innerHTML = floorSvg({}); $("#loadWhy").textContent = ""; }
+  renderBatch(); renderEtaWhy(); renderCompare();
+}
+function renderBatch() {
+  const conf = Number($("#conf").value) / 100, bar = S.batchBar(st.weights), slack = (S.TRUCK - st.t) / 60 - 25;
+  $("#confOut").textContent = `${Math.round(conf * 100)}%`;
+  const d = S.smartBatch({ confidence: conf, threshold: bar, waitMin: 20, slackMin: Math.max(slack, 0) });
+  const zero = S.init(), [a, b] = zero.orders.filter((o) => o.type === "single" && o.eq === "cart" && o.stage === 0);
+  const pa = S.parseBin(a.lines[0].bin), pb = S.parseBin(b.lines[0].bin);
+  const two = S.solveRoute([pa]).length + S.solveRoute([pb]).length, one = S.solveRoute([pa, pb]).length;
+  $("#batch").innerHTML = `<div class="decision ${d.wait ? "" : "go"}"><b>${d.wait ? "Wait, then pull both" : "Go now"}</b>${esc(d.reason)}.</div>
+    <div class="trips"><div><b>${(S.moveSec("cart", two) / 60).toFixed(1)} min</b>travel, two trips</div><div><b>${(S.moveSec("cart", one) / 60).toFixed(1)} min</b>travel, one trip</div></div>
+    <p class="note">Two example orders on the example floor. The 20 min wait is an example.</p>`;
+}
+function renderEtaWhy() {
+  const o = st.byId[st.selected] || st.orders[0];
+  const row = (k, v, c = "") => `<div class="etarow ${c}"><span>${k}</span><span>${v}</span></div>`;
+  if (o.stage === 5) { $("#etaWhy").innerHTML = `<h2>How an ETA is built</h2><p class="note">Order ${o.id} reached the truck at ${S.clock(o.shippedAt)}. Pick an open order on the Control Tower.</p>`; return; }
+  const left = o.lines.filter((l) => !l.done);
+  const pull = left.reduce((s, l) => s + S.stopSec(o.eq, l.bin) + (o.eq === "cart" ? H.cartTravel : H.forkTravel), 0);
+  const kit = o.type === "multi" && o.stage <= 3 ? S.kitSec(o) : 0, drop = o.type === "multi" && o.stage <= 2 ? H.handlerIn : 0;
+  const packT = o.stage <= 4 ? (o.type === "single" ? H.packSingle * o.boxes : H.packMulti) : 0;
+  const touch2 = pull + kit + drop + packT, total = Math.max(o.eta - st.t, 0), wait = Math.max(total - touch2, 0);
+  const min = (s) => `${(s / 60).toFixed(1)} min`;
+  $("#etaWhy").innerHTML = `<h2>How the ETA for order ${o.id} is built</h2>
+    ${row("Now", S.clock(st.t))}${pull ? row(`Pulling, ${left.length} ${left.length === 1 ? "stop" : "stops"}`, min(pull)) : ""}${drop ? row("Drop lane", min(drop)) : ""}${kit ? row(`Kitting, ${o.boxes} ${o.boxes === 1 ? "box" : "boxes"}`, min(kit)) : ""}${packT ? row("Packing", min(packT)) : ""}
+    ${row("Queues ahead of it", min(wait))}${row("ETA", S.clock(o.eta), "tot")}<p class="note">Now + time left here + stages ahead + queues.</p>`;
+}
+function renderCompare() {
+  if (!compareRows) { $("#compare").innerHTML = `<tr><td class="note">Working it out…</td></tr>`; return; }
+  const cols = customRow ? [...compareRows, customRow] : compareRows;
+  const metric = (label, f) => `<tr><td>${label}</td>${cols.map((c) => `<td>${f(c.r)}</td>`).join("")}</tr>`;
+  $("#compare").innerHTML = `<thead><tr><th></th>${cols.map((c) => `<th>${esc(c.name)}</th>`).join("")}</tr></thead><tbody>
+    ${metric("Travel and routing time, min", (r) => r.travelMin.toFixed(0))}
+    ${metric("Orders after the truck", (r) => r.late)}
+    ${metric("Orders split between cart and forklift", (r) => r.split)}
+    ${metric("Orders per load", (r) => r.perLoad.toFixed(1))}
+    ${metric("Last order ready", (r) => S.clock(r.lastShip))}</tbody>`;
+}
+function computeCompare() {
+  compareRows = [{ name: "Today's rules", r: S.simulate({ mode: "today" }) }, ...Object.entries(S.PRESETS).map(([name, weights]) => ({ name, r: S.simulate({ weights }) }))];
+  if (tab === "logic") renderCompare();
+}
+function dialsChanged(name) {
+  const w = {};
+  for (const input of $$("[data-dial]")) w[input.dataset.dial] = Number(input.value) / 100;
+  S.replan(st, name ? S.PRESETS[name] : w, name || "Custom");
+  loadPick = 0;
+  clearTimeout(customTimer);
+  customRow = null;
+  if (!name) customTimer = setTimeout(() => { customRow = { name: "Your dials", r: S.simulate({ weights: st.weights }) }; if (tab === "logic") renderCompare(); }, 250);
+  touch();
+}
+function renderHistory() {
+  const rows = [
+    ["Rack stop, cart", `${H.cartStop} s`, "19 stops"], ["Rack stop, forklift", `${H.forkStop} s`, "62 stops"],
+    ["Travel between locations, cart", `${H.cartTravel} s`, "27 moves"], ["Travel between locations, forklift", `${H.forkTravel} s`, "71 moves"],
+    ["Route planning by feel, cart", `${H.cartRouting} s`, "11 times"], ["Route planning by feel, forklift", `${H.forkRouting} s`, "28 times"],
+    ["Travel to drop and unload, cart", `${H.cartToDrop + H.cartDrop} s`, "2 and 4 times"], ["Travel to drop and unload, forklift", `${H.forkToDrop + H.forkDrop} s`, "7 and 6 times"],
+    ["Matching split pallets at the drop zone", `${H.splitMatch} s`, "1 case"], ["Handler, drop zone to table", `${H.handlerIn} s`, "13 moves"], ["Handler, table to packing", `${H.handlerOut} s`, "12 moves"],
+    ["Kitting, elapsed per box", `${(H.kitPerBox / 60).toFixed(1)} min`, "25 pallets"], ["Packing, single box", `${H.packSingle} s`, "24 orders"], ["Packing, standard multi", `${H.packMulti} s`, "18 orders"],
+  ];
+  $("#hist").innerHTML = `<thead><tr><th>Stage</th><th>Example</th><th>Sample</th></tr></thead><tbody>${rows.map((r) => `<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join("")}</tbody>`;
+  $("#facts").innerHTML = ["Every order converges on one 7:30 PM truck", "Wrong and missing items, not walking speed, drove the worst pulling delays", "Much of pulling time is travel and route planning by feel", "A small set of parts makes up most order lines", "Real figures stay with the sponsor under NDA"].map((f) => `<li>${esc(f)}</li>`).join("");
+}
+
+// ---- frame --------------------------------------------------------------------------------------------
+function renderHeader() {
+  $("#clock").textContent = S.clock(st.t);
+  $("#truck").textContent = st.t < S.TRUCK ? `Truck in ${fmtLeft(S.TRUCK - st.t)}` : "Truck has left";
+  const live = running || followerRunning;
+  $("#play").textContent = st.done ? "Shift over" : live ? "Pause" : st.t > S.T0 ? "Resume" : "Start the shift";
+  $("#play").disabled = st.done;
+}
+function renderTab() {
+  if (tab === "tower") renderTower();
+  if (tab === "puller") renderPuller();
+  if (tab === "kitter") renderKitter();
+  if (tab === "logic") renderLogic();
+}
+function renderAll() { renderHeader(); renderTab(); }
+function touch() {
+  if (followerRunning) { running = true; followerRunning = false; lastTick = performance.now(); }   // whoever acts drives the clock
+  S.refreshEtas(st); autoSelect(); renderAll(); save();
+}
+function autoSelect() {
+  if (pinned) return;
+  const hot = st.orders.find((o) => o.risk && o.stage < 5);
+  if (hot && !st.byId[st.selected].risk) st.selected = hot.id;
+}
+function setManual(prev) {
+  const p = st.pullers[0], tb = st.tables[0];
+  if (tab === "puller") p.manual = true; else if (prev === "puller") p.manual = false;
+  if (tab === "kitter") tb.manual = true; else if (prev === "kitter") tb.manual = false;
+  if (p.manual && p.phase === "drop") S.finishLoad(st, p);
+  if (!tb.manual && tb.sheet && tb.left <= 0) { const o = S.kitOpenOrders(st, tb)[0]; tb.left = o ? S.kitSec(o) : 0; }
+  S.step(st, 0);
+}
+function setTab(name) {
+  const prev = tab;
+  tab = name;
+  $$(".tabs button").forEach((b) => { const on = b.dataset.tab === name; b.classList.toggle("on", on); b.setAttribute("aria-selected", String(on)); });
+  $$(".view").forEach((v) => v.classList.toggle("on", v.id === `tab-${name}`));
+  setManual(prev);
+  touch();
+  if (name === "logic" && !compareRows) setTimeout(computeCompare, 30);
+  if (name === "puller") $("#pullerInput").focus();
+  if (name === "kitter") $("#kitInput").focus();
+}
+function wrongCode(code) { return code.slice(0, -1) + (code.endsWith("1") ? "7" : "1"); }
+
+document.addEventListener("click", (e) => {
+  const tabBtn = e.target.closest("[data-tab]");
+  if (tabBtn) return setTab(tabBtn.dataset.tab);
+  const pickRow = e.target.closest("[data-order]");
+  if (pickRow) { st.selected = Number(pickRow.dataset.order); pinned = true; renderAll(); save(); return; }
+  const b = e.target.closest("[data-act]");
+  if (!b) return;
+  const p = me(), t = S.currentTask(p), tb = table();
+  switch (b.dataset.act) {
+    case "play": { const live = running || followerRunning; running = !live; followerRunning = false; lastTick = performance.now(); renderAll(); save(); return; }
+    case "reset": st = S.init(); running = false; followerRunning = false; pinned = false; loadPick = 0; customRow = null; st.selected = firstPick(); if (tab === "puller") st.pullers[0].manual = true; if (tab === "kitter") st.tables[0].manual = true; S.step(st, 0); break;
+    case "pullRight": if (t) return pullScan(p.step === 0 ? t.bin : t.part); break;
+    case "pullWrong": if (t) return pullScan(wrongCode(p.step === 0 ? t.bin : t.part)); break;
+    case "pullFail": if (t) {
+      const r = S.failStop(st, p, b.dataset.reason);
+      p.msg = { ok: false, text: `${b.dataset.reason} logged. ${r && r.rerouted ? `New bin: ${r.rerouted}.` : "Count task sent."} Next task.` };
+      S.step(st, 0);
+    } break;
+    case "kitSheet": if (tb.sheet && !tb.scanned) return kitInput(tb.sheet.id); if (tb.sheet) tb.flash = { ok: true, text: `Sheet ${tb.sheet.id} is already open.` }; break;
+    case "kitRight": { const o = S.kitOpenOrders(st, tb)[0], l = o && o.lines.find((x) => !x.kitted); if (tb.sheet && !tb.scanned) { S.kitScanPart(st, tb, "ZZ-0000"); break; } if (l) return kitInput(l.part); break; }
+    case "kitWrong": if (tb.sheet && !tb.scanned) { S.kitScanPart(st, tb, "ZZ-0000"); break; } if (tb.sheet) return kitInput("ZZ-0000"); break;
+    case "kitShort": { const o = S.kitOpenOrders(st, tb)[0]; if (o) { S.kitShort(st, tb, o.id); tb.flash = { ok: false, text: `Order ${o.id} to the short shelf. Pull task sent.` }; S.step(st, 0); } break; }
+    case "preset": return dialsChanged(b.dataset.name);
+    case "pickLoad": loadPick = Number(b.dataset.i); return renderLogic();
+    default: return;
+  }
+  touch();
+});
+document.addEventListener("keydown", (e) => {
+  if ((e.key === "Enter" || e.key === " ") && e.target.matches("tr[data-order]")) { e.preventDefault(); e.target.click(); }
+});
+document.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const input = e.target.querySelector("input"), code = input.value;
+  input.value = "";
+  if (e.target.dataset.form === "puller") pullScan(code); else kitInput(code);
+  input.focus();
+});
+document.addEventListener("input", (e) => {
+  if (e.target.matches("[data-dial]")) dialsChanged(null);
+  if (e.target.id === "conf") renderBatch();
+});
+$("#speed").addEventListener("change", (e) => { speed = Number(e.target.value); save(); });
+document.addEventListener("mousemove", (e) => {
+  const tip = $("#tip"), el = e.target.closest && e.target.closest("[data-tip]");
+  if (!el) { tip.hidden = true; return; }
+  tip.textContent = el.dataset.tip; tip.hidden = false;
+  tip.style.left = `${Math.min(e.clientX + 12, innerWidth - 290)}px`; tip.style.top = `${e.clientY + 14}px`;
+});
+
+let lastTick = performance.now();
+setInterval(() => {
+  const n = performance.now(), dt = (n - lastTick) / 1000;
+  lastTick = n;
+  if (!running || st.done) return;
+  acc += dt * speed;
+  while (acc >= 5 && !st.done) { S.step(st, 5); acc -= 5; }
+  const minute = Math.floor(st.t / 60);
+  renderHeader();
+  if (minute !== lastMinute) { lastMinute = minute; autoSelect(); renderTab(); save(); }
+  if (st.done) { running = false; renderAll(); save(); }
+}, 100);
+
+renderHistory();
+$("#speed").value = String(speed);
+if (!joined) S.step(st, 0);
+heartbeat();
+renderAll();
+if (!joined) save();
+window.addEventListener("resize", () => { if (tab === "tower") renderStrip(); });
+window.__demo = { get st() { return st; } };
+})();
+
+</script>
+</body>
+</html>

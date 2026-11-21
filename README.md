@@ -1,4 +1,4 @@
-# suyashsapre_portfolio
+﻿# suyashsapre_portfolio
 
 Personal site for Suyash Sapre — a single page listing data stories, projects, and research.
 
@@ -8,7 +8,9 @@ Personal site for Suyash Sapre — a single page listing data stories, projects,
 index.html         The whole site. Self-contained: inline CSS, no JS, no build step.
 projects.html      Redirect to index.html (kept so old links resolve).
 research.html      Redirect to index.html#research.
-assets/            profile.jpg, used as the og:image for link previews.
+assets/            profile.jpg (og:image), img/ (WebP figures), video/ (short MP4s).
+smartpull/         Public SmartPull demo. Example data only: Lenovo figures are removed (NDA).
+                   Rebuild it from the private copy with the scrub script, never copy it raw.
 ```
 
 ## Editing

@@ -16,8 +16,8 @@ assets/            profile.jpg, used as the og:image for link previews.
 Open `index.html` and edit it. There is no build, no dependency, and no framework.
 
 The page is a header block — name, positioning, availability, contact links, then a
-`<nav class="index">` — followed by five `<section class="group">` blocks: Data Stories,
-Research, Supply Chain, Other fun projects, Tools.
+`<nav class="index">` — followed by five `<section class="group">` blocks: Work & industry projects, Research,
+Supply chain & operations, Data stories & forecasting, Other projects.
 
 To add an entry:
 
@@ -34,7 +34,8 @@ How it works    the method — what was actually built
 What it found   results. Omit for projects with nothing measured yet.
 ```
 
-Close each article with a `.meta` block. Conventional rows are `Runs` (how often the thing
+Close each article with a `.meta` block. Conventional rows are `Evidence` (measured on real data
+or modeled on synthetic data), `Runs` (how often the thing
 executes, which sets the runtime budget), `Stack`, `Scale`, `Links`, and `Good for` / `Not for`
 where the limits are worth stating up front.
 

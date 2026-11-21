@@ -518,6 +518,50 @@
             }
         }
 
+        /* ---------- collapsible projects ---------- */
+        details.proj {
+            margin-top: 0;
+        }
+
+        details.proj > summary {
+            display: block;
+            width: auto;
+            font-size: 1rem;
+            color: var(--text);
+        }
+
+        details.proj > summary::before {
+            content: none;
+        }
+
+        details.proj > summary:hover {
+            text-decoration: none;
+        }
+
+        details.proj > summary:hover h3 {
+            color: var(--link);
+        }
+
+        .tease {
+            color: var(--text-2);
+            margin-top: 8px;
+        }
+
+        .more {
+            display: inline-block;
+            margin-top: 6px;
+            font-size: 0.85rem;
+            color: var(--link);
+        }
+
+        .more::after {
+            content: "Read more ▸";
+        }
+
+        details.proj[open] .more::after {
+            content: "Show less ▴";
+        }
+
         @media (max-width: 600px) {
             header.page {
                 padding-top: 36px;
@@ -540,22 +584,13 @@
 <div class="wrap">
 <h1>Suyash Sapre</h1>
 <p class="lede">
-                Industrial &amp; systems engineering, NC State (December 2026). I build optimization, simulation and
-                data tools for operations problems — sourcing, warehousing, routing, returns — and the part I care
-                about most is whether a result can be measured and checked.
-            </p>
-<p class="lede">
-                How I work: find where the value actually is, delete before adding, measure instead of arguing, and
-                keep the failures in the write-up. Every project below says whether its numbers are
-                <b>measured</b> on real data or <b>modeled</b> on synthetic data, and where the claim stops.
-            </p>
-<p class="lede">Raleigh, NC · available full-time from January 2027.</p>
+                Industrial &amp; systems engineering, NC State (December 2026).</p>
 <ul class="pts">
 <li><b>Ran a ~$10–16M/yr sourcing event at Lowe’s</b> end to end, and replaced a two-week award debate with one meeting using a Python scenario tool I built.</li>
 <li><b>Built a 1.9-million-review statewide dataset</b> for NC State food-access research — after catching a sampling bias that would have invented rural food deserts.</li>
 <li><b>Built SmartPull</b>, a live task-queue prototype for Lenovo’s same-day fulfillment floor, from 94 timed rack stops and eight site visits — <a href="smartpull/">try the demo</a>.</li>
 <li><b>Wrote GeoMatch</b>, an open-source matcher that nearly doubles standard fuzzy matching (0.94 vs 0.50 recall at 95% precision).</li>
-<li><b>Refereed 1,000+ soccer games</b> on three continents; 2025 Assistant Referee of the Year for Triangle Soccer Referees.</li>
+<li><b>Refereed 1,000+ soccer games.</b></li>
 </ul>
 <div class="contact">
 <a href="https://drive.google.com/file/d/10WxiHlnJSuDjz09RKEgLuMvxjyT9WtS5/view?usp=sharing" rel="noopener" target="_blank">Résumé</a>
@@ -611,10 +646,12 @@
                 Strategic sourcing, warehouse network analytics and fulfillment work across retail and manufacturing.
             </p>
 <article id="lowes-rfp">
-<div class="head">
+<details class="proj">
+<summary><div class="head">
 <span class="num">E1</span>
 <h3>Lowe’s — Electrical &amp; Lighting services RFP</h3>
 </div>
+<p class="tease">Ran a ~$10–16M/yr services RFP end to end, and built the spend model and scenario tool that turned a two-week award debate into one meeting.</p><span class="more"></span></summary>
 <h4>Scope</h4>
 <p class="note">
                     Owned the Electrical &amp; Lighting services RFP for Lowe’s Retail Facilities: every store and owned
@@ -664,12 +701,15 @@
 <div class="row"><span class="k">Stack</span><span class="v">Coupa · Python (spend model &amp; scenario tool) · Excel · KPI benchmarking</span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 <article id="upl-network">
-<div class="head">
+<details class="proj">
+<summary><div class="head">
 <span class="num">E2</span>
 <h3>UPL — Warehouse network &amp; SKU placement</h3>
 </div>
+<p class="tease">A Python network tool over 63,512 orders that tested a 30 → 9 warehouse consolidation: 93.3% of orders still within 600 miles.</p><span class="more"></span></summary>
 <h4>Scope</h4>
 <p class="note">
                     Three co-op rotations in supply chain and manufacturing operations, during a plan to cut active
@@ -701,12 +741,15 @@
 <div class="row"><span class="k">Stack</span><span class="v">Python · Jupyter · SAP (MB52, BOMs) · dashboards</span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 <article id="time-study-app">
-<div class="head">
+<details class="proj">
+<summary><div class="head">
 <span class="num">E3</span>
 <h3>Lenovo — SmartPack fulfillment &amp; the SmartPull prototype</h3>
 </div>
+<p class="tease">Timed 94 rack stops with an app I built, traced the delays to stale information, and prototyped SmartPull — a live task queue for pullers.</p><span class="more"></span></summary>
 <h4>Why</h4>
 <p class="note">
                     Lenovo’s Whitsett, NC distribution center ships same-day orders on one 7:30 PM truck. Our team of five
@@ -781,12 +824,15 @@
 <div class="row"><span class="k">Links</span><span class="v"><a href="smartpull/">SmartPull demo</a> <a href="https://youtu.be/MsAMWnsYaL8" rel="noopener" target="_blank">Explainer video</a></span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 <article id="david-phillips">
-<div class="head">
+<details class="proj">
+<summary><div class="head">
 <span class="num">E4</span>
 <h3>David Phillips — Product data audit</h3>
 </div>
+<p class="tease">Audited 1,145 live products (49% had no gross weight), recovered ~200 values from 56 vendors, and proposed one naming standard.</p><span class="more"></span></summary>
 <h4>Scope</h4>
 <p class="note">
                     At a London furniture retailer, product data feeds demand forecasting and delivery planning. It was
@@ -810,6 +856,7 @@
 <div class="row"><span class="k">Stack</span><span class="v">Microsoft Dynamics NAV · Excel · Jotform</span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 </div>
 </section>
@@ -823,10 +870,12 @@
                 access.
             </p>
 <article id="scraper">
-<div class="head">
+<details class="proj">
+<summary><div class="head">
 <span class="num">R1</span>
 <h3>Statewide food-access dataset — 1.9M grocery reviews</h3>
 </div>
+<p class="tease">1.94M Google Maps reviews from 4,442 stores in all 100 NC counties — after catching a bias that would have invented rural food deserts.</p><span class="more"></span></summary>
 <figure class="fig wide"><a href="assets/img/research-poster.webp" rel="noopener" target="_blank"><img alt="Research poster" loading="lazy" src="assets/img/research-poster-sm.webp"/></a><figcaption>Research poster, Fall 2026 — Sapre, Groton &amp; Rachunok, NC State ISE. Click for full size.</figcaption></figure>
 <h4>Why</h4>
 <p class="note">
@@ -886,12 +935,15 @@
 </span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 <article id="geomatch">
-<div class="head">
+<details class="proj">
+<summary><div class="head">
 <span class="num">R2</span>
 <h3>GeoMatch — open-source entity resolution</h3>
 </div>
+<p class="tease">Offline, explainable store matching: 0.94 recall at 95% precision, nearly double standard fuzzy matching.</p><span class="more"></span></summary>
 <h4>Why</h4>
 <p class="note">
                     Building that dataset, I kept hitting the same problem: a list of stores from one source and a list
@@ -948,6 +1000,7 @@
 </span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 </div>
 </section>
@@ -973,10 +1026,12 @@ Reverse       Where does it go coming back?  →  <a href="#return-routing">04</
 Demand side   How will customers react?      →  <a href="#policypulse">05</a>  PolicyPulse</pre>
 </article>
 <article id="uflp">
-<div class="head">
+<details class="proj">
+<summary><div class="head">
 <span class="num">01</span>
 <h3>Facility location</h3>
 </div>
+<p class="tease">Same 8 candidate fire stations, different answers per objective — cost, coverage and worst-case models side by side.</p><span class="more"></span></summary>
 <h4>Why</h4>
 <p class="note">
                     At UPL I worked on a warehouse network redesign. In school, our team advised the City of Goldsboro
@@ -1005,12 +1060,15 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
 </span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 <article id="consolidation">
-<div class="head">
+<details class="proj">
+<summary><div class="head">
 <span class="num">02</span>
 <h3>Freight consolidation &amp; truck loading</h3>
 </div>
+<p class="tease">Waiting for full trucks halves cost per cwt ($3.83 vs $7.44) — but one shipment waited 30.8 days.</p><span class="more"></span></summary>
 <h4>Why</h4>
 <p class="note">
                     A consolidation centre makes two decisions that interact. <b>When do you release a truck?</b>
@@ -1143,12 +1201,15 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
 <div class="row"><span class="k">Stack</span><span class="v">Python · NumPy · pandas · matplotlib · pytest</span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 <article id="routing">
-<div class="head">
+<details class="proj">
+<summary><div class="head">
 <span class="num">03</span>
 <h3>Routing — TSP &amp; VRP, exact vs heuristic</h3>
 </div>
+<p class="tease">Exact solving proves a 150-stop TSP in 21 s but stalls on 15-customer VRPs, and the better starting route gives the worse final route.</p><span class="more"></span></summary>
 <h4>Why</h4>
 <p class="note">
                     The truck is loaded. What order does it visit the stops in, and how many trucks do you need? I
@@ -1190,12 +1251,15 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
 </span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 <article id="return-routing">
-<div class="head">
+<details class="proj">
+<summary><div class="head">
 <span class="num">04</span>
 <h3>Return routing</h3>
 </div>
+<p class="tease">+$5.20 per return by deciding where it goes before it ships — and 90% of that is policy, not the machine learning.</p><span class="more"></span></summary>
 <h4>Why</h4>
 <p class="note">
                     I returned an unworn jacket in the wrong size, and it still got shipped across the country so
@@ -1244,12 +1308,15 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
 </span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 <article id="policypulse">
-<div class="head">
+<details class="proj">
+<summary><div class="head">
 <span class="num">05</span>
 <h3>PolicyPulse — simulating customer backlash</h3>
 </div>
+<p class="tease">500 simulated customers react to a return fee: casual shoppers, not bargain hunters, are the costly ones to lose.</p><span class="more"></span></summary>
 <h4>Why</h4>
 <p class="note">
                     A spreadsheet says a $9.95 return fee saves millions. Then you announce it, people are angry online
@@ -1299,6 +1366,7 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
 </span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 </div>
 </section>
@@ -1307,10 +1375,12 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
 <div class="wrap">
 <div class="group-title">Data stories &amp; forecasting</div>
 <article id="data-stories-wab">
-<div class="head">
+<details class="proj">
+<summary><div class="head">
 <span class="num">06</span>
 <h3>What America Is Buying — consumer data stories</h3>
 </div>
+<p class="tease">Six stories from card, foot-traffic and receipt data — Walmart vs Target, Dunkin’ vs Starbucks, gyms, gas stations and more.</p><span class="more"></span></summary>
 <h4>Why</h4>
 <p class="note">
                     Retail rivalries get explained with stereotypes — two Americas, two kinds of shopper. I wanted to
@@ -1357,12 +1427,15 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
 </span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 <article id="avocado-sourcing">
-<div class="head">
+<details class="proj">
+<summary><div class="head">
 <span class="num">07</span>
 <h3>Food supply shocks — avocados</h3>
 </div>
+<p class="tease">Mexico supplies 83.4% of US avocado imports; a one-week pause leaves 10,669 tonnes uncovered.</p><span class="more"></span></summary>
 <h4>Why</h4>
 <p class="note">
                     I’ve worked in sourcing, and as a student I watch grocery prices move without knowing what’s
@@ -1391,9 +1464,12 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
 </span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 <article id="rdu-delay">
-<div class="head"><span class="num">08</span><h3>Forecasting RDU flight delays the night before</h3></div>
+<details class="proj">
+<summary><div class="head"><span class="num">08</span><h3>Forecasting RDU flight delays the night before</h3></div>
+<p class="tease">Night-before delay forecasts rebuilt from 1.48M flights: 10.7% better Brier score than the best baseline, with leakage tests.</p><span class="more"></span></summary>
 <h4>Why</h4>
 <p class="note">
                     Airline apps tell you about a delay a few hours before departure; at 11 PM the night before you know
@@ -1435,9 +1511,12 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
 <div class="row"><span class="k">Links</span><span class="v"><a href="https://suyashh77.github.io/rdu-delay/" rel="noopener" target="_blank">Live forecasts</a> <a href="https://github.com/suyashh77/rdu-delay" rel="noopener" target="_blank">Code and methods</a></span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 <article id="timesfm-retail">
-<div class="head"><span class="num">09</span><h3>Testing TimesFM 3.0 on grocery sales</h3></div>
+<details class="proj">
+<summary><div class="head"><span class="num">09</span><h3>Testing TimesFM 3.0 on grocery sales</h3></div>
+<p class="tease">Google’s TimesFM against matched gradient boosting on grocery sales: 9.68% vs 12.30% WAPE with sales and calendar inputs.</p><span class="more"></span></summary>
 <h4>Why</h4>
 <p class="note">
                     Google’s TimesFM is pitched as a “ChatGPT moment” for forecasting. Can an already-trained model
@@ -1464,9 +1543,12 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
 <div class="row"><span class="k">Links</span><span class="v"><a href="timesfm-retail/">Full study</a> <a href="timesfm-retail/forecasts.html">Matched forecasts</a> <a href="https://github.com/suyashh77/retail-demand-timesfm">Code and results</a></span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 <article id="tabfm-spending">
-<div class="head"><span class="num">10</span><h3>Testing TabFM on college spending</h3></div>
+<details class="proj">
+<summary><div class="head"><span class="num">10</span><h3>Testing TabFM on college spending</h3></div>
+<p class="tease">A frozen tabular foundation model against fitted forests on four years of my own spending: 87.2% vs 88.4%.</p><span class="more"></span></summary>
 <h4>Why</h4>
 <p class="note">
                     Where does a frozen foundation model help with tables, and where does a fitted model do better? I
@@ -1491,6 +1573,7 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
 <div class="row"><span class="k">Links</span><span class="v"><a href="tabfm-spending/">Full study</a> <a href="tabfm-spending/methods.html">Methods and tables</a> <a href="https://github.com/suyashh77/tabfm-spending-categories">Code only</a></span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 </div>
 </section>
@@ -1499,10 +1582,12 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
 <div class="wrap">
 <div class="group-title">Other projects</div>
 <article id="garmin-wrapped">
-<div class="head">
+<details class="proj">
+<summary><div class="head">
 <span class="num">11</span>
 <h3>Garmin Wrapped</h3>
 </div>
+<p class="tease">Seven years of watch data turned into a ten-slide story — and five silent bugs found in my own pipeline.</p><span class="more"></span></summary>
 <h4>Why</h4>
 <p class="note">
                     Friends post their Spotify Wrapped every year; Garmin gives me records and a step chart — no story.
@@ -1548,12 +1633,15 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
 <p class="fine" style="margin-top:8px">Click any slide to open it at full resolution.</p>
 </details>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 <article id="wolfattend">
-<div class="head">
+<details class="proj">
+<summary><div class="head">
 <span class="num">12</span>
 <h3>WolfAttend</h3>
 </div>
+<p class="tease">Two-factor class attendance (rotating code + campus WiFi) proposed to NC State IT — and the flaw their developer found.</p><span class="more"></span></summary>
 <h4>Why</h4>
 <p class="note">
                     Attendance in a big lecture forces a choice between speed and honesty: calling names burns ten
@@ -1583,12 +1671,15 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
 </span></div>
 </div>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 <article id="also-built">
-<div class="head">
+<details class="proj">
+<summary><div class="head">
 <span class="num">+</span>
 <h3>Also built, and in progress</h3>
 </div>
+<p class="tease">Foreshock, a job-market analysis, a voice transcriber and four small tools.</p><span class="more"></span></summary>
 <p class="problem note">Smaller tools, and work without results worth claiming yet.</p>
 <ul class="pts">
 <li><b>Foreshock</b> (in progress) — a rebuild of my
@@ -1616,19 +1707,14 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
                         playlist of what I’m missing.</li>
 </ul>
 <a class="totop" href="#top">↑ Index</a>
+</details>
 </article>
 <article id="outside-work">
 <div class="head">
 <span class="num">+</span>
 <h3>Outside work — soccer</h3>
 </div>
-<p class="problem note">
-                    US Soccer Regional Referee with 1,000+ games across youth, college and semi-pro, and 2025 Assistant
-                    Referee of the Year for Triangle Soccer Referees; I’ve refereed on three continents. I hold a USSF
-                    National D coaching license and have coached youth teams in Mumbai and Raleigh. Before that I
-                    played — I captained my school to a 2018 Mumbai schools U-16 title.
-                </p>
-<a class="totop" href="#top">↑ Index</a>
+<p class="problem note">I referee, play, coach and watch soccer. USSF Regional Referee · USSF National D coaching license.</p>
 </article>
 </div>
 </section>
@@ -1641,5 +1727,15 @@ Demand side   How will customers react?      →  <a href="#policypulse">05</a> 
 <a href="mailto:suyash.sapre@gmail.com">Email</a>
 </div>
 </footer>
+<script>
+    // Open the project a nav link (or shared URL) points to.
+    function openFromHash() {
+        var target = document.getElementById(location.hash.slice(1));
+        var panel = target && target.querySelector('details.proj');
+        if (panel) { panel.open = true; }
+    }
+    window.addEventListener('hashchange', openFromHash);
+    openFromHash();
+</script>
 </body>
 </html>
